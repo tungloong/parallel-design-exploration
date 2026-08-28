@@ -27,7 +27,7 @@ The primary search affordance stays in the thumb zone while results expand above
 Results emphasize the next action rather than feed-like browsing.
 ```
 
-All siblings are rendered inside the same exploration document and remain addressable by their stable ids.
+All siblings are rendered inside the same exploration artifact and remain addressable by their stable ids.
 
 A simplified structure looks like:
 
@@ -42,6 +42,8 @@ A simplified structure looks like:
   </section>
 </main>
 ```
+
+Once delivered, this Turn 1 subtree becomes a historical snapshot in the session's primary artifact.
 
 Local explanation can appear beside or below an option when the design benefits from it; it is not part of a fixed review form.
 
@@ -62,7 +64,7 @@ The user explicitly asked for three riffs, so the next turn branches from `1b`:
 2c — Single-result command       ← 1b
 ```
 
-The document becomes:
+The same primary artifact grows into:
 
 ```text
 TURN 2
@@ -74,23 +76,27 @@ TURN 1
 1a        1b        1c
 ```
 
-And the canonical state structure becomes:
+The canonical mutation is:
 
 ```html
 <main class="pde-canvas" data-pde-version="1">
+  <!-- newly inserted state -->
   <section class="pde-turn" id="t2" data-turn="2">
     <article class="pde-option" id="2a" data-option="2a" data-parent="1b">...</article>
     <article class="pde-option" id="2b" data-option="2b" data-parent="1b">...</article>
     <article class="pde-option" id="2c" data-option="2c" data-parent="1b">...</article>
   </section>
 
+  <!-- previously delivered subtree remains the same rendered state -->
   <section class="pde-turn" id="t1" data-turn="1">
     ... original 1a / 1b / 1c ...
   </section>
 </main>
 ```
 
-The newest turn sits above the earlier one while the earlier states keep the same ids and visible content.
+Turn 2 is new work. Turn 1 remains source-of-truth history rather than being redrawn as a thumbnail, summary, or reinterpretation. New CSS or JavaScript for Turn 2 is scoped so the earlier prototypes keep the same rendering meaning.
+
+The file path established in Turn 1 also remains the primary artifact identity; the follow-up does not create a second "latest" exploration file.
 
 ## Conversation stays connected to the canvas
 
@@ -107,5 +113,7 @@ Combine 1c's action treatment with 2b's result expansion.
 ```text
 2a is strongest; continue from that direction.
 ```
+
+These prompts normally create new descendant states. If the user instead explicitly asks to correct a historical state itself, that is a direct historical edit rather than a normal continuation.
 
 The value of the protocol is that each sentence refers to a visible, persistent design state rather than an implicit version remembered only by the conversation.
