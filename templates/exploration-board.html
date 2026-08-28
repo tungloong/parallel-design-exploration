@@ -24,8 +24,8 @@
     .pde-option-name{font-weight:600}
     .pde-parent{color:#77746f}
     .pde-design,.pde-baseline-design{min-height:420px;overflow:hidden;border:1px solid rgba(0,0,0,.09);border-radius:9px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-    .pde-explain{margin-top:10px;padding:11px 12px;border:1px solid rgba(0,0,0,.08);border-radius:8px;background:rgba(255,255,255,.5);font-size:11.5px;line-height:1.5}
-    .pde-explain p{display:grid;grid-template-columns:64px 1fr;gap:8px;margin:0}.pde-explain p+p{margin-top:6px}.pde-explain b{font-weight:650}.pde-explain span{color:#696761}
+    .pde-annotation{margin-top:10px;color:#696761;font-size:11.5px;line-height:1.55}
+    .pde-annotation p,.pde-annotation ul{margin:0}.pde-annotation ul{padding-left:18px}.pde-annotation li+li{margin-top:4px}
     .pde-next{margin:22px 0 0;color:#6d6a64;font-size:12px;line-height:1.55}
     .pde-next a{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:650}
   </style>
@@ -37,7 +37,7 @@
         <a class="pde-turn-id" href="#t1">1</a>
         <span class="pde-turn-title">What this turn explores</span>
       </header>
-      <p class="pde-turn-context">One concise, design-facing explanation of this exploration state.</p>
+      <p class="pde-turn-context">A concise design-facing explanation of this exploration state.</p>
 
       <div class="pde-options">
         <article class="pde-option" id="1a" data-option="1a">
@@ -46,11 +46,7 @@
             <span class="pde-option-name">Direction name</span>
           </header>
           <div class="pde-design"><!-- Render the complete inline design here. --></div>
-          <div class="pde-explain">
-            <p><b>Idea</b><span>Core hypothesis.</span></p>
-            <p><b>Key move</b><span>What structurally distinguishes this option.</span></p>
-            <p><b>Tradeoff</b><span>What this option gains and gives up.</span></p>
-          </div>
+          <div class="pde-annotation">A short note explaining what makes this option distinctive.</div>
         </article>
 
         <article class="pde-option" id="1b" data-option="1b">
@@ -59,11 +55,7 @@
             <span class="pde-option-name">Direction name</span>
           </header>
           <div class="pde-design"><!-- Render the complete inline design here. --></div>
-          <div class="pde-explain">
-            <p><b>Idea</b><span>Core hypothesis.</span></p>
-            <p><b>Key move</b><span>Distinctive move.</span></p>
-            <p><b>Tradeoff</b><span>Gain and sacrifice.</span></p>
-          </div>
+          <div class="pde-annotation"><p>Use whatever annotation form best clarifies the design.</p></div>
         </article>
 
         <article class="pde-option" id="1c" data-option="1c">
@@ -72,18 +64,13 @@
             <span class="pde-option-name">Direction name</span>
           </header>
           <div class="pde-design"><!-- Render the complete inline design here. --></div>
-          <div class="pde-explain">
-            <p><b>Idea</b><span>Core hypothesis.</span></p>
-            <p><b>Key move</b><span>Distinctive move.</span></p>
-            <p><b>Tradeoff</b><span>Gain and sacrifice.</span></p>
-          </div>
         </article>
       </div>
 
       <p class="pde-next">Try next: “riff on <a href="#1b">1b</a>” · “combine <a href="#1a">1a</a> and <a href="#1c">1c</a>” · “explore a different axis”</p>
     </section>
 
-    <!-- Add this oldest visible state only when a reliable current design can be established.
+    <!-- Optional oldest state when a reliable current design exists.
     <section class="pde-baseline" id="baseline" data-baseline="0">
       <header class="pde-baseline-head">
         <a class="pde-baseline-id" href="#baseline">0</a>
