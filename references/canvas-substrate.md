@@ -8,7 +8,7 @@ The substrate is intentionally narrow in scope. It is not a design system for th
 
 ```text
 CANVAS CHROME
-stable across runs
+stable across runs and turns
 → turn spacing
 → state ids
 → sibling placement
@@ -44,6 +44,8 @@ The canonical substrate therefore specifies only a few utility properties:
 - a light bounded artifact surface;
 - understated continuation cues.
 
+These properties are the base workspace chrome, not a visual-direction prompt. Artifact-specific styling extends inside or beneath the design states rather than redefining the PDE workspace on every generation.
+
 ## Spatial model
 
 Options behave more like artboards on a working surface than cards in a responsive dashboard.
@@ -68,6 +70,21 @@ artifact width → option width
 ```
 
 This keeps comparison spatial while remaining usable in a normal HTML preview.
+
+## Chrome stability over time
+
+A later turn may need substantial new product-specific CSS or JavaScript. That new implementation should leave the historical workspace states semantically stable.
+
+State-local selectors are a useful default pattern:
+
+```css
+.phone-1a { ... }
+.phone-1b { ... }
+.phone-2a { ... }
+.phone-2b { ... }
+```
+
+This keeps new-turn craft additive. Broad changes to shared selectors are appropriate only when they preserve the rendering meaning of previously delivered states.
 
 ## Annotation and metadata
 
