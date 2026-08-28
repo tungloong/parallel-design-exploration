@@ -25,7 +25,7 @@ Sibling options remain directly comparable, state identities stay stable across 
 
 The plugin can be selected directly as an Open Design Active Plugin and requests only `prompt:inject`, keeping the scenario compatible with the community plugin trust model.
 
-v0.8 narrows the contract to the parts that need to stay stable across agents: document ownership, state ordering, option identity, lineage, visible history, and direct comparison. Design commentary is now free-form rather than a fixed review schema.
+v0.8 narrows the contract to the parts that need to stay stable across agents: document ownership, state ordering, option identity, lineage, visible history, and direct comparison. Design commentary is free-form and adapts to the work being shown.
 
 ## Core protocol
 
@@ -75,9 +75,9 @@ A turn normally contains three materially different rendered options unless the 
 
 ### Free-form local annotation
 
-Annotations stay close to the design they explain, but the plugin does not impose a fixed `Idea / Key move / Tradeoff` form. A useful annotation can be one sentence, a short paragraph, a few bullets, a compact tradeoff note, or no extra prose when the distinction is already obvious.
+Annotations stay close to the design they explain and use the form that best clarifies the work. A useful annotation can be one sentence, a short paragraph, a few bullets, a compact tradeoff note, or little extra prose when the distinction is already obvious.
 
-The protocol standardizes **identity and history**, not the designer's voice.
+The protocol standardizes **identity and history** while leaving the designer's explanation expressive.
 
 ### Quiet comparison surface
 
