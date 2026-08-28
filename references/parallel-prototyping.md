@@ -2,7 +2,7 @@
 
 This skill treats parallel prototyping as its primary design-method foundation.
 
-## 1. Dow et al. — Parallel prototyping vs serial iteration
+## 1. Dow et al. — parallel prototyping vs serial iteration
 
 **Steven P. Dow, Alana Glassco, Jonathan Kass, Melissa Schwarz, Daniel L. Schwartz, Scott R. Klemmer.**
 
@@ -14,8 +14,6 @@ ACM: https://dl.acm.org/doi/10.1145/1879831.1879836
 
 ### What the study compared
 
-The study contrasted two iteration structures:
-
 ```text
 SERIAL
 prototype → critique → prototype → critique → prototype
@@ -26,21 +24,19 @@ prototype B ─┼→ critique/comparison → later refinement
 prototype C ─┘
 ```
 
-The authors frame serial iteration as vulnerable to **fixation**: continuously refining one option without sufficiently considering alternatives.
-
-In the reported experiment, participants in the parallel condition created multiple prototypes before feedback. The paper reports that parallel work produced more diverse alternatives and stronger final outcomes by the study's expert-rating and click-through measures, while participants also reported a larger increase in task-specific confidence.
+The authors discuss how serial iteration can encourage fixation on an incumbent idea. In the reported experiment, participants in the parallel condition created several prototypes before feedback. The paper reports more diverse alternatives and stronger final outcomes by the study's expert-rating and click-through measures, while participants also reported a larger increase in task-specific confidence.
 
 ### Implications for this skill
 
-The relevant lesson is not "always generate exactly three designs." It is structural:
+The relevant lesson is structural rather than numeric:
 
-- keep multiple design hypotheses alive long enough to compare them;
-- delay commitment until alternatives are concrete;
-- solicit feedback across alternatives rather than only on the current answer;
-- avoid treating every follow-up as an instruction to polish one incumbent design;
-- preserve diversity between siblings instead of producing cosmetic variants.
+- keep several design hypotheses alive long enough to compare them;
+- make alternatives concrete before commitment;
+- gather feedback across alternatives rather than only on a single incumbent;
+- preserve meaningful diversity between sibling designs;
+- let convergence follow comparison.
 
-This is why the skill forbids an automatic winner during an exploration round.
+The plugin uses three siblings as a practical default, while the user or brief can call for another count.
 
 ## 2. Hartmann et al. — Design as Exploration / Juxtapose
 
@@ -54,20 +50,20 @@ Project page: https://hci.stanford.edu/research/juxtapose/
 
 ### Why it matters here
 
-Juxtapose is especially relevant because it treats **multiple interface alternatives as first-class authoring objects**, not just sketches that disappear before implementation.
+Juxtapose is especially relevant because it treats **multiple interface alternatives as first-class authoring objects**, not only as sketches that disappear before implementation.
 
-Its core premise is that multiple prototypes support:
+Its core premise supports:
 
 - comparative reasoning;
 - grounded team discussion;
 - situated exploration;
-- faster surveying of alternatives.
+- rapid surveying of alternatives.
 
-It also identifies a tooling problem that remains recognizable today: authoring tools often center a single current artifact even though exploration benefits from multiple alternatives.
+It also highlights a tooling tension that remains recognizable today: authoring tools often center one current artifact even though exploration benefits from multiple alternatives.
 
-### Implications for this skill
+### Implication for this skill
 
-Our design object should therefore be closer to:
+The design object is closer to:
 
 ```text
 Exploration
@@ -76,20 +72,11 @@ Exploration
 └── Alternative C
 ```
 
-than:
+than to a single latest-state artifact. Stable option identities and the persistent canvas make those alternatives explicit and addressable.
 
-```text
-CurrentArtifact
-└── latest.html
-```
-
-The board and manifest exist to make alternatives explicit and addressable.
-
-## 3. Divergence before convergence
+## 3. Divergence and convergence
 
 Parallel prototyping belongs to a broader family of design practices that separate **divergence** from **convergence**.
-
-Operationally, this skill interprets that as two different modes:
 
 ### Explore mode
 
@@ -97,32 +84,32 @@ Operationally, this skill interprets that as two different modes:
 - keep siblings visible;
 - compare trade-offs;
 - branch from promising ideas;
-- avoid declaring a winner.
+- build enough fidelity for judgment.
 
 ### Converge mode
 
 - select or combine specific variants;
 - preserve provenance of the selected ideas;
-- create a promoted design artifact;
-- retain the exploration record instead of deleting it.
+- continue development from a chosen state;
+- retain the exploration record as context.
 
-The mode transition should be explicit. A follow-up comment such as "the keyboard occupies too much space" is normally exploration feedback, not permission to erase Round 1 and silently replace it.
+The user controls the transition between these modes through conversation.
 
-## 4. Comparison requires comparable representations
+## 4. Comparable representations
 
-Parallel alternatives are only useful when comparison is fair.
+Parallel alternatives are easier to judge when comparison conditions are appropriate to the question.
 
-For UI prototypes, siblings in the same round should therefore use, whenever practical:
+For UI prototypes, useful controlled dimensions can include:
 
-- the same device/viewport dimensions;
-- the same content/data scenario;
-- similar prototype fidelity;
-- the same key user task;
-- consistent zoom on the board.
+- device or viewport size;
+- content/data scenario;
+- prototype fidelity;
+- key user task;
+- visual scale on the canvas.
 
-Otherwise differences in fidelity or framing can dominate differences in design hypothesis.
+These are tools for fair comparison rather than content that automatically needs to appear in the visible artifact.
 
-## 5. What counts as meaningful divergence
+## 5. Meaningful divergence
 
 Strong sibling differences often concern:
 
@@ -134,22 +121,13 @@ Strong sibling differences often concern:
 - product metaphor;
 - spatial organization;
 - density;
-- direct manipulation vs command/action models;
-- system-native vs custom interaction.
+- direct manipulation versus command/action models;
+- system-native versus custom interaction.
 
-Weak divergence includes a set of alternatives where the only changes are:
-
-- color palette;
-- typeface;
-- corner radius;
-- shadows;
-- minor spacing;
-- decorative treatment.
-
-Visual style can be a valid exploration dimension, but style-only alternatives should be intentional and clearly labeled as such.
+Visual style can also be a valid exploration dimension when that is the design question. In that case typography, color, material, motion, or tone may be the primary axes of divergence.
 
 ## 6. Design rule derived from the references
 
 > Generate alternatives far enough to compare the design, not merely the description of the design.
 
-That rule is the core distinction between this skill and a conventional direction picker.
+That is the core distinction between parallel prototyping and a conventional direction picker.
