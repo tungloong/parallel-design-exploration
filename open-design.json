@@ -3,8 +3,8 @@
   "specVersion": "1.0.0",
   "name": "parallel-design-exploration",
   "title": "Parallel Design Exploration",
-  "version": "0.6.0",
-  "description": "Standalone Open Design scenario for persistent parallel exploration: preserve a real current-state baseline when one exists, render sibling design options together, keep stable option identities, retain prior turns visibly, and converge only when the user chooses to.",
+  "version": "0.7.0",
+  "description": "Standalone Open Design scenario for persistent parallel design exploration: compare rendered sibling options in one visible design space, preserve reliable current-state evidence when available, keep stable state identities across turns, and converge when the user chooses to.",
   "license": "MIT",
   "author": {
     "name": "tungloong",
@@ -44,8 +44,8 @@
     },
     "useCase": {
       "query": {
-        "en": "Use Parallel Design Exploration for my brief. If usable current design context exists, preserve it as a visible baseline before exploring alternatives. Render materially different sibling options together in one persistent visual document, keep stable option ids and visible history, place newer exploration above older work, and let me decide when to converge.",
-        "zh-CN": "使用 Parallel Design Exploration 处理我的设计需求。如果存在可用的当前设计或项目上下文，先将当前状态作为可见基线保留下来，再展开多个实质不同的并行方案；所有方案在同一个持续存在的视觉文档中直接比较，使用稳定 ID，保留可见历史，并由我决定何时收敛。"
+        "en": "Explore this design brief through several materially different rendered options in one persistent comparison canvas. Use reliable existing design context as baseline evidence when available, keep state identities stable across follow-up exploration, preserve prior visible states, and let me decide when to converge.",
+        "zh-CN": "针对这个设计需求，在同一个持续存在的比较画布中生成多个实质不同、可直接判断的设计方案。如果存在可靠的现有设计上下文，将其作为基线证据保留；后续探索保持各状态的稳定身份与可见历史，并由我决定何时收敛。"
       },
       "exampleOutputs": [
         {
