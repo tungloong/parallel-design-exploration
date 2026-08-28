@@ -21,18 +21,58 @@ Sibling options remain directly comparable, state identities stay stable across 
 
 ## Status
 
-**v0.9 — stable canvas chrome, generative design content.**
+**v0.10 — stable artifact identity and immutable delivered states.**
 
 The plugin can be selected directly as an Open Design Active Plugin and requests only `prompt:inject`, keeping the scenario compatible with the community plugin trust model.
 
-v0.9 separates two responsibilities more sharply:
+v0.10 formalizes the temporal side of the protocol:
 
-- the plugin provides a small, stable Options Canvas substrate for turns, ids, spacing, sibling layout, and navigation;
-- the model and brief determine the actual design language, artifact size, annotation needs, and exploration axes.
+- one exploration session has one stable primary artifact;
+- each delivered turn becomes a historical design-state snapshot;
+- normal follow-up work prepends a new turn to that same artifact;
+- earlier states keep their identity, visible content, and rendering meaning;
+- new implementation extends styles and behavior without unintentionally restyling historical states.
 
-This keeps the workspace recognizable without turning the workspace itself into another design task.
+The visual substrate introduced in v0.9 remains intentionally small and stable so the model can spend its creative effort on the designs themselves.
 
 ## Core protocol
+
+### One persistent artifact identity
+
+The first generation establishes the primary exploration artifact. Its subject-derived filename becomes part of the session identity:
+
+```text
+search-and-go-exploration.html
+checkout-flow-exploration.html
+analytics-dashboard-exploration.html
+```
+
+Follow-up turns resolve and update that same artifact rather than creating a new latest copy.
+
+### Immutable delivered states
+
+Once a turn has been shown to the user, it becomes part of the historical record.
+
+A normal follow-up changes this:
+
+```text
+Turn 1
+0 · Baseline
+```
+
+into this:
+
+```text
+Turn 2   ← new
+Turn 1   ← same historical state
+0 · Baseline
+```
+
+Requests to riff on, deepen, combine, or refine earlier work normally create descendant options in a new turn. Direct correction of an earlier state is a different operation and happens only when the user explicitly asks to change that historical state itself.
+
+Historical preservation applies to rendering meaning, not only DOM ids. New-turn CSS and behavior should be additive or scoped so previously delivered states still look and behave as they did when delivered.
+
+See [`references/artifact-state-mutation.md`](references/artifact-state-mutation.md) for the state-transition model.
 
 ### One visible exploration document
 
@@ -92,7 +132,7 @@ The Options Canvas uses a small utility chrome rather than a newly invented page
 - a light artifact surface around each rendered design;
 - quiet, one-line continuation cues when useful.
 
-The design inside each option remains free to use whatever visual language the brief calls for.
+This substrate is the base canvas chrome, not a visual-direction suggestion. The design inside each option remains free to use whatever visual language the brief calls for.
 
 See [`templates/exploration-board.html`](templates/exploration-board.html) for the minimal substrate and [`references/canvas-substrate.md`](references/canvas-substrate.md) for the rationale.
 
@@ -100,7 +140,7 @@ See [`templates/exploration-board.html`](templates/exploration-board.html) for t
 
 Design reasoning can stay close to an option when it materially improves understanding, but it is not a fixed option schema. Depending on the work, an explanation can be one sentence, a short paragraph, bullets, or absent when the design is already clear.
 
-The protocol standardizes **identity, history, and spatial comparison** rather than the designer's writing style.
+The protocol standardizes **identity, history, mutation, and spatial comparison** rather than the designer's writing style.
 
 ## Install
 
@@ -141,25 +181,13 @@ See [`examples/single-document-exploration.html`](examples/single-document-explo
 1. Diverge before converge.
 2. Render alternatives rather than merely describing them.
 3. Keep sibling options directly comparable.
-4. Preserve visible exploration history.
-5. Give design states stable conversational identities.
-6. Treat baseline evidence and design lineage as separate concepts.
-7. Keep the canvas chrome stable and lightweight.
-8. Let the user's brief determine the domain, style, fidelity, and variation axes.
-9. Let the artifact determine its useful intrinsic size on the canvas.
+4. Keep one stable primary artifact for the exploration session.
+5. Treat delivered states as persistent historical snapshots.
+6. Give design states stable conversational identities.
+7. Treat baseline evidence and design lineage as separate concepts.
+8. Keep the canvas chrome stable and lightweight.
+9. Let the user's brief determine the domain, style, fidelity, and variation axes.
 10. Let the user direct convergence.
-
-## Artifact naming
-
-The exploration file is named from the actual subject, for example:
-
-```text
-search-and-go-exploration.html
-checkout-flow-exploration.html
-analytics-dashboard-exploration.html
-```
-
-The filename remains stable across later turns. Host-required entry paths take precedence when applicable.
 
 ## Open Design compatibility
 
@@ -173,7 +201,7 @@ surface: web
 capabilities: [prompt:inject]
 ```
 
-Open Design can still contribute host-level discovery, craft, or design-direction context. The skill uses that context while maintaining the persistent parallel exploration model and its small canonical substrate.
+Open Design can still contribute host-level discovery, craft, or design-direction context. The skill uses that context while maintaining the persistent parallel exploration model, stable artifact identity, immutable history semantics, and canonical substrate.
 
 ## Method references
 
@@ -190,6 +218,7 @@ See:
 - [`references/parallel-prototyping.md`](references/parallel-prototyping.md)
 - [`references/exploration-canvas.md`](references/exploration-canvas.md)
 - [`references/persistent-options-canvas.md`](references/persistent-options-canvas.md)
+- [`references/artifact-state-mutation.md`](references/artifact-state-mutation.md)
 - [`references/canvas-substrate.md`](references/canvas-substrate.md)
 - [`references/open-design-community-alignment.md`](references/open-design-community-alignment.md)
 
