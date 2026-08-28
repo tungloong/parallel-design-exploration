@@ -1,14 +1,13 @@
 ---
 name: parallel-design-exploration
 description: |
-  Explore a design problem through multiple fully rendered sibling prototypes in parallel,
-  keep every prior exploration visible, and append new rounds without overwriting old work.
-  Use when the user wants divergent UI/product design exploration, parallel prototyping,
-  side-by-side alternatives, or a persistent exploration canvas before convergence.
+  Explore a design problem through multiple fully rendered sibling variants in one persistent
+  design document. Keep prior rounds visibly present, append new rounds instead of overwriting,
+  and converge only when the user asks.
 license: MIT
 metadata:
   author: tungloong
-  version: "0.3.0"
+  version: "0.4.0"
 triggers:
   - "parallel design exploration"
   - "parallel prototyping"
@@ -26,193 +25,137 @@ od:
 
 # Parallel Design Exploration
 
-Create a **working design exploration canvas**, not a presentation page.
+Create a **persistent design exploration document**, not a presentation page and not a collection of separate prototype files.
 
-The purpose of this skill is to keep a design space open long enough for useful comparison. It follows the logic of parallel prototyping: generate materially different alternatives at the same time, make them visually comparable, collect feedback, and only converge when the user explicitly asks to converge.
+The desired interaction model is a design studio wall / large canvas: alternatives from the same round are spatially adjacent, old rounds remain visible, and later feedback grows the same document instead of replacing what came before.
 
-## Standalone Open Design scenario contract
+## 0. This skill is self-contained
 
-When this bundle is the Active Plugin in Open Design, it owns the **design-method contract** for the run. It does **not** depend on Web Prototype or another prototype plugin.
+Do not search the Open Design installation directory for this skill's `references/`, `templates/`, or checklist before starting. Those files are background documentation for humans and plugin development; they are **not runtime prerequisites**.
 
-Treat the user's current chat prompt as the authoritative design brief. Do not wait for, request, or invent a separate `brief` plugin input. `variantCount` is only a configuration hint.
+Do not block generation because an optional plugin asset cannot be located.
 
-For community-safe distribution, this plugin intentionally does **not** declare its own elevated `od.pipeline`, filesystem capability, or shell capability. It relies on Open Design's built-in `new-generation` host pipeline for normal planning, file creation, live artifact rendering, and critique. The distinctive behavior of this plugin lives here, in this skill contract.
+The hard runtime contract is fully contained in this `SKILL.md`.
 
-If the host pipeline exposes a `direction-picker`, do **not** use it as a pre-generation convergence gate. Candidate directions may be used as planning seeds, but continue through generation and render all requested sibling prototypes before asking the user to choose.
+## 1. One persistent artifact — hard requirement
 
-Host default mental model:
+For normal exploration, create **one user-facing HTML artifact** and keep editing that same file across turns.
 
-```text
-directions → pick one → generate
-```
-
-Parallel Design Exploration mental model:
+Preferred semantic name:
 
 ```text
-directions → keep several → generate all siblings → compare → user decides when to converge
+design-exploration.html
 ```
 
-## Core contract
+A brief-specific semantic name such as `search-screen-exploration.html` is also fine. Once created, preserve that filename on follow-up turns.
 
-1. **Diverge before converge.** During an exploration round, do not choose a winner, recommend a preferred direction, or quietly collapse alternatives into one answer.
-2. **Prototype the alternatives.** A direction is not just a paragraph, mood card, palette, or style label. Each sibling must be rendered far enough that the user can judge the design itself.
-3. **Juxtapose, do not summarize.** Sibling variants must be visible in the same comparative field whenever practical.
-4. **Never overwrite an exploration.** Earlier rounds are immutable historical design states. New feedback creates descendants; it does not mutate ancestors.
-5. **Every iteration is additive.** The exploration board grows over time.
-6. **Keep lineage explicit.** Every variant has a stable id and a parent.
-7. **Allow branching from old work.** A new variant may descend from any prior variant, not only the latest round.
-8. **The board is a workspace, not a showcase.** The board UI must remain visually neutral and subordinate to the prototypes.
-9. **Convergence is a user decision.** Do not mark a winner or emit a final recommendation unless the user asks for selection, synthesis, or convergence.
-
-## Resource map
-
-```text
-parallel-design-exploration/
-├── SKILL.md
-├── open-design.json
-├── README.md
-├── references/
-│   ├── parallel-prototyping.md
-│   ├── exploration-canvas.md
-│   ├── open-design-community-alignment.md
-│   └── checklist.md
-├── templates/
-│   ├── exploration-board.html
-│   └── exploration.schema.json
-└── examples/
-    └── mobile-ui-exploration.md
-```
-
-Read `references/parallel-prototyping.md`, `references/exploration-canvas.md`, and `references/open-design-community-alignment.md` before generating the first round. Run `references/checklist.md` before completing each round.
-
-## Information model
-
-Treat the design exploration as a persistent graph, not as one mutable artifact.
-
-Example:
-
-```text
-Baseline
-├── 1A  Quiet canvas
-│   └── 2A  Quiet canvas + keyboard-aware layout
-├── 1B  Thumb search dock
-│   ├── 2B  Dock with compact result cards
-│   └── 2D  Dock with inline actions
-└── 1C  Command results
-    └── 2C  Command results + persistent source context
-```
-
-The round number describes when a variant was generated. The letter is only a sibling label within that round. The parent relationship is authoritative.
-
-## File model
-
-Prefer independent prototype files plus a neutral board:
+### Do not create this normal-mode structure
 
 ```text
 board.html
 exploration.json
-round-1/
-  1A.html
-  1B.html
-  1C.html
-round-2/
-  2A.html
-  2B.html
-  2C.html
+round-1/1A.html
+round-1/1B.html
+round-1/1C.html
 ```
 
-Independent files prevent a later iteration from accidentally rewriting earlier designs, and they keep each prototype usable outside the board.
+That is explicitly **not** the desired experience.
 
-If the runtime strongly prefers a single HTML artifact, preserve the same semantics inside one document: previous variant DOM must remain intact and new rounds must be appended rather than replacing earlier sections.
+Do not use iframes to compose sibling variants from separate files. The alternatives must be rendered **inline in the same HTML document** so the page itself is the design space.
 
-## Round 0 — baseline
+Do not create `brand-spec.md`, `exploration.json`, PNG exports, or per-variant HTML files unless the user explicitly asks for them or a real supplied brand/reference source makes a brand-spec necessary.
 
-When a source design exists, preserve it as `0` or `baseline` before exploring.
+## 2. Document grammar
 
-The baseline area should contain:
+Use a simple additive DOM structure. Exact class names may vary, but the information model must remain obvious:
 
-- the current design or faithful reconstruction;
-- a short, factual problem statement;
-- constraints explicitly supplied by the user.
+```html
+<main class="exploration-canvas">
+  <section class="round" data-round="1">
+    <header>Round 1</header>
 
-Do not decorate the baseline as a marketing hero.
+    <div class="variants">
+      <article class="variant" data-variant="1A" data-parent="baseline">
+        <div class="variant-label">1A · Direction name</div>
+        <div class="prototype">…complete inline prototype…</div>
+        <div class="rationale">…short rationale…</div>
+      </article>
 
-If there is no source design, start directly at Round 1.
+      <article class="variant" data-variant="1B" data-parent="baseline">…</article>
+      <article class="variant" data-variant="1C" data-parent="baseline">…</article>
+    </div>
+  </section>
+</main>
+```
 
-## Round 1 — divergence
+Every variant's interactive DOM and JS should be scoped to that variant. Do not build a launcher that links out to separate designs.
 
-Unless the user requests another count, generate **3 distinct sibling prototypes**: `1A`, `1B`, `1C`.
+The page must open directly into the comparative field. Do not make the user click cards, tabs, links, or files to see the alternatives.
 
-Use 4 or 5 only when the design problem genuinely benefits from broader exploration. Avoid more than 5 siblings in one round.
+## 3. First round: diverge before converge
 
-Each sibling must differ in at least one consequential design hypothesis, such as:
+Unless the user requests another count, generate **3 materially different siblings**:
+
+```text
+1A    1B    1C
+```
+
+They should differ in consequential design hypotheses such as:
 
 - information architecture;
 - primary interaction model;
 - navigation model;
-- content hierarchy;
 - spatial organization;
-- density and disclosure strategy;
-- dominant product metaphor;
-- platform convention vs custom interaction.
+- density/disclosure strategy;
+- product metaphor;
+- platform-native vs custom interaction;
+- visual language, when the brief is explicitly exploring visual directions.
 
-A color swap, typeface swap, border radius change, or minor spacing variation is **not** a distinct direction by itself.
+A color/font/radius swap alone is not a distinct direction.
 
-For every sibling include:
+Each sibling should be rendered far enough that the user can compare the design itself, not merely read a description of it.
 
-- stable id (`1A`, `1B`, ...);
-- short direction name;
-- complete enough prototype to evaluate the key flow;
-- 2–4 sentence rationale;
-- primary hypothesis;
-- what this direction gains;
-- what this direction sacrifices;
-- parent id (`baseline` for first-round siblings when a baseline exists).
+Each sibling needs only concise supporting text:
 
-## Board grammar
+- stable id and short name;
+- one-line hypothesis or rationale;
+- optional gain / sacrifice note when it helps comparison.
 
-The board itself should be intentionally boring.
+Do not rank siblings. Do not add `recommended`, `best`, `continue with this`, winner ribbons, or a recommendation section.
 
-Preferred desktop composition:
+## 4. Canvas is a substrate, not the design
+
+The exploration document's own chrome must be neutral and quiet.
+
+Do not turn the document into:
+
+- a landing page;
+- a case study;
+- a polished editorial article;
+- a marketing presentation;
+- a hero + sections + CTA composition.
+
+Avoid decorative hero copy, sticky marketing nav, giant titles, promotional CTAs, alternating showcase sections, decorative narrative, or conclusion blocks.
+
+Prefer:
 
 ```text
-ROUND 1
+Round 1
 
-1A                     1B                     1C
-[full prototype]       [full prototype]       [full prototype]
-short rationale        short rationale        short rationale
-trade-off              trade-off              trade-off
+1A                  1B                  1C
+[prototype]         [prototype]         [prototype]
+short note          short note          short note
 ```
 
-All siblings in a round should use comparable viewport dimensions and zoom so visual comparison is fair.
+Keep siblings in the same visual field whenever practical. Use comparable viewport size and content so the comparison is fair.
 
-Do not add presentation chrome such as:
+## 5. Follow-up turns are additive
 
-- hero sections;
-- marketing headlines;
-- decorative sticky navigation;
-- alternating editorial sections;
-- CTA banners;
-- "recommended" badges;
-- winner ribbons;
-- conclusion sections;
-- decorative gradients unrelated to the prototypes;
-- a polished case-study narrative around the board.
+When the user gives feedback, **edit the same HTML file**.
 
-A small persistent utility header is allowed for neutral workspace controls such as round navigation, fit-to-view, or lineage visibility.
+Never replace Round 1 with the new result.
 
-## Follow-up rounds
-
-When the user gives feedback after Round 1:
-
-1. Read the feedback as a transformation request on the design graph.
-2. Preserve every previous variant unchanged.
-3. Create a new round number.
-4. Generate only the descendants that are useful for the feedback.
-5. Assign each new variant an explicit parent.
-6. Append the new prototypes and metadata to the board and manifest.
-
-Example:
+Append a new round below or beside the existing one:
 
 ```text
 ROUND 1
@@ -220,53 +163,83 @@ ROUND 1
 
 ROUND 2
 2A        2B        2C
-↑         ↑         ↑
-1A        1B        1C
 ```
 
-A follow-up does **not** need a one-to-one descendant for every prior sibling. If feedback says "keep exploring 1B", Round 2 may contain `2A`, `2B`, and `2C` all with parent `1B`.
+Every new variant has an explicit parent, for example:
 
-## Persistent history rules
+```text
+2A ← 1B
+2B ← 1B
+2C ← 1C
+```
 
-- Earlier prototype files are read-only once a later round exists.
-- Never repurpose an existing id.
-- Never replace Round 1 with a cleaner Round 1.
-- If a historical prototype has an implementation defect that prevents viewing, create a repair descendant or explicitly annotate the repair; do not silently rewrite history.
-- Keep the original user feedback associated with the round it triggered when practical.
-- The board may change its own neutral layout to accommodate more content, but it must continue to expose prior rounds.
+If the user says "keep exploring 1B", several Round 2 siblings may all branch from `1B`.
 
-## Relationship to Open Design direction picking
+Historical variant DOM is read-only once a later round exists. Do not silently clean up, restyle, or repair old variants. If a repair is essential, create a descendant and label it as such.
 
-Open Design's `direction-picker` is useful in conventional workflows that select a direction before generation. When this skill is active, its semantics change:
+The exploration document grows; previous work does not disappear.
 
-- do not stop at direction cards;
-- do not ask the user to pick before seeing rendered alternatives;
-- do not mark one direction as recommended;
-- if the host presents direction vocabulary during planning, carry multiple candidates forward into generation.
+## 6. Open Design host direction handling
 
-The deliverable is the rendered exploration space, not a set of direction cards.
+Open Design's host may resolve or lock a visual direction before this skill body runs. Do not let that host-level direction collapse the exploration into one design answer.
 
-## Critique without premature convergence
+If the host requires a direction/theme selection:
 
-Critique evaluates whether every sibling is legible, sufficiently distinct, technically viewable, and faithful to the user's constraints. Critique must **not** rank siblings, nominate a winner, or merge them unless the user has explicitly requested convergence.
+- treat it as a neutral **canvas/base fallback**, not as the conceptual answer;
+- do not make all siblings structurally identical because of it;
+- variant-local CSS variables and component rules may differ when that is necessary to express the design hypothesis;
+- never ask the user to pick one direction before rendering the siblings;
+- if a direction lookup/tool fails, do not debug it beyond one attempt—continue with the exploration.
 
-A critique repair may improve a newly generated variant before handoff, but once a later round exists, historical variants remain immutable.
+Do not proactively call `tools directions` merely because this skill discusses directions. If the host already selected a direction, proceed.
 
-## Convergence
+## 7. Scope proportionality
 
-Converge only when the user explicitly asks to choose, combine, finalize, promote, or move forward with a direction.
+Match effort to the brief.
 
-At convergence:
+For a vague smoke-test prompt such as "随便画", "test this", or "draw something":
 
-- preserve the exploration board and all ancestors;
-- record which variant(s) contributed to the selected direction;
-- if combining ideas, identify the sources (for example `1B structure + 2C result treatment`);
-- create a new promoted artifact instead of deleting unused branches.
+- choose a tiny, clearly fictional UI problem;
+- create three small but visibly different inline sketches;
+- keep the artifact lightweight;
+- do not invent a large product strategy, brand system, data model, or multi-file project;
+- do not spend many minutes on tooling diagnostics or elaborate QA.
 
-## Output orientation
+For a real product brief, increase fidelity as needed.
 
-Before completing a round, provide only enough orientation for the user to navigate the board. Avoid writing a long prose recommendation that competes with visual comparison.
+## 8. Do not turn QA into a side quest
 
-The desired user state is:
+The live HTML artifact is the deliverable.
 
-> I can see the alternatives, compare them, point to specific parts, and continue exploring without losing where I came from.
+Do not require a PNG/screenshot export to declare success. If Open Design's normal preview works, use it. If image export fails, note it only if relevant and move on; do not spend the run debugging export infrastructure.
+
+Do not run broad shell/XML/browser validation suites unless the user asks. Avoid `xmllint` on HTML containing JavaScript templates. A concise syntax/structure check is enough for a normal exploration round.
+
+## 9. Minimal completion checklist
+
+Before finishing, verify mentally or with lightweight inspection:
+
+- [ ] Exactly one primary exploration HTML document exists for this exploration.
+- [ ] Siblings are inline and simultaneously visible; no iframe/file hopping is required.
+- [ ] Default first round has 3 materially different siblings unless the user asked otherwise.
+- [ ] Visible ids such as `1A`, `1B`, `1C` exist.
+- [ ] The board is neutral, not a presentation page.
+- [ ] No winner or recommendation appears unless the user asked to converge.
+- [ ] On follow-up turns, earlier rounds remain visible and unchanged.
+- [ ] New variants show lineage to their parent.
+- [ ] No optional plugin-resource lookup or export failure blocked delivery.
+
+## 10. Convergence
+
+Converge only when the user explicitly asks to choose, combine, finalize, promote, or proceed with a direction.
+
+When converging:
+
+- keep the exploration document intact;
+- name the source variants used in the decision;
+- if combining ideas, say which parts came from which variants;
+- create/promote a final artifact separately if the user wants one.
+
+The target user experience is:
+
+> I open one design document, see several real alternatives at once, give feedback, and the same document grows with the next generation while the previous generation remains visible.
