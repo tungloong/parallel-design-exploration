@@ -31,7 +31,13 @@
     "mode": "prototype",
     "scenario": "design-exploration",
     "useCase": {
-      "query": "Run a parallel design exploration for this brief: {{brief}}. Generate {{variantCount}} materially different, fully rendered sibling prototypes and place them on one neutral exploration board. Do not pick a winner. Preserve prior rounds and append descendants on follow-up turns."
+      "query": "Run a parallel design exploration for this brief: {{brief}}. Generate {{variantCount}} materially different, fully rendered sibling prototypes and place them on one neutral exploration board. Do not pick a winner. Preserve prior rounds and append descendants on follow-up turns.",
+      "exampleOutputs": [
+        {
+          "path": "./examples/mobile-search/board.html",
+          "title": "Mobile search — three parallel interaction directions"
+        }
+      ]
     },
     "context": {
       "skills": [
