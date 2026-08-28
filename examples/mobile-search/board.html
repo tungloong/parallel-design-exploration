@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quick Search — Exploration Board</title>
+  <style>
+    :root {
+      --bg: #f2f2ef;
+      --panel: #fff;
+      --text: #171717;
+      --muted: #72726d;
+      --line: #d8d8d3;
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--text); }
+    .bar {
+      position: sticky; top: 0; z-index: 10;
+      height: 48px; padding: 0 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      background: rgba(242,242,239,.94);
+      backdrop-filter: blur(8px);
+      font-size: 12px;
+    }
+    .bar strong { font-size: 13px; }
+    .bar span { color: var(--muted); }
+    main { width: max-content; min-width: 100%; padding: 28px; }
+    .round-label { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+    .round-label strong { font-size: 11px; text-transform: uppercase; letter-spacing: .09em; }
+    .round-label span { color: var(--muted); font-size: 12px; }
+    .row { display: flex; align-items: flex-start; gap: 20px; }
+    .variant { width: 300px; }
+    .head { display: grid; grid-template-columns: auto 1fr; gap: 7px 9px; align-items: baseline; margin-bottom: 8px; }
+    .id {
+      min-width: 30px; height: 22px; padding: 0 7px;
+      display: inline-grid; place-items: center;
+      border: 1px solid var(--line); border-radius: 6px; background: #fff;
+      font-size: 11px; font-weight: 750;
+    }
+    .name { font-size: 13px; font-weight: 650; }
+    .parent { grid-column: 2; color: var(--muted); font-size: 10px; }
+    .frame {
+      width: 282px; height: 609px;
+      overflow: hidden;
+      border: 1px solid var(--line); border-radius: 12px;
+      background: #fff;
+    }
+    iframe {
+      width: 390px; height: 844px; border: 0; display: block;
+      transform: scale(.72); transform-origin: top left;
+    }
+    .notes { margin-top: 10px; width: 282px; font-size: 11px; line-height: 1.45; }
+    .hypothesis { margin: 0 0 5px; font-weight: 650; }
+    .rationale { margin: 0; color: #555550; }
+    .trade { margin-top: 7px; color: var(--muted); }
+    .footer-note { margin-top: 30px; color: var(--muted); font-size: 11px; }
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <strong>Quick Search · interaction exploration</strong>
+    <span>3 sibling prototypes · no winner selected</span>
+  </header>
+
+  <main>
+    <div class="round-label">
+      <strong>Round 1</strong>
+      <span>Different interaction models, held at comparable mobile fidelity.</span>
+    </div>
+
+    <div class="row">
+      <article class="variant">
+        <div class="head"><span class="id">1A</span><span class="name">Quiet Canvas</span><span class="parent">root exploration</span></div>
+        <div class="frame"><iframe src="round-1/1A.html" title="1A Quiet Canvas"></iframe></div>
+        <div class="notes">
+          <p class="hypothesis">Hypothesis: less chrome makes intent and completion feel immediate.</p>
+          <p class="rationale">Search owns the center; useful results stay compact instead of becoming a browse surface.</p>
+          <div class="trade">Gains: calm, clarity · Sacrifices: fewer persistent controls</div>
+        </div>
+      </article>
+
+      <article class="variant">
+        <div class="head"><span class="id">1B</span><span class="name">Thumb Search Dock</span><span class="parent">root exploration</span></div>
+        <div class="frame"><iframe src="round-1/1B.html" title="1B Thumb Search Dock"></iframe></div>
+        <div class="notes">
+          <p class="hypothesis">Hypothesis: a bottom dock keeps repeated search physically reachable.</p>
+          <p class="rationale">The search action remains anchored while results occupy the canvas above it.</p>
+          <div class="trade">Gains: reachability, stable affordance · Sacrifices: vertical space</div>
+        </div>
+      </article>
+
+      <article class="variant">
+        <div class="head"><span class="id">1C</span><span class="name">Command Results</span><span class="parent">root exploration</span></div>
+        <div class="frame"><iframe src="round-1/1C.html" title="1C Command Results"></iframe></div>
+        <div class="notes">
+          <p class="hypothesis">Hypothesis: action-shaped results encourage task completion over browsing.</p>
+          <p class="rationale">Each result is phrased as the next useful move, with content preview kept deliberately small.</p>
+          <div class="trade">Gains: fast completion, anti-feed posture · Sacrifices: exploratory depth</div>
+        </div>
+      </article>
+    </div>
+
+    <div class="footer-note">The board is intentionally neutral. A follow-up round should be appended below this row without rewriting 1A / 1B / 1C.</div>
+  </main>
+</body>
+</html>
