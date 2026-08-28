@@ -3,7 +3,7 @@
   "specVersion": "1.0.0",
   "name": "parallel-design-exploration",
   "title": "Parallel Design Exploration",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Standalone Open Design scenario for persistent parallel design exploration: compare rendered sibling options in one visible design space, preserve reliable current-state evidence when available, keep stable state identities across turns, and converge when the user chooses to.",
   "license": "MIT",
   "author": {
