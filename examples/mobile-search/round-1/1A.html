@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>1A — Quiet Canvas</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; }
+    body {
+      overflow: hidden;
+      background: #f7f7f4;
+      color: #171717;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    }
+    .screen { min-height: 100%; padding: 18px 20px 24px; display: flex; flex-direction: column; }
+    .status { display: flex; justify-content: space-between; font-size: 12px; font-weight: 650; padding: 0 3px; }
+    .intro { margin-top: 126px; }
+    .eyebrow { color: #787873; font-size: 12px; margin-bottom: 8px; }
+    h1 { margin: 0; font-size: 32px; line-height: 1.06; letter-spacing: -0.04em; font-weight: 650; }
+    .search {
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 56px;
+      padding: 0 15px;
+      border: 1px solid #d5d5d0;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 8px 28px rgba(0,0,0,.04);
+    }
+    .search svg { flex: none; color: #7b7b76; }
+    .query { flex: 1; color: #2b2b29; font-size: 16px; }
+    .kbd { color: #9b9b95; font-size: 11px; border: 1px solid #deded9; border-radius: 6px; padding: 4px 6px; background: #fafaf8; }
+    .sources { display: flex; gap: 8px; margin-top: 14px; }
+    .source { border: 0; background: transparent; padding: 5px 0; color: #777771; font-size: 12px; }
+    .source + .source { margin-left: 8px; }
+    .results { margin-top: auto; padding-bottom: 6px; }
+    .result-label { color: #8a8a84; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+    .result {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 13px 0;
+      border-top: 1px solid #deded9;
+    }
+    .result:last-child { border-bottom: 1px solid #deded9; }
+    .result strong { display: block; font-size: 14px; font-weight: 620; margin-bottom: 4px; }
+    .result p { margin: 0; color: #74746f; font-size: 12px; line-height: 1.35; }
+    .arrow { color: #9a9a95; padding-top: 2px; }
+    .home { width: 128px; height: 5px; border-radius: 99px; background: #171717; margin: 14px auto 0; }
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <div class="status"><span>9:41</span><span>5G&nbsp;&nbsp;●●●</span></div>
+
+    <section class="intro">
+      <div class="eyebrow">Search, get what you need, leave.</div>
+      <h1>What are you<br />looking for?</h1>
+
+      <div class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <div class="query">Best flat white near me</div>
+        <span class="kbd">↵</span>
+      </div>
+
+      <div class="sources">
+        <button class="source">Xiaohongshu</button>
+        <button class="source">Dianping</button>
+        <button class="source">Maps</button>
+      </div>
+    </section>
+
+    <section class="results">
+      <div class="result-label">Recent useful results</div>
+      <div class="result">
+        <div><strong>Mellow Coffee · 4 min</strong><p>Small shop · strong milk texture · usually quiet before 2pm</p></div><div class="arrow">↗</div>
+      </div>
+      <div class="result">
+        <div><strong>Atlas Coffeehouse · 7 min</strong><p>Bright roast · plenty of seats · good for a quick stop</p></div><div class="arrow">↗</div>
+      </div>
+    </section>
+
+    <div class="home"></div>
+  </div>
+</body>
+</html>
