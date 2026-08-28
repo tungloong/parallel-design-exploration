@@ -3,8 +3,8 @@
   "specVersion": "1.0.0",
   "name": "parallel-design-exploration",
   "title": "Parallel Design Exploration",
-  "version": "0.3.0",
-  "description": "Standalone Open Design scenario for parallel prototyping: render multiple full design directions side by side, preserve prior rounds, and converge only when the user asks.",
+  "version": "0.4.0",
+  "description": "Standalone Open Design scenario for Claude-Design-style parallel exploration: render sibling variants inline in one persistent design document, preserve prior rounds visibly, and converge only when the user asks.",
   "license": "MIT",
   "author": {
     "name": "tungloong",
@@ -39,18 +39,18 @@
     "scenario": "design-exploration",
     "preview": {
       "type": "html",
-      "entry": "./examples/mobile-search/board.html",
+      "entry": "./examples/single-document-exploration.html",
       "motion": "static"
     },
     "useCase": {
       "query": {
-        "en": "Use Parallel Design Exploration for my design brief. Render {{variantCount}} materially different, fully realized sibling prototypes in the same comparative field before asking me to choose. Treat my chat prompt as the authoritative brief, preserve prior rounds, append descendants on follow-up turns, and do not recommend a winner unless I ask to converge.",
-        "zh-CN": "使用 Parallel Design Exploration 处理我的设计需求。先在同一个比较画布中渲染 {{variantCount}} 个实质不同、足够完整的并行方案，再让我选择。以当前聊天 Prompt 作为权威设计 brief；后续轮次保留旧方案并追加新分支；除非我明确要求收敛，否则不要推荐赢家。"
+        "en": "Use Parallel Design Exploration for my brief. Create ONE persistent HTML design document. Render {{variantCount}} materially different sibling variants inline in the same comparative field—no separate variant files, no iframes, and no pre-generation winner. On follow-up turns, edit that same HTML and append new rounds while keeping all earlier rounds visibly present and unchanged.",
+        "zh-CN": "使用 Parallel Design Exploration 处理我的设计需求。只创建一个持续存在的 HTML 设计文档，在同一个比较画布中内联渲染 {{variantCount}} 个实质不同的并行方案：不要拆成多个方案文件，不要用 iframe，也不要在生成前选赢家。后续轮次继续编辑同一个 HTML，追加新一轮，同时让之前所有轮次保持可见且不被覆盖。"
       },
       "exampleOutputs": [
         {
-          "path": "./examples/mobile-search/board.html",
-          "title": "Mobile search — three parallel interaction directions"
+          "path": "./examples/single-document-exploration.html",
+          "title": "Single-document parallel exploration"
         }
       ]
     },
@@ -68,17 +68,6 @@
         {
           "path": "./SKILL.md"
         }
-      ],
-      "assets": [
-        "./references/parallel-prototyping.md",
-        "./references/exploration-canvas.md",
-        "./references/checklist.md",
-        "./references/open-design-community-alignment.md",
-        "./templates/exploration-board.html",
-        "./templates/exploration.schema.json",
-        "./examples/mobile-ui-exploration.md",
-        "./examples/mobile-search/board.html",
-        "./examples/mobile-search/exploration.json"
       ]
     },
     "capabilities": [
