@@ -39,12 +39,33 @@ This first version is deliberately lightweight. It packages the exploration beha
 
 The board therefore uses normal HTML as the compatibility layer.
 
+## Install in Open Design
+
+Open Design's plugin CLI supports direct GitHub sources:
+
+```bash
+od plugin install github:tungloong/parallel-design-exploration
+```
+
+Then apply it with structured inputs:
+
+```bash
+od plugin apply parallel-design-exploration \
+  --input brief="Explore structurally different interaction models for a focused iOS search app" \
+  --input variantCount=3
+```
+
+You can also reference the installed plugin from an Open Design project/chat and ask the agent to use `parallel-design-exploration` for the current brief.
+
+For generic Agent Skills clients, the canonical capability remains `SKILL.md`; `open-design.json` is additive Open Design metadata.
+
 ## Repository structure
 
 ```text
 .
 ├── SKILL.md
 ├── open-design.json
+├── LICENSE
 ├── references/
 │   ├── parallel-prototyping.md
 │   ├── exploration-canvas.md
@@ -53,7 +74,14 @@ The board therefore uses normal HTML as the compatibility layer.
 │   ├── exploration-board.html
 │   └── exploration.schema.json
 └── examples/
-    └── mobile-ui-exploration.md
+    ├── mobile-ui-exploration.md
+    └── mobile-search/
+        ├── board.html
+        ├── exploration.json
+        └── round-1/
+            ├── 1A.html
+            ├── 1B.html
+            └── 1C.html
 ```
 
 ## Core behavior
@@ -121,6 +149,21 @@ Open Design plugins are anchored by portable `SKILL.md` files; `open-design.json
 
 The v0.1 pipeline intentionally does **not** use `direction-picker`, because its normal interaction is to collect a direction choice and then converge. Instead, the skill itself instructs the planning/generation stages to render all siblings before asking for selection.
 
+The plugin requests only:
+
+- `prompt:inject`
+- `fs:read`
+- `fs:write`
+
+and uses these first-party atoms:
+
+- `discovery-question-form`
+- `todo-write`
+- `file-write`
+- `live-artifact`
+
+The included `examples/mobile-search/board.html` is also registered as the plugin's concrete HTML preview.
+
 ## Example request
 
 ```text
@@ -139,6 +182,17 @@ results while keeping that interaction model. Preserve Round 1.
 ```
 
 Expected result: three Round 2 descendants of `1B`, while Round 1 remains available for comparison.
+
+## Local validation
+
+After cloning the repo into an environment with the Open Design CLI:
+
+```bash
+od plugin validate .
+od plugin install .
+```
+
+Then run a real exploration and check it against `references/checklist.md`.
 
 ## Next steps
 
