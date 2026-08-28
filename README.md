@@ -13,7 +13,7 @@ the plugin keeps a visible design space:
 ```text
 TURN 3:  3a   3b   3c   ← newest
 TURN 2:  2a   2b   2c
-TURN 1:  1a   1b   1c
+TURN 1:  1a   1b   1c   1d
 0 · BASELINE             ← when a reliable current design exists
 ```
 
@@ -21,11 +21,16 @@ Sibling options remain directly comparable, state identities stay stable across 
 
 ## Status
 
-**v0.8 — thinner protocol, stronger document ownership.**
+**v0.9 — stable canvas chrome, generative design content.**
 
 The plugin can be selected directly as an Open Design Active Plugin and requests only `prompt:inject`, keeping the scenario compatible with the community plugin trust model.
 
-v0.8 narrows the contract to the parts that need to stay stable across agents: document ownership, state ordering, option identity, lineage, visible history, and direct comparison. Design commentary is free-form and adapts to the work being shown.
+v0.9 separates two responsibilities more sharply:
+
+- the plugin provides a small, stable Options Canvas substrate for turns, ids, spacing, sibling layout, and navigation;
+- the model and brief determine the actual design language, artifact size, annotation needs, and exploration axes.
+
+This keeps the workspace recognizable without turning the workspace itself into another design task.
 
 ## Core protocol
 
@@ -37,15 +42,13 @@ The primary artifact is one persistent Options Canvas. `main.pde-canvas` owns th
 2. older turns in descending order;
 3. optional `0 · Baseline` as the oldest state.
 
-This keeps the exploration space itself as the artifact rather than wrapping it inside a separate presentation layer.
-
 ### Stable turn and option identities
 
 Turns and options use stable anchors:
 
 ```text
 t1, t2, t3
-1a, 1b, 1c
+1a, 1b, 1c, 1d
 2a, 2b, 2c
 ```
 
@@ -63,7 +66,7 @@ When the supplied project, screen, screenshot, design file, or prior artifact co
 
 The baseline records **what exists now**. It does not imply that new options must inherit the baseline's design choices. A redesign can keep the current state visible while exploring from first principles.
 
-For greenfield work or insufficient source context, the baseline is simply absent.
+For greenfield work or insufficient source context, the baseline is absent.
 
 ### Lineage where it is meaningful
 
@@ -71,21 +74,33 @@ For greenfield work or insufficient source context, the baseline is simply absen
 
 ### Rendered sibling alternatives
 
-A turn normally contains three materially different rendered options unless the user asks for another count. Variation axes come from the actual brief: interaction, structure, hierarchy, navigation, density, visual language, content strategy, or other relevant design dimensions.
+Each turn contains a compact set of materially different rendered options. A user-specified count wins; otherwise the agent chooses enough siblings to expose meaningful alternatives while keeping comparison practical.
 
-### Free-form local annotation
+Variation axes come from the actual brief: interaction, structure, hierarchy, navigation, density, visual language, content strategy, or other relevant design dimensions.
 
-Annotations stay close to the design they explain and use the form that best clarifies the work. A useful annotation can be one sentence, a short paragraph, a few bullets, a compact tradeoff note, or little extra prose when the distinction is already obvious.
+## Canonical canvas substrate
 
-The protocol standardizes **identity and history** while leaving the designer's explanation expressive.
+The Options Canvas uses a small utility chrome rather than a newly invented page style on every run:
 
-### Quiet comparison surface
+- warm neutral workspace background;
+- compact system-ui turn labels;
+- compact monospace state ids;
+- thin separators between turns;
+- `flex-wrap` sibling layout;
+- intrinsic artboard sizing;
+- transparent option containers;
+- a light artifact surface around each rendered design;
+- quiet, one-line continuation cues when useful.
 
-The canvas is infrastructure. A neutral substrate, compact labels, restrained separators, and consistent exploration chrome keep attention on the options themselves. Individual options remain free to use the visual language required by the brief.
+The design inside each option remains free to use whatever visual language the brief calls for.
 
-### Progressive authoring when available
+See [`templates/exploration-board.html`](templates/exploration-board.html) for the minimal substrate and [`references/canvas-substrate.md`](references/canvas-substrate.md) for the rationale.
 
-When Open Design refreshes the HTML artifact as project files change, the skill can establish the newest turn early and fill sibling options incrementally. Progressive rendering is an enhancement; the same protocol also works with final-write hosts.
+## Optional local explanation
+
+Design reasoning can stay close to an option when it materially improves understanding, but it is not a fixed option schema. Depending on the work, an explanation can be one sentence, a short paragraph, bullets, or absent when the design is already clear.
+
+The protocol standardizes **identity, history, and spatial comparison** rather than the designer's writing style.
 
 ## Install
 
@@ -107,7 +122,7 @@ If an older version is installed, reinstall or upgrade it so Open Design sees th
     </section>
 
     <section class="pde-turn" id="t1" data-turn="1">
-      ... 1a · 1b · 1c ...
+      ... 1a · 1b · 1c · 1d ...
     </section>
 
     <section class="pde-baseline" id="baseline" data-baseline="0">
@@ -129,9 +144,9 @@ See [`examples/single-document-exploration.html`](examples/single-document-explo
 4. Preserve visible exploration history.
 5. Give design states stable conversational identities.
 6. Treat baseline evidence and design lineage as separate concepts.
-7. Keep explanation close to the work and proportionate to what needs explanation.
-8. Keep the canvas visually subordinate to the designs.
-9. Let the user's brief determine the domain, style, and variation axes.
+7. Keep the canvas chrome stable and lightweight.
+8. Let the user's brief determine the domain, style, fidelity, and variation axes.
+9. Let the artifact determine its useful intrinsic size on the canvas.
 10. Let the user direct convergence.
 
 ## Artifact naming
@@ -158,7 +173,7 @@ surface: web
 capabilities: [prompt:inject]
 ```
 
-Open Design can still contribute host-level discovery, craft, or design-direction context. The skill uses that context while maintaining the persistent parallel exploration model.
+Open Design can still contribute host-level discovery, craft, or design-direction context. The skill uses that context while maintaining the persistent parallel exploration model and its small canonical substrate.
 
 ## Method references
 
@@ -175,6 +190,7 @@ See:
 - [`references/parallel-prototyping.md`](references/parallel-prototyping.md)
 - [`references/exploration-canvas.md`](references/exploration-canvas.md)
 - [`references/persistent-options-canvas.md`](references/persistent-options-canvas.md)
+- [`references/canvas-substrate.md`](references/canvas-substrate.md)
 - [`references/open-design-community-alignment.md`](references/open-design-community-alignment.md)
 
 ## Example request
