@@ -3,8 +3,8 @@
   "specVersion": "1.0.0",
   "name": "parallel-design-exploration",
   "title": "Parallel Design Exploration",
-  "version": "0.4.0",
-  "description": "Standalone Open Design scenario for Claude-Design-style parallel exploration: render sibling variants inline in one persistent design document, preserve prior rounds visibly, and converge only when the user asks.",
+  "version": "0.5.0",
+  "description": "Standalone Open Design scenario for persistent parallel exploration: render sibling design options together, preserve prior turns visibly, maintain stable option identities, and converge only when the user chooses to.",
   "license": "MIT",
   "author": {
     "name": "tungloong",
@@ -44,13 +44,13 @@
     },
     "useCase": {
       "query": {
-        "en": "Use Parallel Design Exploration for my brief. Create ONE persistent HTML design document. Render {{variantCount}} materially different sibling variants inline in the same comparative field—no separate variant files, no iframes, and no pre-generation winner. On follow-up turns, edit that same HTML and append new rounds while keeping all earlier rounds visibly present and unchanged.",
-        "zh-CN": "使用 Parallel Design Exploration 处理我的设计需求。只创建一个持续存在的 HTML 设计文档，在同一个比较画布中内联渲染 {{variantCount}} 个实质不同的并行方案：不要拆成多个方案文件，不要用 iframe，也不要在生成前选赢家。后续轮次继续编辑同一个 HTML，追加新一轮，同时让之前所有轮次保持可见且不被覆盖。"
+        "en": "Use Parallel Design Exploration for my brief. Create one persistent exploration document with {{variantCount}} materially different sibling options per turn. Show siblings together, give every option a stable id, place the newest turn above older turns, preserve earlier turns visibly, explain each option's design hypothesis and tradeoffs, and let me decide when to converge.",
+        "zh-CN": "使用 Parallel Design Exploration 处理我的设计需求。创建一个持续存在的设计探索文档，每轮生成 {{variantCount}} 个实质不同的并行方案并同时展示；为每个方案保留稳定 ID；最新一轮位于旧轮次上方；旧轮次持续可见；说明每个方案的设计假设、关键变化与取舍；由我决定何时收敛。"
       },
       "exampleOutputs": [
         {
           "path": "./examples/single-document-exploration.html",
-          "title": "Single-document parallel exploration"
+          "title": "Persistent options canvas"
         }
       ]
     },
@@ -59,7 +59,7 @@
         "name": "variantCount",
         "type": "number",
         "required": false,
-        "label": "Variants per round",
+        "label": "Options per turn",
         "default": 3
       }
     ],
