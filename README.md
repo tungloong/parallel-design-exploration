@@ -8,78 +8,91 @@ Instead of treating design iteration as one mutable latest state:
 brief → one answer → modify → replace → modify
 ```
 
-this plugin keeps the design space visible:
+the plugin keeps a visible design space:
 
 ```text
 TURN 3:  3a   3b   3c   ← newest
 TURN 2:  2a   2b   2c
 TURN 1:  1a   1b   1c
-0 · BASELINE             ← when a real current design exists
+0 · BASELINE             ← when a reliable current design exists
 ```
 
-Sibling options are rendered together, option ids remain stable across conversation, and later turns branch from earlier work without erasing the visible exploration history.
+Sibling options remain directly comparable, state identities stay stable across conversation, and later exploration can branch from earlier work without erasing visible history.
 
 ## Status
 
-**v0.6 — baseline-aware persistent options canvas.**
+**v0.7 — canonical options canvas protocol.**
 
-The plugin can be selected directly as an Open Design Active Plugin and remains community-safe by requesting only `prompt:inject`.
+The plugin can be selected directly as an Open Design Active Plugin and requests only `prompt:inject`, keeping the scenario compatible with the community plugin trust model.
 
-v0.6 simplifies the visible document grammar, adds a conditional current-state baseline for redesign/existing-project work, and derives the exploration filename from the actual design subject rather than hard-coding a plugin-specific filename.
+v0.7 focuses on making the behavior model-independent: execution semantics are separated from visible artifact structure, the canvas follows a canonical DOM grammar, and baseline evidence is treated separately from design lineage.
 
-## What the plugin changes
+## Core protocol
 
-### Turn-first visual document
+### Persistent visual states
 
-The primary artifact begins directly with the newest exploration turn. The workflow is represented by the turn/option structure itself rather than by a separate page-level project narrative.
+The primary artifact is one persistent exploration document. Its direct visible states are:
 
-### Conditional baseline
+1. newest exploration turn;
+2. older turns in descending order;
+3. optional `0 · Baseline` as the oldest state.
 
-When the user provides a real current state — for example an imported codebase, existing screen, screenshot, design file, or prior artifact — the plugin preserves that current state as `0 · Baseline` before exploring alternatives.
+The document itself is the exploration history rather than a launcher for disconnected variants.
 
-For genuinely greenfield work, no baseline is invented.
+### Canonical turn and option identities
 
-### Contextual artifact naming
-
-The exploration artifact gets a concise name derived from the subject, for example:
+Turns and options use stable anchors:
 
 ```text
-search-and-go-exploration.html
-checkout-flow-exploration.html
-analytics-dashboard-exploration.html
+t1, t2, t3
+1a, 1b, 1c
+2a, 2b, 2c
 ```
 
-The name stays stable across follow-up turns.
-
-### Newest turn first
-
-A new design turn is inserted above older turns. Earlier work remains visible and keeps its original identity.
-
-### Stable option ids
-
-Options use short ids such as `1a`, `1b`, `2a`. Those ids connect the canvas and chat:
+Those ids are shared between canvas and conversation:
 
 ```text
 Keep 2a's hierarchy, but use the interaction from 1c.
 ```
 
-### Design reasoning next to the work
+Every visible reference to existing work links back to the corresponding document anchor.
 
-Each option contains:
+### Reliable baseline evidence
 
-- a stable id and concise direction name;
-- the rendered design itself;
-- compact reasoning about its hypothesis, key move, advantage, and tradeoff.
+When the supplied project, screen, screenshot, design file, or prior artifact contains a reliable current state, the plugin preserves that state as `0 · Baseline`.
 
-Each turn also ends with a few concrete follow-up ideas for navigating the design space.
+The baseline records **what exists now**. It does not imply that new options must inherit the baseline's design choices. A redesign can keep the current state visible while exploring from first principles.
 
-### Quiet canvas
+For greenfield work or insufficient source context, the baseline is simply absent.
 
-The exploration surface stays visually subordinate: neutral background, lightweight labels, subtle separators, and enough whitespace to compare the actual designs.
+### Lineage where it is meaningful
+
+`data-parent` represents intentional design descent, such as a later variant riffing on `1b`. Baseline presence alone does not make every first-turn option a child of the baseline.
+
+This keeps the design graph semantically accurate while still preserving current-state evidence for comparison.
+
+### Rendered sibling alternatives
+
+A turn normally contains three materially different rendered options unless the user asks for another count. Variation axes come from the actual brief: interaction, structure, hierarchy, navigation, density, visual language, content strategy, or other relevant design dimensions.
+
+### Local reasoning
+
+Each option can carry compact explanation near the rendered design:
+
+- idea or hypothesis;
+- key move;
+- likely advantage;
+- tradeoff.
+
+Turn-level framing stays concise and describes the design question being explored rather than the plugin's internal workflow.
+
+### Quiet comparison surface
+
+The canvas is infrastructure. Neutral substrate, compact labels, subtle separators, and consistent exploration chrome keep attention on the options themselves.
 
 ### Progressive authoring when available
 
-The skill prefers to establish the contextually named exploration file early and fill the current turn incrementally when the host can refresh previews on file changes. The exact streaming granularity still depends on the active agent and host editing path, so progressive rendering is treated as an enhancement rather than a correctness requirement.
+When Open Design refreshes the HTML artifact as project files change, the skill prefers to establish the newest turn early and fill sibling options incrementally. Progressive rendering is an enhancement; the same protocol also works with final-write hosts.
 
 ## Install
 
@@ -91,64 +104,56 @@ Then select **Parallel Design Exploration** directly as the Active Plugin.
 
 If an older version is installed, reinstall or upgrade it so Open Design sees the current manifest and skill package.
 
-## Runtime model
+## Example structure
 
-Existing-design task:
+```html
+<main class="pde-canvas" data-pde-version="1">
+  <section class="pde-turn" id="t2" data-turn="2">
+    ... 2a · 2b · 2c ...
+  </section>
 
-```text
-TURN 1 · explore alternatives
+  <section class="pde-turn" id="t1" data-turn="1">
+    ... 1a · 1b · 1c ...
+  </section>
 
-1a                     1b                     1c
-[design]               [design]               [design]
-[explanation]          [explanation]          [explanation]
-
-Try next: ...
-
-────────────────────────────────────────────
-0 · BASELINE
-[current design]
+  <section class="pde-baseline" id="baseline" data-baseline="0">
+    ... faithful current state ...
+  </section>
+</main>
 ```
 
-Follow-up turn:
+For greenfield work, omit the baseline section.
 
-```text
-TURN 2 · riffs on 1b
-
-2a                     2b                     2c
-[design]               [design]               [design]
-[explanation]          [explanation]          [explanation]
-
-Try next: ...
-
-────────────────────────────────────────────
-TURN 1 · unchanged
-1a                     1b                     1c
-
-────────────────────────────────────────────
-0 · BASELINE
-[current design]
-```
-
-For greenfield work, the document begins at Turn 1 with no invented baseline.
-
-See [`examples/single-document-exploration.html`](examples/single-document-exploration.html).
+See [`examples/single-document-exploration.html`](examples/single-document-exploration.html) for a multi-turn example and [`templates/exploration-board.html`](templates/exploration-board.html) for the canonical structural scaffold.
 
 ## Design principles
 
 1. Diverge before converge.
-2. Preserve a real current state before varying it.
-3. Prototype alternatives rather than merely describing them.
-4. Juxtapose sibling options in one visual field.
-5. Keep the newest turn first while preserving prior work.
-6. Give every option a stable conversational identity.
-7. Make lineage explicit when later options branch from earlier ones.
-8. Explain design hypotheses and tradeoffs close to the design.
-9. Keep the canvas visually subordinate to the options.
-10. Let the user decide when to converge.
+2. Render alternatives rather than merely describing them.
+3. Keep sibling options directly comparable.
+4. Preserve visible exploration history.
+5. Give design states stable conversational identities.
+6. Treat baseline evidence and design lineage as separate concepts.
+7. Keep reasoning close to the work it explains.
+8. Keep the canvas visually subordinate to the designs.
+9. Let the user's brief determine the domain, style, and variation axes.
+10. Converge when the user chooses to.
+
+## Artifact naming
+
+The exploration file is named from the actual subject, for example:
+
+```text
+search-and-go-exploration.html
+checkout-flow-exploration.html
+analytics-dashboard-exploration.html
+```
+
+The filename remains stable across later turns. Host-required entry paths take precedence when applicable.
 
 ## Open Design compatibility
 
-The plugin is intentionally shaped like a community-safe standalone scenario:
+The plugin is intentionally shaped as a community-safe standalone scenario:
 
 ```text
 kind: scenario
@@ -158,7 +163,7 @@ surface: web
 capabilities: [prompt:inject]
 ```
 
-Open Design's host may still apply its own discovery and design-direction guidance. This plugin treats that guidance as context while preserving the requested parallel exploration structure.
+Open Design may still contribute host-level discovery or design-direction context. The skill uses relevant host guidance while maintaining the persistent parallel exploration protocol.
 
 ## Method references
 
@@ -180,13 +185,13 @@ See:
 ## Example request
 
 ```text
-Explore three materially different ways to solve this design problem. Keep the options together and do not converge yet.
+Explore several materially different ways to solve this design problem. Keep the alternatives together so I can compare them before choosing a direction.
 ```
 
 Later:
 
 ```text
-Take 1b as the parent and show three different riffs on it.
+Take 1b as the main parent and show three different riffs on it.
 ```
 
 Or:
