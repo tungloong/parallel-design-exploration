@@ -2,7 +2,7 @@
 
 Parallel prototyping explains **why** multiple alternatives should stay alive. The exploration canvas explains **how** those alternatives remain visible and navigable.
 
-This model combines two forms of design memory:
+This model combines three forms of design memory:
 
 ```text
 SPATIAL MEMORY
@@ -14,6 +14,10 @@ Turn 3
 Turn 2
 Turn 1
 prior exploration remains visible
+
+ARTIFACT MEMORY
+one primary document keeps growing
+instead of being replaced by successive exports
 ```
 
 The current state and the path that produced it can therefore be inspected in the same working space.
@@ -139,9 +143,11 @@ This preserves the artboard mental model while still allowing a normal HTML docu
 
 ## 8. Persistent exploration units
 
-The historical unit is the **design state**: a turn, option, or baseline with stable identity and meaning.
+The historical unit is the **delivered design state**: a turn, option, or baseline with stable identity and rendering meaning.
 
-The surrounding canvas can adapt as the document grows. The design-state identities, historical content, turn association, and meaningful lineage remain the anchors that keep the exploration intelligible.
+Once delivered, a state acts as a source-of-truth snapshot for later comparison and branching. The normal next-turn operation grows the document around that state rather than recreating an abbreviated or stylistically updated version of it.
+
+The surrounding canvas can grow as the exploration continues. New state-local implementation can be added, while the identities, rendered content, turn association, and meaningful lineage of earlier states remain the anchors that keep the exploration intelligible.
 
 ## 9. Spatial hierarchy
 
@@ -165,6 +171,6 @@ A user can scan downward to understand how the design space evolved while keepin
 
 ## 10. Design rule derived from the references
 
-> Design history that matters for active comparison is most useful when it remains visible in the design space and addressable from conversation.
+> Design history that matters for active comparison is most useful when it remains visible, stable in meaning, and addressable from conversation inside the same growing artifact.
 
-That principle is the basis for persistent turns, stable option ids, newest-first ordering, and a lightweight canvas substrate.
+That principle is the basis for persistent turns, stable option ids, immutable delivered states, newest-first ordering, and a lightweight canvas substrate.
