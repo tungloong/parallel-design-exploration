@@ -1,6 +1,6 @@
 # Example: Mobile Search UI Exploration
 
-This walkthrough demonstrates the **session shape** of Parallel Design Exploration. It is an example of the protocol, not a prescribed product style.
+This walkthrough demonstrates the **session shape** of Parallel Design Exploration. It is an example of the protocol, not a prescribed product style or option count.
 
 ## User brief
 
@@ -14,7 +14,7 @@ ideas and I want to compare them before choosing a direction.
 
 ## Turn 1
 
-The first turn might establish three distinct hypotheses:
+The first turn might establish a compact set of distinct hypotheses such as:
 
 ```text
 1a — Quiet Canvas
@@ -27,7 +27,7 @@ The primary search affordance stays in the thumb zone while results expand above
 Results emphasize the next action rather than feed-like browsing.
 ```
 
-All three are rendered inside the same exploration document and remain addressable by their stable ids.
+All siblings are rendered inside the same exploration document and remain addressable by their stable ids.
 
 A simplified structure looks like:
 
@@ -43,7 +43,7 @@ A simplified structure looks like:
 </main>
 ```
 
-Annotations can vary with the work. One option may need a single sentence; another may benefit from a short tradeoff note or a few bullets.
+Local explanation can appear beside or below an option when the design benefits from it; it is not part of a fixed review form.
 
 ## Follow-up feedback
 
@@ -54,7 +54,7 @@ Keep the dock idea and show me three different ways to handle results in that st
 
 ## Turn 2
 
-The next turn branches from `1b`:
+The user explicitly asked for three riffs, so the next turn branches from `1b`:
 
 ```text
 2a — Compressed result stack     ← 1b
@@ -108,4 +108,4 @@ Combine 1c's action treatment with 2b's result expansion.
 2a is strongest; continue from that direction.
 ```
 
-The value of the protocol is that each of those sentences refers to a visible, persistent design state rather than an implicit version remembered only by the conversation.
+The value of the protocol is that each sentence refers to a visible, persistent design state rather than an implicit version remembered only by the conversation.
