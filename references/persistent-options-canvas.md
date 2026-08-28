@@ -4,10 +4,11 @@ This note documents the interaction model implemented by the plugin. It is a beh
 
 ## Core model
 
-A persistent options canvas combines two kinds of design memory:
+A persistent options canvas combines three kinds of design memory:
 
 - **spatial memory** — sibling alternatives from the same exploration turn remain visible together;
-- **temporal memory** — later turns are added while earlier work remains visible.
+- **temporal memory** — later turns are added while earlier work remains visible;
+- **artifact memory** — the exploration keeps growing inside the same primary artifact rather than producing a sequence of replacement exports.
 
 The result behaves more like a studio wall than a single mutable mockup.
 
@@ -23,6 +24,22 @@ Turn 1
 ```
 
 A turn contains sibling options. The optional baseline is a reference state representing what exists before exploration.
+
+### Delivered turns become historical snapshots
+
+A turn can change while it is being generated. Once delivered, it becomes part of the visible state ledger.
+
+The normal follow-up operation adds a new turn while preserving the older states as the same rendered states the user already saw:
+
+```text
+D1 = [t1, baseline]
+D2 = [t2, t1, baseline]
+D3 = [t3, t2, t1, baseline]
+```
+
+Preservation means more than keeping the same label or concept. Replacing a full prototype with a compact summary changes the state. Shared style or behavior changes that alter how an older state renders also change the state.
+
+See [`artifact-state-mutation.md`](artifact-state-mutation.md) for the mutation model.
 
 ### Baseline is evidence, lineage is descent
 
@@ -86,9 +103,10 @@ A turn can end with a short line of concrete next-step paths: riff on one option
 
 When the host refreshes HTML as project files change, progressive authoring can make the design space appear while generation is still in progress:
 
-1. establish the newest turn shell;
-2. render coherent sibling options incrementally;
-3. add local explanation or continuation cues when they improve the work.
+1. resolve the existing primary artifact when one already exists;
+2. establish the newest turn shell in front of older states;
+3. render coherent sibling options incrementally;
+4. add local explanation or continuation cues when they improve the work.
 
 The same interaction model also works in hosts that expose only a final-write workflow.
 
