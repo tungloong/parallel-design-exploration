@@ -1,74 +1,87 @@
-# Parallel Exploration Checklist
+# Parallel Exploration Review Checklist
 
 Background documentation for reviewing a persistent options-canvas run.
 
-## A. Divergence
+## A. Context and baseline evidence
+
+- [ ] The agent inspected the available design context before generating alternatives.
+- [ ] A reliable current state is rendered as `0 · Baseline` when one can be established.
+- [ ] A baseline is omitted when the available material is insufficient to reconstruct a trustworthy current state.
+- [ ] The baseline is treated as comparison evidence rather than an automatic design constraint.
+- [ ] Baseline presence and `data-parent` lineage are treated as separate concepts.
+
+## B. Divergence
 
 - [ ] There are multiple sibling alternatives unless the user explicitly requested one.
-- [ ] Default sibling count is 3 unless the brief suggests otherwise.
+- [ ] The default sibling count is 3 unless the brief or user specifies otherwise.
 - [ ] Each sibling represents a consequentially different design hypothesis.
-- [ ] Differences are substantive on the axes relevant to the brief, not merely cosmetic token swaps.
-- [ ] No sibling is framed as the winner unless the user asked to converge.
+- [ ] Differences are substantive on axes relevant to the brief rather than superficial token changes.
+- [ ] Exploration remains open until the user asks to converge.
 
-## B. Persistent options canvas
+## C. Visible document protocol
 
-- [ ] There is one primary exploration document.
-- [ ] Siblings are directly visible together rather than requiring file/tab hopping.
-- [ ] Every option has a stable short id such as `1a`, `1b`, `2a`.
-- [ ] Siblings are spatially adjacent whenever practical.
-- [ ] The canvas is visually quiet and subordinate to the design options.
+- [ ] There is one primary persistent exploration artifact.
+- [ ] `.pde-canvas` contains visible design states in newest-first order.
+- [ ] Every turn has a stable `id="tN"` and matching `data-turn="N"`.
+- [ ] Every option has a stable DOM `id` and matching `data-option`.
+- [ ] Every visible reference to an existing turn, option, or baseline links to its document anchor.
+- [ ] The optional baseline is the oldest visible state.
+- [ ] Project-method bookkeeping stays out of the visible canvas unless it genuinely helps interpret a design state.
 
-## C. Turn structure
+## D. Turn structure
 
 - [ ] The newest turn appears before older turns.
-- [ ] The turn header explains what the current round is exploring.
-- [ ] Descendant turns identify the earlier option(s) they riff on.
-- [ ] Older turns remain visible and retain their original ids.
-- [ ] A new turn does not silently redesign historical options.
-- [ ] The turn ends with 2–3 useful follow-up ideas for navigating the design space.
+- [ ] Turn framing concisely explains the design question or riff represented by that state.
+- [ ] Sibling options are directly comparable within the same turn.
+- [ ] Older turns retain their original ids and meaning.
+- [ ] Descendant turns expose meaningful lineage to earlier options where applicable.
+- [ ] The turn ends with a small number of useful paths for continuing the design space.
 
-## D. Option anatomy
+## E. Option anatomy
 
 For each option:
 
-- [ ] Stable id and concise direction name are visible.
-- [ ] The design itself is rendered far enough to evaluate.
-- [ ] The explanation states the core idea/hypothesis.
-- [ ] The distinguishing design move is legible.
-- [ ] A likely advantage and tradeoff are stated when useful.
-- [ ] Parent lineage is present for descendant options.
+- [ ] The stable id and concise direction name are visible.
+- [ ] The design is rendered far enough to evaluate rather than merely described.
+- [ ] Reasoning is local to the option it explains.
+- [ ] The core idea or hypothesis is legible.
+- [ ] The distinguishing move is legible.
+- [ ] Tradeoffs are stated when useful.
+- [ ] `data-parent` reflects intentional lineage rather than generic project context.
 
-## E. Comparison fairness
+## F. Comparison quality
 
-- [ ] Siblings use comparable viewport/device dimensions when the task benefits from direct visual comparison.
-- [ ] Siblings use comparable content/data scenarios where practical.
-- [ ] Fidelity differences do not unfairly bias comparison.
+- [ ] Siblings use comparable viewport/device dimensions when direct visual comparison benefits from controlled conditions.
+- [ ] Siblings use comparable content or data scenarios where that improves fairness.
+- [ ] Fidelity differences do not accidentally bias the comparison.
+- [ ] The canvas chrome remains visually subordinate to the designs.
 
-## F. Progressive authoring
+## G. Artifact lifecycle
+
+- [ ] The filename is derived from the actual subject or a host-required entry path.
+- [ ] The primary filename remains stable across follow-up turns.
+- [ ] Later turns extend the existing exploration artifact instead of replacing its visible history.
+
+## H. Progressive authoring
 
 When the host supports preview refreshes:
 
 - [ ] The primary document is established early enough to become visible during generation.
-- [ ] The current turn can take shape through incremental file updates rather than waiting unnecessarily for one final monolithic write.
-- [ ] Progressive authoring does not compromise stable ids or corrupt earlier turns.
+- [ ] The newest turn can take shape through coherent incremental updates.
+- [ ] Progressive authoring preserves stable ids and historical states.
 
-If the host only supports a final-write workflow, this section is informational rather than a failure condition.
+If the host exposes only a final-write workflow, this section is informational rather than a failure condition.
 
-## G. Convergence
+## I. Convergence
 
-Unless the user explicitly asks to choose, combine, finalize, promote, or proceed with a direction:
-
-- [ ] No winner is declared.
-- [ ] No branch is deleted merely because it appears weaker.
-
-If the user does request convergence:
+When the user asks to choose, combine, finalize, promote, or proceed with a direction:
 
 - [ ] Source option ids are named.
-- [ ] Combined directions identify their contributing ancestors.
-- [ ] The exploration document remains preserved as design history.
+- [ ] Combined directions identify their contributing earlier states where useful.
+- [ ] The exploration history remains available as design context.
 
 ## Final test
 
 The exploration succeeds if the user can truthfully say:
 
-> I can see the newest round immediately, compare its options side by side, refer to any option by id, and continue exploring without losing the path that led here.
+> I can see the current state when one exists, compare several real options at once, navigate to any referenced state by id, ask for another riff, and keep the visible path of exploration in one place.
