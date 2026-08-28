@@ -1,78 +1,72 @@
 # Reference: Persistent Exploration Canvas
 
-Parallel prototyping explains **why** multiple alternatives should stay alive. The exploration canvas explains **how** they should remain visible and navigable.
+Parallel prototyping explains **why** multiple alternatives should stay alive. The exploration canvas explains **how** those alternatives remain visible and navigable.
 
-This skill combines two forms of history:
+This model combines two forms of design memory:
 
 ```text
-SPATIAL HISTORY
+SPATIAL MEMORY
 A      B      C
-side-by-side alternatives
+sibling alternatives visible together
 
-TEMPORAL HISTORY
-Round 1 → Round 2 → Round 3
-prior states remain recoverable and visible
+TEMPORAL MEMORY
+Turn 3
+Turn 2
+Turn 1
+prior exploration remains visible
 ```
 
-The key design principle is that the current state should not erase the path that produced it.
+The current state and the path that produced it can therefore be inspected in the same working space.
 
 ## 1. Figma — canvas as a working area for exploration
 
-Figma describes the canvas as the working area where designers have room to **explore and iterate on ideas**.
+Figma describes the canvas as the working area where designers have room to explore and iterate on ideas.
 
 Official guide:
 https://help.figma.com/hc/en-us/articles/15297425105303-Explore-design-files
 
-The same guide explains that Pages can be used to:
+The same guide explains that Pages can help manage designs by milestone or status, keep a scratchpad of ideas, and archive older designs.
 
-- manage designs by milestone or status;
-- keep a scratchpad of ideas;
-- archive older designs.
-
-This is important because it separates two jobs:
+This separates two jobs:
 
 - the **canvas** exposes active alternatives spatially;
 - **pages/version history** provide additional organization and recovery.
 
-### Implication for this skill
-
-Do not make the user open separate files merely to remember what the previous round looked like. The most relevant prior alternatives should remain on the working board.
+For an agent-driven exploration, the most relevant earlier alternatives remain visible in the working space so comparison stays immediate.
 
 ## 2. Figma Sections — named regions for ideation
 
-Figma Sections are explicitly intended to group related ideas and designate areas of the canvas for collaboration or ideation.
+Figma Sections group related ideas and designate areas of the canvas for collaboration or ideation.
 
 Official guide:
 https://help.figma.com/hc/en-us/articles/9771500257687-Organize-your-canvas-with-sections
 
-A useful analogue for this skill is:
+A useful analogue is:
 
 ```text
-Section / Round 1
-[1A] [1B] [1C]
+Turn 2
+[2a] [2b] [2c]
 
-Section / Round 2
-[2A] [2B] [2C]
+Turn 1
+[1a] [1b] [1c]
 ```
 
-The board therefore treats a **round** as a spatial region, not merely a timestamp in hidden history.
+A turn is therefore both a temporal generation and a visible spatial region.
 
-## 3. Figma version history — evolution without destructive replacement
+## 3. Version history — evolution with recoverability
 
 Figma design files maintain version history so users can inspect previous iterations and capture milestones.
 
 Official overview:
 https://help.figma.com/hc/en-us/articles/15297425105303-Explore-design-files
 
-This is a second safety layer rather than a replacement for spatial comparison.
-
-### Spatial exploration vs version history
+Spatial exploration and version history serve related but different purposes:
 
 ```text
 Spatial exploration
 Used for: active comparison
 Visible: A / B / C together
-Question: "Which idea is stronger and why?"
+Question: "How do these ideas differ?"
 
 Version history
 Used for: recovery / temporal trace
@@ -80,106 +74,79 @@ Visible: v1 / v2 / v3 in a history UI
 Question: "What did this artifact look like before?"
 ```
 
-Claude Design-like exploration benefits from combining both mental models: alternatives are spatially visible **and** older states are not destroyed.
+A persistent options canvas brings the most relevant temporal history into the visible design space while host version history remains an additional safety layer.
 
-## 4. Artboards and frames — multiple bounded designs in one document
+## 4. Artboards and frames — bounded designs in one document
 
 Long before AI design agents, visual design tools normalized the idea that one document can contain multiple bounded design surfaces.
 
-Adobe Illustrator's multiple-artboard model allowed multiple artboards to be created, positioned, reordered, and viewed in one document. Artboards have long been used for related pages, assets, storyboards, and design alternatives.
+Adobe Illustrator's multiple-artboard model allowed several artboards to be created, positioned, reordered, and viewed in one document. Figma frames and similar UI-design primitives continue the same broad working pattern: a bounded design can be duplicated or branched while its source remains available for comparison.
 
-Figma frames and similar UI-design primitives continue the same broad working pattern: duplicate a bounded design, move it beside the original, and explore another state without first destroying the source.
+Each option in this plugin behaves conceptually like an artboard or frame:
 
-### Implication for this skill
-
-Each variant should behave conceptually like an artboard/frame:
-
-- bounded;
+- bounded enough to judge as a design state;
 - independently addressable;
-- comparable in scale with siblings;
-- safe to preserve when a descendant is created.
+- comparable in scale with siblings when useful;
+- stable enough to serve as a source for later branches.
 
 ## 5. The pin-up wall mental model
 
-Before digital canvases, design studios already used a spatial review model: sketches, alternatives, intermediate states, and developed proposals are pinned up together so a group can compare them.
+Design studios have long used spatial review: sketches, alternatives, intermediate states, and developed proposals are pinned up together so a group can compare them.
 
 The important property is **juxtaposition**.
 
 When alternatives are simultaneously visible, critique naturally becomes relational:
 
 - "A's hierarchy is clearer than B's."
-- "B's interaction is stronger, but C handles density better."
+- "B's interaction is stronger, while C handles density better."
 - "Can we branch from B and borrow C's result treatment?"
 
-This is qualitatively different from reviewing one latest artifact at a time.
+The canvas supports that same kind of comparative language through stable visible ids.
 
-## 6. Board grammar for an agent
+## 6. Canvas substrate
 
-An agent tends to optimize every HTML file as a designed deliverable. That instinct is harmful here.
+The exploration surface works best when its own visual system stays quiet and consistent. Useful substrate qualities include:
 
-The exploration board is infrastructure, analogous to the empty canvas around artboards. It should not compete with the designs.
-
-### Good board qualities
-
-- neutral background;
-- simple round labels;
-- stable variant ids;
-- consistent prototype viewport sizes;
+- a neutral background;
+- compact turn and option labels;
+- restrained separators;
+- stable option ids;
 - enough whitespace to distinguish siblings;
-- minimal metadata close to each variant;
+- comparable prototype viewport sizes when that helps comparison;
+- local annotations close to the work they explain;
 - optional lineage indicators;
-- large working width on desktop;
-- previous rounds remain reachable without opening another artifact.
+- enough working width for sibling designs to remain visible together.
 
-### Bad board qualities
+The designs themselves carry the visual personality required by the brief; the canvas mainly provides orientation and comparison.
 
-- landing-page hero;
-- marketing copy;
-- decorative gradients;
-- editorial alternating sections;
-- large CTA buttons;
-- "recommended" treatment on one variant;
-- summary-first structure that forces reading before comparison;
-- replacing old variants with updated versions.
+## 7. Persistent exploration units
 
-## 7. Persistent exploration is not the same as keeping every pixel forever
+The historical unit is the **design state**: a turn, option, or baseline with stable identity and meaning.
 
-The immutable unit is the **historical variant**, not necessarily the board shell.
+The surrounding canvas can adapt as the document grows. A wide grid may later become a wrapped row or gain navigation aids. The design-state identities, historical content, turn association, and meaningful lineage remain the anchors that keep the exploration intelligible.
 
-The board itself may be reorganized as it grows. For example, it may change from a 3-column grid to a horizontally scrollable row or add round navigation.
+## 8. Spatial hierarchy
 
-What must remain stable:
-
-- variant identity;
-- historical prototype content;
-- parent lineage;
-- round association;
-- feedback/provenance when available.
-
-## 8. Recommended spatial hierarchy
-
-For desktop:
+The temporal and spatial order align:
 
 ```text
-[small workspace header]
+TURN 3   ← newest
+[3a] [3b] [3c]
 
-BASELINE
-[baseline]
+TURN 2
+[2a] [2b] [2c]
 
-ROUND 1
-[1A]   [1B]   [1C]
+TURN 1
+[1a] [1b] [1c]
 
-ROUND 2
-[2A]   [2B]   [2C]
-
-ROUND 3
-...
+0 · BASELINE   ← when a reliable current state exists
+[current design]
 ```
 
-A user should be able to zoom out mentally and understand the design trajectory.
+A user can scan downward to understand how the design space evolved while keeping the latest exploration immediately accessible.
 
 ## 9. Design rule derived from the references
 
-> History that matters for active design reasoning should remain visible in the design space, not only recoverable from a hidden version menu.
+> Design history that matters for active comparison is most useful when it remains visible in the design space and addressable from conversation.
 
-This is why this skill treats "append, do not replace" as a core behavior rather than an implementation detail.
+That principle is the basis for persistent turns, stable option ids, and newest-first ordering.
