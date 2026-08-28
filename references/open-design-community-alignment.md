@@ -1,60 +1,46 @@
 # Open Design community alignment
 
-This plugin is intentionally shaped to behave like a community-installable Open Design scenario rather than a first-party bundled plugin.
+This plugin is shaped as a community-installable Open Design scenario with a portable `SKILL.md` as its executable contract.
 
 ## Reference patterns reviewed
 
 ### Community Registry Starter
 
-Open Design's `plugins/community/registry-starter` is a useful baseline for a standalone community scenario:
+Open Design's `plugins/community/registry-starter` provides a useful baseline for a standalone community scenario:
 
 - `od.kind: scenario`
 - `od.taskKind: new-generation`
 - `od.mode: prototype`
-- only `prompt:inject` is requested
-- no custom `od.pipeline`
+- `prompt:inject` capability
+- host-provided project/run execution
 
-This demonstrates that a community plugin can be a project/run entry point without owning elevated execution capabilities.
+This shows that a community plugin can be a first-class project entry point while relying on Open Design's normal artifact runtime.
 
 ### Hallmark
 
-`plugins/community/hallmark` is a richer design example. Its `SKILL.md` contains detailed design and implementation behavior while its Open Design manifest still requests only:
+`plugins/community/hallmark` encodes substantial design and implementation behavior in `SKILL.md` while keeping the Open Design manifest lightweight.
 
-```json
-["prompt:inject"]
+The relevant pattern is separation of concerns:
+
+```text
+SKILL.md
+→ portable agent behavior
+
+open-design.json
+→ marketplace metadata, preview, inputs, context wiring, capabilities
 ```
 
-The important lesson is that a community design plugin can encode substantial generation behavior in a portable skill contract and let Open Design's host scenario supply normal project execution and artifact-writing machinery.
+Parallel Design Exploration follows the same pattern.
 
-### Humanize PPT
+### Broader-capability plugins
 
-`plugins/community/humanize-ppt` represents the broader-capability lane. It requests:
+Some community plugins request filesystem, shell, or other elevated capabilities because those capabilities are intrinsic to their workflow. Open Design's trust model accounts for that broader execution surface.
 
-```json
-["prompt:inject", "fs:read", "fs:write", "bash"]
-```
+Parallel Design Exploration's core behavior is an artifact and interaction protocol, so `prompt:inject` is sufficient for the community distribution path.
 
-because its workflow explicitly needs plugin-level execution beyond prompt context. That is legitimate, but it crosses the community trust gate and therefore depends on a trusted install or source.
+## Community-safe execution model
 
-## Community trust model
-
-The default Open Design community marketplace describes its entries as discoverable by default but restricted until the user installs and trusts them.
-
-Direct GitHub and community installs should therefore assume the restricted capability floor unless a trusted source grants more.
-
-For this plugin, the default distribution model is **restricted-safe**:
-
-- request only `prompt:inject`;
-- let the host's built-in `new-generation` scenario provide normal execution and artifact-writing behavior;
-- keep the distinctive exploration protocol inside the portable `SKILL.md` contract.
-
-This allows Parallel Design Exploration to launch as an Active Plugin without requiring elevated plugin capabilities simply to produce and update normal project artifacts.
-
-## Why the manifest does not own a custom pipeline
-
-A manifest-owned `od.pipeline` makes the plugin itself responsible for pipeline execution and causes Open Design to require pipeline capability. A restricted community or GitHub install can therefore be blocked before a run begins.
-
-Parallel Design Exploration does not fundamentally require a second filesystem or shell runtime. Its core value is a design-state protocol:
+The plugin relies on Open Design's built-in project runtime for normal file creation, editing, preview, and conversation history. The portable skill contributes the design-state protocol:
 
 ```text
 brief
@@ -63,23 +49,35 @@ parallel rendered options
   ↓
 visible comparison
   ↓
-stable identities and preserved history
+stable identities and persistent history
   ↓
 user-directed continuation or convergence
 ```
 
-The host agent already knows how to create and edit project artifacts. The plugin defines how exploration states are organized and maintained.
+This keeps the plugin installable with the restricted community capability floor while preserving a rich design workflow.
 
-## Host planning and direction guidance
+## Host planning and design guidance
 
-Open Design's normal `new-generation` path may provide planning or design-direction guidance before the skill runs.
+Open Design can contribute host-level discovery, craft, and design-direction guidance. The plugin treats those signals as context for the rendered options while keeping the persistent options-canvas structure stable.
 
-Parallel Design Exploration uses relevant host guidance as context while maintaining several rendered siblings when the user is exploring alternatives. Candidate directions can seed different options without turning the planning stage into an automatic convergence point.
+The same portable behavior remains understandable to other Agent Skills clients because the interaction contract lives in `SKILL.md` rather than depending on a private Open Design runtime extension.
 
-The portable behavior belongs in `SKILL.md` so the same interaction model can survive changes in the host's internal orchestration and remain understandable to other Agent Skills clients.
+## Preview and executable context
 
-## UI and trust implication
+The manifest preview is primarily a marketplace/user-facing example. The executable behavior comes from the injected skill contract.
 
-Open Design's Plugins UI exposes trust control at the marketplace-source level. Plugin detail metadata displays trust and capability information, while the reviewed UI path does not depend on an individual installed-plugin capability-grant control.
+For that reason, the visual and structural properties that matter to the generated artifact are expressed directly in `SKILL.md`; preview files remain examples rather than hidden runtime dependencies.
 
-The community-safe distribution therefore avoids requiring elevated capabilities for the core exploration experience. A future trusted distribution could introduce host-level enhancements without changing the portable options-canvas protocol.
+## Distribution principle
+
+The repository keeps one portable skill and one additive Open Design manifest:
+
+```text
+SKILL.md             → agent capability
+open-design.json     → Open Design packaging
+examples/            → human-readable demonstrations
+references/          → method and compatibility notes
+templates/           → structural starting points
+```
+
+That layout keeps the plugin useful inside Open Design while remaining legible to the wider Agent Skills ecosystem.
