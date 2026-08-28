@@ -1,63 +1,74 @@
 # Parallel Exploration Checklist
 
-This is background documentation. The runtime skill is self-contained and must not block on locating this file.
+Background documentation for reviewing a persistent options-canvas run.
 
 ## A. Divergence
 
 - [ ] There are multiple sibling alternatives unless the user explicitly requested one.
-- [ ] Default sibling count is 3; never exceed 5 without a strong reason.
+- [ ] Default sibling count is 3 unless the brief suggests otherwise.
 - [ ] Each sibling represents a consequentially different design hypothesis.
-- [ ] Alternatives are not merely color, typeface, radius, shadow, or spacing swaps.
-- [ ] No sibling is visually framed as the recommended or winning option.
+- [ ] Differences are substantive on the axes relevant to the brief, not merely cosmetic token swaps.
+- [ ] No sibling is framed as the winner unless the user asked to converge.
 
-## B. Single-document canvas
+## B. Persistent options canvas
 
-- [ ] There is one primary exploration HTML document.
-- [ ] Variants are rendered inline in that document, not as separate HTML files composed with iframes.
-- [ ] The page opens directly into the comparative field; no tab/file/link hopping is required.
-- [ ] Stable ids such as `1A`, `1B`, `1C` are visible.
+- [ ] There is one primary exploration document.
+- [ ] Siblings are directly visible together rather than requiring file/tab hopping.
+- [ ] Every option has a stable short id such as `1a`, `1b`, `2a`.
 - [ ] Siblings are spatially adjacent whenever practical.
-- [ ] The canvas looks like a workspace, not a landing page, case study, or marketing presentation.
+- [ ] The canvas is visually quiet and subordinate to the design options.
 
-## C. Prototype fidelity
+## C. Turn structure
 
-- [ ] Each direction is rendered far enough to judge the key interaction or product idea.
-- [ ] Siblings use comparable viewport/device dimensions.
+- [ ] The newest turn appears before older turns.
+- [ ] The turn header explains what the current round is exploring.
+- [ ] Descendant turns identify the earlier option(s) they riff on.
+- [ ] Older turns remain visible and retain their original ids.
+- [ ] A new turn does not silently redesign historical options.
+- [ ] The turn ends with 2–3 useful follow-up ideas for navigating the design space.
+
+## D. Option anatomy
+
+For each option:
+
+- [ ] Stable id and concise direction name are visible.
+- [ ] The design itself is rendered far enough to evaluate.
+- [ ] The explanation states the core idea/hypothesis.
+- [ ] The distinguishing design move is legible.
+- [ ] A likely advantage and tradeoff are stated when useful.
+- [ ] Parent lineage is present for descendant options.
+
+## E. Comparison fairness
+
+- [ ] Siblings use comparable viewport/device dimensions when the task benefits from direct visual comparison.
 - [ ] Siblings use comparable content/data scenarios where practical.
 - [ ] Fidelity differences do not unfairly bias comparison.
 
-## D. History and lineage
+## F. Progressive authoring
 
-- [ ] Existing historical variants remain visibly present and unchanged.
-- [ ] No old variant id has been reused.
-- [ ] New variants have explicit parent ids.
-- [ ] New work is appended as a new round inside the same HTML document.
-- [ ] A branch from an older variant remains valid even if it is not descended from the latest round.
+When the host supports preview refreshes:
 
-## E. Runtime discipline
+- [ ] The primary document is established early enough to become visible during generation.
+- [ ] The current turn can take shape through incremental file updates rather than waiting unnecessarily for one final monolithic write.
+- [ ] Progressive authoring does not compromise stable ids or corrupt earlier turns.
 
-- [ ] Optional plugin references/templates were not treated as runtime prerequisites.
-- [ ] No `brand-spec.md` was created without a real user-supplied brand/reference source.
-- [ ] No PNG/screenshot export was required merely to finish the round.
-- [ ] Direction/theme tooling failures did not become a debugging side quest.
-- [ ] A vague smoke-test prompt produced a lightweight exploration rather than an oversized multi-file project.
+If the host only supports a final-write workflow, this section is informational rather than a failure condition.
 
-## F. Convergence guard
+## G. Convergence
 
-Unless the user explicitly asked to choose, combine, finalize, promote, or move forward:
+Unless the user explicitly asks to choose, combine, finalize, promote, or proceed with a direction:
 
 - [ ] No winner is declared.
-- [ ] No final recommendation is written.
-- [ ] No branch is deleted because it appears weaker.
+- [ ] No branch is deleted merely because it appears weaker.
 
-If the user **did** explicitly request convergence:
+If the user does request convergence:
 
-- [ ] Source variant ids are recorded.
-- [ ] Combined directions name their contributing ancestors.
-- [ ] The exploration document remains preserved.
+- [ ] Source option ids are named.
+- [ ] Combined directions identify their contributing ancestors.
+- [ ] The exploration document remains preserved as design history.
 
-## G. Final test
+## Final test
 
-The round passes if the user can truthfully say:
+The exploration succeeds if the user can truthfully say:
 
-> I opened one design document, saw several real alternatives at once, and can continue into another round without losing the previous round.
+> I can see the newest round immediately, compare its options side by side, refer to any option by id, and continue exploring without losing the path that led here.
