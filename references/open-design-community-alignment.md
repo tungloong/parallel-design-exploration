@@ -47,18 +47,22 @@ brief
   ↓
 parallel rendered options
   ↓
-visible comparison
+one primary exploration artifact
   ↓
-stable identities and persistent history
+stable identities + immutable delivered states
+  ↓
+follow-up turns extend the same visible history
   ↓
 user-directed continuation or convergence
 ```
 
 This keeps the plugin installable with the restricted community capability floor while preserving a rich design workflow.
 
+The artifact lifecycle is behavioral rather than privileged: the skill asks the host agent to resolve the existing primary exploration artifact and edit it in place on follow-up turns. It does not require a custom filesystem capability or private versioning service.
+
 ## Host planning and design guidance
 
-Open Design can contribute host-level discovery, craft, and design-direction guidance. The plugin treats those signals as context for the rendered options while keeping the persistent options-canvas structure stable.
+Open Design can contribute host-level discovery, craft, and design-direction guidance. The plugin treats those signals as context for the rendered options while keeping the persistent options-canvas structure, artifact identity, and historical-state semantics stable.
 
 The same portable behavior remains understandable to other Agent Skills clients because the interaction contract lives in `SKILL.md` rather than depending on a private Open Design runtime extension.
 
@@ -66,7 +70,7 @@ The same portable behavior remains understandable to other Agent Skills clients 
 
 The manifest preview is primarily a marketplace/user-facing example. The executable behavior comes from the injected skill contract.
 
-For that reason, the structural protocol and the small canonical canvas substrate that materially affect generated artifacts are expressed directly in `SKILL.md`. Preview files demonstrate the experience but are not hidden runtime dependencies.
+For that reason, the structural protocol, mutation semantics, and small canonical canvas substrate that materially affect generated artifacts are expressed directly in `SKILL.md`. Preview files demonstrate the experience but are not hidden runtime dependencies.
 
 The substrate is intentionally limited to exploration chrome—turn spacing, ids, sibling layout, artifact framing, and navigation—so host-level design guidance can continue shaping the actual options without needing to reinvent the workspace itself.
 
@@ -75,7 +79,7 @@ The substrate is intentionally limited to exploration chrome—turn spacing, ids
 The repository keeps one portable skill and one additive Open Design manifest:
 
 ```text
-SKILL.md             → agent capability and canonical substrate
+SKILL.md             → agent capability, state mutation, canonical substrate
 open-design.json     → Open Design packaging
 examples/            → human-readable demonstrations
 references/          → method and compatibility notes
