@@ -1,6 +1,6 @@
 # Example: Mobile Search UI Exploration
 
-This example shows the intended **shape of a session**, not a prescribed visual style.
+This walkthrough demonstrates the **session shape** of Parallel Design Exploration. It is an example of the protocol, not a prescribed product style.
 
 ## User brief
 
@@ -9,181 +9,103 @@ Explore alternative interaction models for an iOS quick-search app.
 
 The user arrives with a specific search intent and should be able to execute the search
 without getting pulled into an infinite content feed. I want structurally different
-ideas, not three visual themes. Keep the alternatives side by side and do not choose a
-winner yet.
+ideas and I want to compare them before choosing a direction.
 ```
 
-## Expected Round 1 planning
+## Turn 1
 
-The agent might identify three distinct hypotheses:
+The first turn might establish three distinct hypotheses:
 
 ```text
-1A — Quiet Canvas
-Hypothesis: remove nearly all chrome and let search/result content dominate.
+1a — Quiet Canvas
+Search and result content dominate; almost all surrounding chrome recedes.
 
-1B — Thumb Search Dock
-Hypothesis: make the primary search affordance persist near the thumb zone and let
-results expand above it.
+1b — Thumb Search Dock
+The primary search affordance stays in the thumb zone while results expand above it.
 
-1C — Command Results
-Hypothesis: treat results as immediately actionable commands rather than feed-like cards.
+1c — Command Results
+Results emphasize the next action rather than feed-like browsing.
 ```
 
-The important point is that these are **hypotheses to render**, not direction cards to show before asking the user to pick one.
+All three are rendered inside the same exploration document and remain addressable by their stable ids.
 
-## Expected files after Round 1
+A simplified structure looks like:
+
+```html
+<main class="pde-canvas" data-pde-version="1">
+  <section class="pde-turn" id="t1" data-turn="1">
+    <div class="pde-options">
+      <article class="pde-option" id="1a" data-option="1a">...</article>
+      <article class="pde-option" id="1b" data-option="1b">...</article>
+      <article class="pde-option" id="1c" data-option="1c">...</article>
+    </div>
+  </section>
+</main>
+```
+
+Annotations can vary with the work. One option may need a single sentence; another may benefit from a short tradeoff note or a few bullets.
+
+## Follow-up feedback
 
 ```text
-board.html
-exploration.json
-round-1/
-├── 1A.html
-├── 1B.html
-└── 1C.html
+1b feels closest, but the keyboard will already occupy the lower part of the screen.
+Keep the dock idea and show me three different ways to handle results in that state.
 ```
 
-## Example `exploration.json`
+## Turn 2
 
-```json
-{
-  "schemaVersion": "0.1",
-  "title": "Quick Search — interaction exploration",
-  "brief": "Explore structurally different interaction models for a focused iOS search app.",
-  "defaults": {
-    "viewport": {
-      "width": 390,
-      "height": 844,
-      "scale": 0.72
-    }
-  },
-  "rounds": [
-    {
-      "number": 1,
-      "label": "Round 1 — interaction model",
-      "variants": [
-        {
-          "id": "1A",
-          "parent": null,
-          "name": "Quiet Canvas",
-          "file": "round-1/1A.html",
-          "hypothesis": "A nearly chrome-free surface will make intent and completion feel immediate.",
-          "rationale": "Search occupies the visual center; results appear without introducing feed-like navigation.",
-          "gains": ["low distraction", "clear intent"],
-          "sacrifices": ["fewer persistent controls"]
-        },
-        {
-          "id": "1B",
-          "parent": null,
-          "name": "Thumb Search Dock",
-          "file": "round-1/1B.html",
-          "hypothesis": "A persistent bottom search dock will support fast one-handed repeated searches.",
-          "rationale": "Input stays in reach while results use the space above it.",
-          "gains": ["one-handed reachability", "stable search affordance"],
-          "sacrifices": ["less vertical result space"]
-        },
-        {
-          "id": "1C",
-          "parent": null,
-          "name": "Command Results",
-          "file": "round-1/1C.html",
-          "hypothesis": "Results should emphasize the next action rather than encourage browsing.",
-          "rationale": "Each result exposes a compact action path designed to finish the task and leave.",
-          "gains": ["fast completion", "strong anti-feed posture"],
-          "sacrifices": ["less room for exploratory content"]
-        }
-      ]
-    }
-  ]
-}
-```
-
-## Example feedback
+The next turn branches from `1b`:
 
 ```text
-1B feels closest, but the keyboard will actually occupy the lower part of the screen.
-Keep the dock idea and show me three different ways to handle results when the keyboard
-is already present. Do not delete Round 1.
+2a — Compressed result stack     ← 1b
+2b — Result peek + expand        ← 1b
+2c — Single-result command       ← 1b
 ```
 
-## Correct Round 2 behavior
-
-Do **not** edit `round-1/1B.html` in place.
-
-Create three descendants:
+The document becomes:
 
 ```text
-1B — Thumb Search Dock
-├── 2A — Compressed result stack
-├── 2B — Result peek + expand
-└── 2C — Single-result command focus
+TURN 2
+2a        2b        2c
+ ↑         ↑         ↑
+ └──────── 1b ───────┘
+
+TURN 1
+1a        1b        1c
 ```
 
-Files become:
+And the canonical state structure becomes:
+
+```html
+<main class="pde-canvas" data-pde-version="1">
+  <section class="pde-turn" id="t2" data-turn="2">
+    <article class="pde-option" id="2a" data-option="2a" data-parent="1b">...</article>
+    <article class="pde-option" id="2b" data-option="2b" data-parent="1b">...</article>
+    <article class="pde-option" id="2c" data-option="2c" data-parent="1b">...</article>
+  </section>
+
+  <section class="pde-turn" id="t1" data-turn="1">
+    ... original 1a / 1b / 1c ...
+  </section>
+</main>
+```
+
+The newest turn sits above the earlier one while the earlier states keep the same ids and visible content.
+
+## Conversation stays connected to the canvas
+
+Stable ids make follow-up prompts precise:
 
 ```text
-board.html
-exploration.json
-round-1/
-├── 1A.html
-├── 1B.html
-└── 1C.html
-round-2/
-├── 2A.html
-├── 2B.html
-└── 2C.html
+Go back to 1a and branch a more system-native version.
 ```
-
-And the manifest appends:
-
-```json
-{
-  "number": 2,
-  "label": "Round 2 — keyboard-aware result strategies",
-  "feedback": "Keep 1B's dock model; explore result handling with the keyboard already present.",
-  "variants": [
-    {
-      "id": "2A",
-      "parent": "1B",
-      "name": "Compressed Result Stack",
-      "file": "round-2/2A.html",
-      "hypothesis": "Compact stacking can preserve multiple visible results above the keyboard."
-    },
-    {
-      "id": "2B",
-      "parent": "1B",
-      "name": "Result Peek + Expand",
-      "file": "round-2/2B.html",
-      "hypothesis": "A small result preview can preserve context while one result expands on demand."
-    },
-    {
-      "id": "2C",
-      "parent": "1B",
-      "name": "Single-result Command Focus",
-      "file": "round-2/2C.html",
-      "hypothesis": "Showing the strongest actionable result first can minimize browsing and vertical pressure."
-    }
-  ]
-}
-```
-
-## What the board should communicate
-
-At this point the user should be able to see:
 
 ```text
-ROUND 1
-1A        1B        1C
-
-ROUND 2
-          ├─ 2A
-          ├─ 2B
-          └─ 2C
+Combine 1c's action treatment with 2b's result expansion.
 ```
 
-The user can now say things like:
+```text
+2a is strongest; continue from that direction.
+```
 
-- "Go back to 1A and branch a more system-native version."
-- "Combine 1C's action treatment with 2B's result expansion."
-- "2A is strongest; now converge on that direction."
-
-Those statements are only easy when prior design states remain stable, visible, and addressable.
+The value of the protocol is that each of those sentences refers to a visible, persistent design state rather than an implicit version remembered only by the conversation.
