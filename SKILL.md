@@ -7,7 +7,7 @@ description: |
 license: MIT
 metadata:
   author: tungloong
-  version: "0.7.0"
+  version: "0.8.0"
 triggers:
   - "parallel design exploration"
   - "parallel prototyping"
@@ -25,83 +25,63 @@ od:
 
 # Parallel Design Exploration
 
-Use a **persistent options canvas** when the task benefits from comparing several rendered design possibilities before committing to one direction.
+Use a **persistent options canvas** when a design problem benefits from comparing several rendered possibilities before committing to one direction.
 
-This skill defines an interaction protocol for design exploration. It does not prescribe a product domain, aesthetic, platform, fidelity, or house style. The user's brief and source material determine the design problem; this skill determines how alternatives remain visible, comparable, and referable over time.
+This skill defines the interaction model of the exploration space. The user's brief, source material, platform, and design context determine what gets designed. The skill keeps alternatives visible, comparable, referable, and historically stable while the exploration continues.
 
-## 1. Execution model
+## 1. Exploration model
 
-Keep the execution model distinct from the visible artifact.
+### Read the design context
 
-### Acquire design context
+Start from the usable context supplied by the user or project: current screens, source code, screenshots, design files, prior artifacts, product constraints, design systems, and platform conventions that materially affect the task.
 
-Before generating alternatives, inspect the usable context supplied by the user or project:
+When that context contains a reliable current design, represent it as **`0 · Baseline`**. The baseline is current-state evidence for comparison. It can coexist with a complete rethink of the product because baseline and design lineage are separate concepts.
 
-- current screens or artifacts;
-- source code containing the relevant UI;
-- screenshots or design files;
-- prior exploration artifacts;
-- product constraints, design systems, and platform conventions that materially affect the task.
+When no trustworthy current state can be established, the exploration begins with Turn 1.
 
-Use this context to understand what exists today and what the user is asking to explore.
+### Render substantive siblings
 
-### Establish current-state evidence
+Unless the user specifies another count, create **three materially different sibling options** in each new exploration turn.
 
-When a reliable current design can be reconstructed from the supplied context, preserve it as **`0 · Baseline`**. The baseline records the current state for comparison.
+Choose variation axes from the actual design question: information architecture, layout, interaction, navigation, hierarchy, density, product metaphor, platform behavior, visual language, content strategy, or another consequential dimension.
 
-The existence of a baseline is independent of whether the user wants to preserve, evolve, or completely rethink that design. A request to "start over" can still have a baseline if a real current state exists; the baseline is evidence, not a requirement to inherit its choices.
+Render each option far enough that the design itself can be judged. Comparable viewport, content, and fidelity are useful when controlled conditions improve the comparison.
 
-If the available material is insufficient to establish a trustworthy current state, omit the baseline. Baseline absence is represented structurally by its absence from the document.
+### Preserve the path of exploration
 
-### Generate substantive siblings
+Each new generation becomes the next numbered turn. The newest turn appears first. Earlier turns retain their identities and remain visible, so the document records both the current design space and the path that produced it.
 
-Unless the user specifies another count, create **3 materially different sibling options** in a new turn.
+When a new option is intentionally derived from earlier work, record the main lineage anchor with `data-parent` and link to the earlier option in the visible canvas.
 
-Choose axes that matter to the brief, for example:
+### Let convergence be user-directed
 
-- information architecture;
-- layout and spatial organization;
-- interaction model;
-- navigation or disclosure strategy;
-- density and hierarchy;
-- product metaphor;
-- platform-native versus custom behavior;
-- visual language, typography, or tone when visual direction is part of the question;
-- content or copy strategy when that is the design question.
+The user can continue branching, combine ideas, explore another axis, or converge on a direction. Stable ids make those moves conversationally precise.
 
-The options should differ enough that a user can explain the distinction between any two in one sentence. Render each far enough that the design itself can be judged rather than merely described.
+## 2. Complete visible document protocol
 
-Use comparable viewport, source content, and constraints when comparison benefits from controlled conditions. These are execution invariants; surface them in the artifact only when they are genuinely useful to understanding a design state.
+The **Options Canvas is the complete visible exploration document**.
 
-### Continue additively
+`main.pde-canvas` is the single visible top-level container in the artifact body. Every visible piece of exploration chrome, context, design work, annotation, and navigation belongs to a state inside this canvas. Non-rendering support such as scripts may sit outside the main element.
 
-Each new exploration generation becomes the next turn. Insert the newest turn before older turns. Preserve prior turns and option identities so the visible document accumulates design history instead of collapsing into a single latest state.
-
-### Converge explicitly
-
-Converge when the user asks to choose, combine, finalize, promote, or continue with a specific option. Until then, keep alternatives alive as alternatives.
-
-## 2. Visible document protocol
-
-The exploration artifact follows a stable DOM grammar so different agents produce the same interaction model.
-
-The direct children of `.pde-canvas` are visible design states: newest turns first, followed by the optional baseline as the oldest state.
+The direct children of `.pde-canvas` are design states in temporal order: newest turns first, then older turns, followed by the optional baseline as the oldest state.
 
 ```html
-<main class="pde-canvas" data-pde-version="1">
-  <section class="pde-turn" id="t2" data-turn="2">...</section>
-  <section class="pde-turn" id="t1" data-turn="1">...</section>
-  <section class="pde-baseline" id="baseline" data-baseline="0">...</section>
-</main>
+<body>
+  <main class="pde-canvas" data-pde-version="1">
+    <section class="pde-turn" id="t2" data-turn="2">...</section>
+    <section class="pde-turn" id="t1" data-turn="1">...</section>
+    <section class="pde-baseline" id="baseline" data-baseline="0">...</section>
+  </main>
+
+  <script>/* optional interaction support */</script>
+</body>
 ```
 
-For greenfield work without a reliable current state, the baseline section is simply absent.
-
-Visible framing belongs to a specific design state. Method bookkeeping and internal comparison rules remain execution metadata unless they help the user interpret that state.
+For greenfield work without a reliable current state, the baseline section is absent.
 
 ## 3. Turn protocol
 
-Every turn has a stable turn anchor, compact framing, a sibling option group, and a short set of navigation suggestions.
+A turn is one visible exploration state. It contains a stable turn anchor, concise framing when useful, a group of sibling options, and optionally a few paths for continuing the design space.
 
 ```html
 <section class="pde-turn" id="t2" data-turn="2">
@@ -120,20 +100,18 @@ Every turn has a stable turn anchor, compact framing, a sibling option group, an
 </section>
 ```
 
-The turn title and optional context describe what this design state is exploring. Keep turn chrome visually subordinate to the options.
-
-The newest turn is the first turn section in the document. Existing turn markup, ids, and meaning stay stable when later turns are added.
+Turn framing describes the design question represented by that state. It stays visually subordinate to the rendered options.
 
 ## 4. Option protocol
 
-Use stable `{turn}{letter}` identifiers:
+Options use stable `{turn}{letter}` identities:
 
 ```text
 1a  1b  1c
 2a  2b  2c
 ```
 
-Each option uses the stable id as both its DOM anchor and its visible identity:
+The same id is the DOM anchor, visible label, and conversational reference.
 
 ```html
 <article class="pde-option" id="2a" data-option="2a" data-parent="1b">
@@ -147,26 +125,27 @@ Each option uses the stable id as both its DOM anchor and its visible identity:
     <!-- Render the actual screen, component, flow, composition, or prototype. -->
   </div>
 
-  <div class="pde-explain">
-    <p><b>Idea</b><span>Core hypothesis.</span></p>
-    <p><b>Key move</b><span>What structurally distinguishes this option.</span></p>
-    <p><b>Tradeoff</b><span>What this option gains and gives up.</span></p>
+  <div class="pde-annotation">
+    A short design-facing note that helps the user understand what is distinctive here.
   </div>
 </article>
 ```
 
-Option explanation stays close to the design and covers the most useful of:
+### Free-form local annotation
 
-- **Idea / hypothesis** — what the option believes about the problem;
-- **Key move** — the structural or interaction decision that distinguishes it;
-- **Why it may work** — what it gains;
-- **Tradeoff** — what it makes harder or gives up.
+Annotations stay close to the design they explain, but their form follows the work rather than a fixed schema. Depending on the option, a useful annotation may be:
 
-A few specific points are usually more useful than a long case-study narrative.
+- one sentence naming the core idea;
+- a short paragraph explaining the design move and its consequence;
+- two or three bullets;
+- a compact label plus a tradeoff;
+- no extra prose when the distinction is already self-evident.
+
+The purpose is legibility: the user should be able to understand what makes the option meaningfully different without turning every option into the same review form.
 
 ### Stable references
 
-Every visible reference to an existing turn, option, or baseline uses a link to its document anchor:
+Visible references to existing turns, options, or baseline states link to their anchors:
 
 ```html
 <a href="#2a">2a</a>
@@ -174,19 +153,17 @@ Every visible reference to an existing turn, option, or baseline uses a link to 
 <a href="#baseline">0</a>
 ```
 
-This keeps conversational identity and spatial navigation aligned.
+This aligns conversational identity with spatial navigation.
 
-### Lineage is not the same as baseline context
+### Lineage
 
-`data-parent` records an intentional design lineage relationship, not merely the fact that a baseline exists.
+`data-parent` represents an intentional design lineage relationship. Baseline presence alone does not imply parentage.
 
-Use `data-parent="baseline"` when an option is explicitly an evolution or riff on the baseline. A first-turn option that deliberately rethinks the problem from first principles may coexist with a visible baseline without claiming the baseline as its parent.
-
-For later turns, use parent ids when a variant clearly riffs on or combines earlier work. When a concept has multiple meaningful sources, express those sources in the visible explanation and links; keep the primary `data-parent` for the main lineage anchor when useful.
+For later turns, use a parent id when an option clearly riffs on earlier work. When a concept combines several sources, keep the main lineage anchor in `data-parent` and reference the other sources in nearby linked text when that helps explain the design.
 
 ## 5. Baseline protocol
 
-When a reliable current state exists, render it as the oldest visible state:
+When reliable current-state evidence exists, render it as the oldest visible state:
 
 ```html
 <section class="pde-baseline" id="baseline" data-baseline="0">
@@ -201,31 +178,25 @@ When a reliable current state exists, render it as the oldest visible state:
 </section>
 ```
 
-Represent the current state faithfully enough to support comparison with the new options. Baseline annotations, when useful, identify source, state, or relevant constraints; they do not need to prescribe the future direction.
+Represent the current state faithfully enough to support comparison. A concise source or state note can accompany it when that context improves interpretation.
 
-## 6. Navigation suggestions
+## 6. Canvas substrate
 
-End each turn with a small number of concrete paths through the design space. Useful suggestions include:
+The canvas is infrastructure for comparison. Use a quiet, consistent substrate: neutral background, compact state labels, restrained separators, and enough whitespace for sibling designs to remain the focus.
 
-- riffing on one option;
-- combining specific parts from two options;
-- exploring a different axis;
-- increasing or reducing fidelity;
-- converging on an option when the user is ready.
+The exploration chrome stays visually stable across turns. Individual options can use whatever visual language the brief calls for.
 
-Use stable linked ids wherever a suggestion references existing work.
+## 7. Navigation through the design space
 
-## 7. Canvas substrate
+A turn can end with a small number of concrete continuation paths: riff on an option, combine specific ideas, explore a different axis, change fidelity, or converge when the user is ready.
 
-The canvas is infrastructure for comparison. Use a restrained neutral substrate, compact labels, subtle separators, and enough whitespace for sibling designs to remain the visual focus.
-
-The exploration chrome should remain consistent across turns while individual options may use whatever visual language the brief requires.
+Use linked stable ids when a suggestion points to existing work.
 
 ## 8. Artifact lifecycle and naming
 
 Maintain one primary exploration artifact for the visible design space.
 
-Derive a concise, stable, kebab-case filename from the actual subject being explored, for example:
+Derive a concise, stable, kebab-case filename from the subject being explored, for example:
 
 ```text
 search-and-go-exploration.html
@@ -233,44 +204,39 @@ checkout-flow-exploration.html
 analytics-dashboard-exploration.html
 ```
 
-If an exploration artifact already exists for the project, continue editing that file across turns. If the host requires a specific entry path, follow the host requirement while preserving this document protocol.
-
-Supporting files may exist when the host, implementation, or requested output genuinely needs them; the persistent options canvas remains the primary visible exploration artifact.
+Follow-up turns continue editing the same primary artifact. Host-required entry paths take precedence when applicable. Supporting files can exist when the implementation or requested output genuinely benefits from them.
 
 ## 9. Progressive authoring
 
-When live preview refreshes as the artifact changes, establish the primary file early and build the newest state incrementally:
+When the host refreshes the artifact as files change, establish the primary canvas early and let the newest turn take shape through coherent incremental updates. A useful sequence is:
 
-1. create or open the exploration artifact;
-2. insert the newest turn shell in canonical position;
-3. render coherent sibling options as they become ready;
-4. add local reasoning;
-5. finish with navigation suggestions.
+1. establish the new turn shell in canonical position;
+2. render sibling options as they become coherent;
+3. add local annotations where they improve understanding;
+4. add continuation paths when useful.
 
-On later turns, establish the new turn at the top first and fill it while older states remain intact.
-
-This is progressive enhancement. Hosts that expose only a final-write workflow still use the same persistent document semantics.
+Hosts that expose only a final-write workflow still use the same document and history semantics.
 
 ## 10. Open Design compatibility
 
-Open Design may apply host-level discovery or design-direction guidance before this skill runs. Use relevant host guidance as context while preserving the parallel exploration protocol.
+Open Design may contribute host-level discovery, craft, or design-direction guidance. Treat that guidance as context for the designs while preserving the persistent options-canvas interaction model.
 
-If a host-level visual direction is already active, meaningful divergence can still occur in structure, hierarchy, interaction, navigation, density, and content strategy. When visual direction itself is the design question, allow option-local visual systems as far as the host permits.
+A host-level visual direction can coexist with meaningful divergence in structure, hierarchy, interaction, navigation, density, or content strategy. When visual direction itself is the design question, option-local visual systems can carry that exploration as far as the host permits.
 
 ## Structural validation
 
-Before finishing a turn, verify the protocol rather than a specific visual style:
+Before finishing a turn, confirm that:
 
-- `.pde-canvas` contains visible design states in newest-first order;
-- every turn has `id="tN"` and `data-turn="N"`;
+- `main.pde-canvas` owns the complete visible exploration document;
+- its direct state children are ordered newest-first, with the optional baseline last;
+- every turn has `id="tN"` and matching `data-turn="N"`;
 - every option has a stable `id` and matching `data-option`;
-- every visible reference to an existing state links to its anchor;
-- a baseline appears when reliable current-state evidence exists and is omitted when it cannot be established;
-- baseline presence and `data-parent` lineage are treated as separate concepts;
-- older states preserve their ids and meaning;
-- sibling options are rendered and directly comparable;
-- reasoning stays local to the state it explains;
-- the artifact filename reflects the actual subject and remains stable across turns.
+- references to existing design-state ids navigate to their anchors;
+- baseline evidence and design lineage remain separate concepts;
+- earlier turns retain their stable identities and visible content;
+- sibling options are rendered far enough for direct comparison;
+- local annotations are proportionate to what the design needs explained;
+- the primary artifact name reflects the subject and stays stable across turns.
 
 The target experience is:
 
