@@ -3,8 +3,8 @@
   "specVersion": "1.0.0",
   "name": "parallel-design-exploration",
   "title": "Parallel Design Exploration",
-  "version": "0.1.0",
-  "description": "Generate multiple full prototype directions in parallel, preserve every exploration round, and compare alternatives on one persistent board before convergence.",
+  "version": "0.2.0",
+  "description": "Standalone Open Design scenario for parallel prototyping: render multiple full design directions side by side, preserve prior rounds, and converge only when the user asks.",
   "license": "MIT",
   "author": {
     "name": "tungloong",
@@ -12,6 +12,7 @@
   },
   "homepage": "https://github.com/tungloong/parallel-design-exploration",
   "tags": [
+    "scenario",
     "design-exploration",
     "parallel-prototyping",
     "variants",
@@ -26,18 +27,19 @@
     ]
   },
   "od": {
-    "kind": "skill",
+    "kind": "scenario",
     "taskKind": "new-generation",
     "mode": "prototype",
+    "surface": "web",
     "platform": "desktop",
     "scenario": "design-exploration",
     "preview": {
       "type": "html",
-      "entry": "examples/mobile-search/board.html",
+      "entry": "./examples/mobile-search/board.html",
       "motion": "static"
     },
     "useCase": {
-      "query": "Run a parallel design exploration for this brief: {{brief}}. Generate {{variantCount}} materially different, fully rendered sibling prototypes and place them on one neutral exploration board. Do not pick a winner. Preserve prior rounds and append descendants on follow-up turns.",
+      "query": "Run a parallel design exploration for my design brief. Generate {{variantCount}} materially different, fully rendered sibling prototypes and place them on one neutral exploration board. Treat my chat prompt as the brief. Do not make me pick a direction before rendering the alternatives. Do not pick a winner. Preserve prior rounds and append descendants on follow-up turns.",
       "exampleOutputs": [
         {
           "path": "./examples/mobile-search/board.html",
@@ -45,17 +47,37 @@
         }
       ]
     },
+    "inputs": [
+      {
+        "name": "variantCount",
+        "type": "number",
+        "required": false,
+        "label": "Variants per round",
+        "default": 3
+      }
+    ],
     "context": {
       "skills": [
         {
           "path": "./SKILL.md"
         }
       ],
+      "assets": [
+        "./references/parallel-prototyping.md",
+        "./references/exploration-canvas.md",
+        "./references/checklist.md",
+        "./templates/exploration-board.html",
+        "./templates/exploration.schema.json",
+        "./examples/mobile-ui-exploration.md",
+        "./examples/mobile-search/board.html",
+        "./examples/mobile-search/exploration.json"
+      ],
       "atoms": [
         "discovery-question-form",
         "todo-write",
         "file-write",
-        "live-artifact"
+        "live-artifact",
+        "critique-theater"
       ]
     },
     "pipeline": {
@@ -67,39 +89,30 @@
           ]
         },
         {
-          "id": "exploration-plan",
+          "id": "plan",
           "atoms": [
             "todo-write"
           ]
         },
         {
-          "id": "parallel-generate",
+          "id": "generate",
           "atoms": [
             "file-write",
             "live-artifact"
           ]
+        },
+        {
+          "id": "critique",
+          "atoms": [
+            "critique-theater"
+          ],
+          "repeat": true,
+          "until": "critique.score>=4 || iterations>=3"
         }
       ]
     },
-    "inputs": [
-      {
-        "name": "brief",
-        "type": "string",
-        "required": true,
-        "label": "Design brief",
-        "placeholder": "Explore alternative interaction models for a mobile search experience."
-      },
-      {
-        "name": "variantCount",
-        "type": "number",
-        "required": false,
-        "label": "Variants per round",
-        "default": 3
-      }
-    ],
     "capabilities": [
       "prompt:inject",
-      "fs:read",
       "fs:write"
     ]
   }
