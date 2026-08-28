@@ -29,7 +29,13 @@
     "kind": "skill",
     "taskKind": "new-generation",
     "mode": "prototype",
+    "platform": "desktop",
     "scenario": "design-exploration",
+    "preview": {
+      "type": "html",
+      "entry": "examples/mobile-search/board.html",
+      "motion": "static"
+    },
     "useCase": {
       "query": "Run a parallel design exploration for this brief: {{brief}}. Generate {{variantCount}} materially different, fully rendered sibling prototypes and place them on one neutral exploration board. Do not pick a winner. Preserve prior rounds and append descendants on follow-up turns.",
       "exampleOutputs": [
@@ -93,6 +99,7 @@
     ],
     "capabilities": [
       "prompt:inject",
+      "fs:read",
       "fs:write"
     ]
   }
