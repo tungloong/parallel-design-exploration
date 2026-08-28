@@ -8,7 +8,7 @@ description: |
 license: MIT
 metadata:
   author: tungloong
-  version: "0.1.0"
+  version: "0.2.0"
 triggers:
   - "parallel design exploration"
   - "parallel prototyping"
@@ -19,6 +19,8 @@ triggers:
   - "diverge before converge"
 od:
   mode: prototype
+  surface: web
+  platform: desktop
   scenario: design-exploration
 ---
 
@@ -27,6 +29,20 @@ od:
 Create a **working design exploration canvas**, not a presentation page.
 
 The purpose of this skill is to keep a design space open long enough for useful comparison. It follows the logic of parallel prototyping: generate materially different alternatives at the same time, make them visually comparable, collect feedback, and only converge when the user explicitly asks to converge.
+
+## Standalone Open Design scenario contract
+
+When this bundle is the Active Plugin in Open Design, it owns the exploration workflow. It does **not** depend on Web Prototype or another prototype plugin.
+
+Treat the user's current chat prompt as the design brief. Do not wait for, request, or invent a separate `brief` plugin input. `variantCount` is only a configuration hint; the conversational prompt remains the authoritative brief.
+
+The Open Design pipeline for this scenario is:
+
+```text
+discovery → plan → generate → critique
+```
+
+The important difference from Open Design's default new-generation scenario is that the plan stage intentionally has **no `direction-picker`**. Alternatives must be rendered before the user is asked to choose among them.
 
 ## Core contract
 
@@ -212,9 +228,9 @@ A follow-up does **not** need a one-to-one descendant for every prior sibling. I
 
 ## Relationship to Open Design direction picking
 
-Open Design's direction-picker can be useful for generating candidate hypotheses, vocabulary, or style seeds. Do **not** stop at direction cards when this skill is active.
+Open Design's `direction-picker` can be useful in other workflows for selecting a direction before generation. It is intentionally excluded from this scenario's plan stage.
 
-The skill changes the default flow from:
+The scenario changes the default flow from:
 
 ```text
 directions → pick one → generate
@@ -226,7 +242,13 @@ to:
 directions → generate siblings → compare → user feedback → append descendants
 ```
 
-Direction cards are planning inputs. The deliverable is the rendered exploration space.
+The deliverable is the rendered exploration space, not a set of direction cards.
+
+## Critique without premature convergence
+
+Critique evaluates whether every sibling is legible, sufficiently distinct, technically viewable, and faithful to the user's constraints. Critique must **not** rank siblings, nominate a winner, or merge them unless the user has explicitly requested convergence.
+
+A critique repair may improve a newly generated variant before handoff, but once a later round exists, historical variants remain immutable.
 
 ## Convergence
 
