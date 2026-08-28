@@ -2,83 +2,72 @@
 
 Background documentation for reviewing a persistent options-canvas run.
 
-## A. Context and baseline evidence
+The checklist focuses on protocol stability rather than a particular visual style or writing format.
 
-- [ ] The agent inspected the available design context before generating alternatives.
-- [ ] A reliable current state is rendered as `0 · Baseline` when one can be established.
-- [ ] A baseline is omitted when the available material is insufficient to reconstruct a trustworthy current state.
-- [ ] The baseline is treated as comparison evidence rather than an automatic design constraint.
-- [ ] Baseline presence and `data-parent` lineage are treated as separate concepts.
+## A. Context and baseline
+
+- [ ] The available design context was inspected before alternatives were generated.
+- [ ] A trustworthy current state appears as `0 · Baseline` when one can be established.
+- [ ] Greenfield or insufficient-context work begins cleanly with Turn 1.
+- [ ] Baseline evidence and design lineage are represented as separate concepts.
 
 ## B. Divergence
 
-- [ ] There are multiple sibling alternatives unless the user explicitly requested one.
-- [ ] The default sibling count is 3 unless the brief or user specifies otherwise.
-- [ ] Each sibling represents a consequentially different design hypothesis.
-- [ ] Differences are substantive on axes relevant to the brief rather than superficial token changes.
-- [ ] Exploration remains open until the user asks to converge.
+- [ ] The turn contains multiple rendered sibling alternatives.
+- [ ] The default sibling count is 3 unless the user or brief calls for another count.
+- [ ] Siblings differ on consequential dimensions relevant to the design question.
+- [ ] The alternatives are developed far enough for the design itself to be judged.
+- [ ] Convergence remains user-directed.
 
 ## C. Visible document protocol
 
-- [ ] There is one primary persistent exploration artifact.
-- [ ] `.pde-canvas` contains visible design states in newest-first order.
-- [ ] Every turn has a stable `id="tN"` and matching `data-turn="N"`.
-- [ ] Every option has a stable DOM `id` and matching `data-option`.
-- [ ] Every visible reference to an existing turn, option, or baseline links to its document anchor.
+- [ ] `main.pde-canvas` owns the complete visible exploration document.
+- [ ] Its direct visible state children are ordered newest-first.
 - [ ] The optional baseline is the oldest visible state.
-- [ ] Project-method bookkeeping stays out of the visible canvas unless it genuinely helps interpret a design state.
+- [ ] Every turn has `id="tN"` and matching `data-turn="N"`.
+- [ ] Every option has a stable DOM `id` and matching `data-option`.
+- [ ] Visible references to existing design-state ids navigate to their anchors.
 
-## D. Turn structure
+## D. Turn and history behavior
 
-- [ ] The newest turn appears before older turns.
-- [ ] Turn framing concisely explains the design question or riff represented by that state.
-- [ ] Sibling options are directly comparable within the same turn.
-- [ ] Older turns retain their original ids and meaning.
-- [ ] Descendant turns expose meaningful lineage to earlier options where applicable.
-- [ ] The turn ends with a small number of useful paths for continuing the design space.
+- [ ] The newest turn appears before earlier turns.
+- [ ] Turn framing explains the design question represented by that state when framing is useful.
+- [ ] Sibling options are directly comparable within the turn.
+- [ ] Earlier turns retain stable ids, meaning, and visible content.
+- [ ] Descendant options expose meaningful lineage when they branch from earlier work.
+- [ ] Continuation paths, when present, point to concrete moves in the design space.
 
-## E. Option anatomy
+## E. Option clarity
 
 For each option:
 
 - [ ] The stable id and concise direction name are visible.
-- [ ] The design is rendered far enough to evaluate rather than merely described.
-- [ ] Reasoning is local to the option it explains.
-- [ ] The core idea or hypothesis is legible.
-- [ ] The distinguishing move is legible.
-- [ ] Tradeoffs are stated when useful.
-- [ ] `data-parent` reflects intentional lineage rather than generic project context.
+- [ ] The design is rendered rather than represented only by prose.
+- [ ] Any annotation stays close to the work it explains.
+- [ ] The annotation format is proportionate to what the option needs clarified.
+- [ ] `data-parent` reflects intentional lineage when a primary parent exists.
 
 ## F. Comparison quality
 
-- [ ] Siblings use comparable viewport/device dimensions when direct visual comparison benefits from controlled conditions.
-- [ ] Siblings use comparable content or data scenarios where that improves fairness.
-- [ ] Fidelity differences do not accidentally bias the comparison.
-- [ ] The canvas chrome remains visually subordinate to the designs.
+- [ ] Viewport, content, and fidelity are comparable when controlled conditions improve the comparison.
+- [ ] The canvas substrate remains visually subordinate to the options.
+- [ ] Individual options retain freedom to use the visual language appropriate to the brief.
 
 ## G. Artifact lifecycle
 
-- [ ] The filename is derived from the actual subject or a host-required entry path.
-- [ ] The primary filename remains stable across follow-up turns.
-- [ ] Later turns extend the existing exploration artifact instead of replacing its visible history.
+- [ ] The primary artifact name reflects the subject or a host-required entry path.
+- [ ] The filename remains stable across follow-up turns.
+- [ ] Later turns extend the visible exploration history in the same primary artifact.
 
 ## H. Progressive authoring
 
-When the host supports preview refreshes:
+When the host supports live preview refreshes:
 
-- [ ] The primary document is established early enough to become visible during generation.
+- [ ] The primary canvas becomes available early enough to show meaningful progress.
 - [ ] The newest turn can take shape through coherent incremental updates.
-- [ ] Progressive authoring preserves stable ids and historical states.
+- [ ] Incremental updates preserve stable ids and historical states.
 
-If the host exposes only a final-write workflow, this section is informational rather than a failure condition.
-
-## I. Convergence
-
-When the user asks to choose, combine, finalize, promote, or proceed with a direction:
-
-- [ ] Source option ids are named.
-- [ ] Combined directions identify their contributing earlier states where useful.
-- [ ] The exploration history remains available as design context.
+For final-write hosts, the same document semantics apply without progressive preview.
 
 ## Final test
 
