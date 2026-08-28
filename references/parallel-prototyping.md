@@ -36,7 +36,7 @@ The relevant lesson is structural rather than numeric:
 - preserve meaningful diversity between sibling designs;
 - let convergence follow comparison.
 
-The plugin uses three siblings as a practical default, while the user or brief can call for another count.
+The exact number of siblings can follow the design question and the user's request.
 
 ## 2. Hartmann et al. — Design as Exploration / Juxtapose
 
