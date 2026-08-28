@@ -14,27 +14,46 @@ this plugin keeps the design space visible:
 TURN 3:  3a   3b   3c   ← newest
 TURN 2:  2a   2b   2c
 TURN 1:  1a   1b   1c
+0 · BASELINE             ← when a real current design exists
 ```
 
 Sibling options are rendered together, option ids remain stable across conversation, and later turns branch from earlier work without erasing the visible exploration history.
 
 ## Status
 
-**v0.5 — persistent options canvas.**
+**v0.6 — baseline-aware persistent options canvas.**
 
 The plugin can be selected directly as an Open Design Active Plugin and remains community-safe by requesting only `prompt:inject`.
 
-v0.5 focuses the contract on a reusable interaction model rather than any particular test prompt or product type.
+v0.6 simplifies the visible document grammar, adds a conditional current-state baseline for redesign/existing-project work, and derives the exploration filename from the actual design subject rather than hard-coding a plugin-specific filename.
 
 ## What the plugin changes
 
-### One persistent visual document
+### Turn-first visual document
 
-The primary artifact is `design-exploration.html`. The exploration itself lives in that document rather than in a launcher that points to disconnected alternatives.
+The primary artifact begins directly with the newest exploration turn. The workflow is represented by the turn/option structure itself rather than by a separate page-level project narrative.
+
+### Conditional baseline
+
+When the user provides a real current state — for example an imported codebase, existing screen, screenshot, design file, or prior artifact — the plugin preserves that current state as `0 · Baseline` before exploring alternatives.
+
+For genuinely greenfield work, no baseline is invented.
+
+### Contextual artifact naming
+
+The exploration artifact gets a concise name derived from the subject, for example:
+
+```text
+search-and-go-exploration.html
+checkout-flow-exploration.html
+analytics-dashboard-exploration.html
+```
+
+The name stays stable across follow-up turns.
 
 ### Newest turn first
 
-A new design round is inserted above older rounds. Earlier work remains visible and keeps its original identity.
+A new design turn is inserted above older turns. Earlier work remains visible and keeps its original identity.
 
 ### Stable option ids
 
@@ -44,23 +63,23 @@ Options use short ids such as `1a`, `1b`, `2a`. Those ids connect the canvas and
 Keep 2a's hierarchy, but use the interaction from 1c.
 ```
 
-### Richer design reasoning
+### Design reasoning next to the work
 
-Each option has:
+Each option contains:
 
 - a stable id and concise direction name;
 - the rendered design itself;
-- a compact explanation of its hypothesis, key move, advantage, and tradeoff.
+- compact reasoning about its hypothesis, key move, advantage, and tradeoff.
 
-Each turn also explains the purpose of the round and ends with a few concrete follow-up ideas.
+Each turn also ends with a few concrete follow-up ideas for navigating the design space.
 
 ### Quiet canvas
 
-The exploration surface uses a restrained neutral background, lightweight labels, subtle separators, and minimal chrome. The canvas is infrastructure; the design options should carry the personality.
+The exploration surface stays visually subordinate: neutral background, lightweight labels, subtle separators, and enough whitespace to compare the actual designs.
 
 ### Progressive authoring when available
 
-The skill prefers to establish the exploration file early and fill the current turn incrementally when the host can refresh previews on file changes. Open Design already has live project/artifact preview infrastructure, and many built-in prototype skills declare debounced HTML preview reloads. The exact streaming granularity still depends on the active agent and host editing path, so progressive rendering is treated as an enhancement rather than a correctness requirement.
+The skill prefers to establish the contextually named exploration file early and fill the current turn incrementally when the host can refresh previews on file changes. The exact streaming granularity still depends on the active agent and host editing path, so progressive rendering is treated as an enhancement rather than a correctness requirement.
 
 ## Install
 
@@ -74,16 +93,20 @@ If an older version is installed, reinstall or upgrade it so Open Design sees th
 
 ## Runtime model
 
-First turn:
+Existing-design task:
 
 ```text
-TURN 1 · explore the problem
+TURN 1 · explore alternatives
 
 1a                     1b                     1c
 [design]               [design]               [design]
 [explanation]          [explanation]          [explanation]
 
 Try next: ...
+
+────────────────────────────────────────────
+0 · BASELINE
+[current design]
 ```
 
 Follow-up turn:
@@ -100,17 +123,23 @@ Try next: ...
 ────────────────────────────────────────────
 TURN 1 · unchanged
 1a                     1b                     1c
+
+────────────────────────────────────────────
+0 · BASELINE
+[current design]
 ```
+
+For greenfield work, the document begins at Turn 1 with no invented baseline.
 
 See [`examples/single-document-exploration.html`](examples/single-document-exploration.html).
 
 ## Design principles
 
 1. Diverge before converge.
-2. Prototype alternatives rather than merely describing them.
-3. Juxtapose sibling options in one visual field.
-4. Use one persistent exploration document.
-5. Put the newest turn first while preserving prior turns.
+2. Preserve a real current state before varying it.
+3. Prototype alternatives rather than merely describing them.
+4. Juxtapose sibling options in one visual field.
+5. Keep the newest turn first while preserving prior work.
 6. Give every option a stable conversational identity.
 7. Make lineage explicit when later options branch from earlier ones.
 8. Explain design hypotheses and tradeoffs close to the design.
@@ -129,7 +158,7 @@ surface: web
 capabilities: [prompt:inject]
 ```
 
-Open Design's host may still apply its own discovery and design-direction guidance. This plugin treats that guidance as context while preserving the requested parallel exploration structure. A future host-level parallel direction policy could make unrestricted multi-style divergence even stronger, but the persistent options canvas does not depend on such an upstream change.
+Open Design's host may still apply its own discovery and design-direction guidance. This plugin treats that guidance as context while preserving the requested parallel exploration structure.
 
 ## Method references
 
