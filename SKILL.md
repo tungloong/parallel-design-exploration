@@ -7,7 +7,7 @@ description: |
 license: MIT
 metadata:
   author: tungloong
-  version: "0.9.0"
+  version: "0.10.0"
 triggers:
   - "parallel design exploration"
   - "parallel prototyping"
@@ -27,7 +27,7 @@ od:
 
 Use a **persistent options canvas** when a design problem benefits from seeing several rendered possibilities before committing to one direction.
 
-The skill owns the exploration protocol: visible history, stable identities, sibling comparison, lineage, and the small amount of canvas chrome required to keep those things legible. The user's brief and design context own the product, aesthetic, fidelity, platform, and content of the designs themselves.
+The skill owns the exploration protocol: one persistent artifact, visible design history, stable identities, sibling comparison, lineage, and the small amount of canvas chrome required to keep those things legible. The user's brief and design context own the product, aesthetic, fidelity, platform, and content of the designs themselves.
 
 ## 1. Establish the design context
 
@@ -45,13 +45,42 @@ Choose variation axes from the actual design question: information architecture,
 
 Render each option far enough that the design itself can be judged. Comparable viewport, content, or fidelity can be useful when controlled conditions improve the comparison.
 
-## 3. Preserve the exploration path
+## 3. Artifact and state mutation protocol
 
-Each new generation becomes the next numbered turn. The newest turn appears first. Earlier turns retain their identities and visible content so the document records both the current design space and the path that produced it.
+An exploration session has **one stable primary artifact identity**. The first generation establishes that artifact. Follow-up turns resolve the same artifact and extend it in place.
 
-When a new option is intentionally derived from earlier work, record the primary lineage anchor with `data-parent` and link to the earlier option in the visible canvas.
+A delivered turn is an **immutable historical design-state snapshot**. After a turn has been shown to the user, its identity and rendering meaning become part of the visible record. A normal follow-up adds a newer state rather than re-authoring older states.
 
-The user can keep branching, combine ideas, explore another axis, or converge on a direction.
+The canonical mutation is prepend-only at the state level:
+
+```text
+before follow-up                after follow-up
+
+Turn 1                          Turn 2   ← inserted
+0 · Baseline                    Turn 1   ← preserved
+                                0 · Baseline
+```
+
+Equivalently in the document:
+
+```html
+<!-- existing artifact -->
+<main class="pde-canvas">
+  <section id="t1" data-turn="1">...</section>
+  <section id="baseline" data-baseline="0">...</section>
+</main>
+
+<!-- after the next turn -->
+<main class="pde-canvas">
+  <section id="t2" data-turn="2">...</section>
+  <section id="t1" data-turn="1">...</section>
+  <section id="baseline" data-baseline="0">...</section>
+</main>
+```
+
+Treat requests to riff on, deepen, combine, or refine prior work as new descendant states by default. A past state is edited directly only when the user explicitly asks to correct or replace that historical state itself.
+
+Historical preservation includes rendering semantics as well as markup. New-turn implementation should extend styles and behavior additively or with state-local selectors so earlier states keep the same visual and interactive meaning.
 
 ## 4. Complete visible document protocol
 
@@ -75,9 +104,7 @@ For greenfield work without a reliable current state, the baseline section is ab
 
 ## 5. Canonical canvas substrate
 
-Canvas chrome is stable infrastructure rather than another design assignment. Use a small, consistent substrate and let the option content carry the visual personality of the brief.
-
-A suitable default is:
+Canvas chrome is stable infrastructure rather than another design assignment. Use the canonical substrate below as the base workspace chrome. Extend it for artifact content; adapt it only when the medium or host requires a different representation.
 
 ```css
 *{box-sizing:border-box}
@@ -184,9 +211,7 @@ When reliable current-state evidence exists, render it as the oldest visible sta
 
 Represent the current state faithfully enough to support comparison. Source or state notes can accompany it when they materially improve interpretation.
 
-## 9. Artifact lifecycle and naming
-
-Maintain one primary exploration artifact for the visible design space.
+## 9. Artifact identity and naming
 
 Derive a concise, stable, kebab-case filename from the subject being explored, for example:
 
@@ -196,17 +221,18 @@ checkout-flow-exploration.html
 analytics-dashboard-exploration.html
 ```
 
-Follow-up turns continue editing the same primary artifact. Host-required entry paths take precedence when applicable. Supporting files can exist when the implementation or requested output benefits from them.
+That path becomes the primary artifact identity for the exploration session. Follow-up turns resolve and update that same artifact. Host-required entry paths take precedence when applicable. Supporting files can exist when the implementation or requested output benefits from them, while the visible exploration history remains anchored in the same primary artifact.
 
 ## 10. Progressive authoring
 
 When the host refreshes the artifact as files change, establish the primary canvas early and let the newest turn take shape through coherent incremental updates:
 
-1. establish the new turn shell in canonical position;
-2. render sibling options as they become coherent;
-3. add local explanation and continuation cues when they improve the work.
+1. resolve the existing primary artifact when the session already has one;
+2. insert the new turn shell in canonical position;
+3. render sibling options as they become coherent;
+4. add local explanation and continuation cues when they improve the work.
 
-Hosts that expose only a final-write workflow still use the same document and history semantics.
+Hosts that expose only a final-write workflow still use the same artifact identity and state mutation semantics.
 
 ## 11. Open Design compatibility
 
@@ -218,17 +244,18 @@ A host-level visual direction can coexist with meaningful divergence in structur
 
 Before finishing a turn, confirm that:
 
+- the exploration still uses the same primary artifact identity established for the session;
 - `main.pde-canvas` owns the complete visible exploration document;
 - its direct state children are ordered newest-first, with the optional baseline last;
 - every turn has `id="tN"` and matching `data-turn="N"`;
 - every option has a stable `id` and matching `data-option`;
 - references to existing design-state ids navigate to their anchors;
 - baseline evidence and design lineage remain separate concepts;
-- earlier turns retain their stable identities and visible content;
+- every previously delivered state retains the same identity, visible content, and rendering meaning;
+- new-turn styles and behavior extend the artifact without changing historical states unintentionally;
 - sibling options are rendered far enough for direct comparison;
-- the canvas uses the stable minimal substrate while the designs themselves carry the brief's visual language;
-- the primary artifact name reflects the subject and stays stable across turns.
+- the canvas uses the canonical substrate while the designs themselves carry the brief's visual language.
 
 The target experience is:
 
-> I can see the current state when one exists, compare several real alternatives at once, refer to any state by a stable id, ask for another riff, and keep the visible path of exploration in one place.
+> I can see the current state when one exists, compare several real alternatives at once, refer to any state by a stable id, ask for another riff, and keep the same visible history intact as the exploration grows.
