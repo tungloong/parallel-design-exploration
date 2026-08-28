@@ -2,7 +2,7 @@
 
 Background documentation for reviewing a persistent options-canvas run.
 
-The checklist focuses on protocol stability rather than a particular visual style or writing format.
+The checklist focuses on protocol stability and comparison quality rather than a particular product style or writing format.
 
 ## A. Context and baseline
 
@@ -13,8 +13,8 @@ The checklist focuses on protocol stability rather than a particular visual styl
 
 ## B. Divergence
 
-- [ ] The turn contains multiple rendered sibling alternatives.
-- [ ] The default sibling count is 3 unless the user or brief calls for another count.
+- [ ] The turn contains several rendered sibling alternatives.
+- [ ] A user-specified option count is respected.
 - [ ] Siblings differ on consequential dimensions relevant to the design question.
 - [ ] The alternatives are developed far enough for the design itself to be judged.
 - [ ] Convergence remains user-directed.
@@ -31,11 +31,10 @@ The checklist focuses on protocol stability rather than a particular visual styl
 ## D. Turn and history behavior
 
 - [ ] The newest turn appears before earlier turns.
-- [ ] Turn framing explains the design question represented by that state when framing is useful.
 - [ ] Sibling options are directly comparable within the turn.
 - [ ] Earlier turns retain stable ids, meaning, and visible content.
 - [ ] Descendant options expose meaningful lineage when they branch from earlier work.
-- [ ] Continuation paths, when present, point to concrete moves in the design space.
+- [ ] Continuation cues, when present, point to concrete moves in the design space.
 
 ## E. Option clarity
 
@@ -43,14 +42,16 @@ For each option:
 
 - [ ] The stable id and concise direction name are visible.
 - [ ] The design is rendered rather than represented only by prose.
-- [ ] Any annotation stays close to the work it explains.
-- [ ] The annotation format is proportionate to what the option needs clarified.
+- [ ] Local explanation appears only when it materially improves understanding.
 - [ ] `data-parent` reflects intentional lineage when a primary parent exists.
 
-## F. Comparison quality
+## F. Canvas substrate
 
-- [ ] Viewport, content, and fidelity are comparable when controlled conditions improve the comparison.
-- [ ] The canvas substrate remains visually subordinate to the options.
+- [ ] The stable canvas chrome is visually subordinate to the rendered options.
+- [ ] Turn labels and state ids remain compact and consistent.
+- [ ] Siblings use a wrapping spatial row rather than a fixed responsive column system.
+- [ ] Option containers behave as spatial containers; the rendered design is the artifact surface.
+- [ ] Artifact widths follow the content being shown so different design formats can share the same canvas protocol.
 - [ ] Individual options retain freedom to use the visual language appropriate to the brief.
 
 ## G. Artifact lifecycle
