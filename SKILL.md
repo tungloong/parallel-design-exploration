@@ -8,7 +8,7 @@ description: |
 license: MIT
 metadata:
   author: tungloong
-  version: "0.2.0"
+  version: "0.3.0"
 triggers:
   - "parallel design exploration"
   - "parallel prototyping"
@@ -32,17 +32,25 @@ The purpose of this skill is to keep a design space open long enough for useful 
 
 ## Standalone Open Design scenario contract
 
-When this bundle is the Active Plugin in Open Design, it owns the exploration workflow. It does **not** depend on Web Prototype or another prototype plugin.
+When this bundle is the Active Plugin in Open Design, it owns the **design-method contract** for the run. It does **not** depend on Web Prototype or another prototype plugin.
 
-Treat the user's current chat prompt as the design brief. Do not wait for, request, or invent a separate `brief` plugin input. `variantCount` is only a configuration hint; the conversational prompt remains the authoritative brief.
+Treat the user's current chat prompt as the authoritative design brief. Do not wait for, request, or invent a separate `brief` plugin input. `variantCount` is only a configuration hint.
 
-The Open Design pipeline for this scenario is:
+For community-safe distribution, this plugin intentionally does **not** declare its own elevated `od.pipeline`, filesystem capability, or shell capability. It relies on Open Design's built-in `new-generation` host pipeline for normal planning, file creation, live artifact rendering, and critique. The distinctive behavior of this plugin lives here, in this skill contract.
+
+If the host pipeline exposes a `direction-picker`, do **not** use it as a pre-generation convergence gate. Candidate directions may be used as planning seeds, but continue through generation and render all requested sibling prototypes before asking the user to choose.
+
+Host default mental model:
 
 ```text
-discovery → plan → generate → critique
+directions → pick one → generate
 ```
 
-The important difference from Open Design's default new-generation scenario is that the plan stage intentionally has **no `direction-picker`**. Alternatives must be rendered before the user is asked to choose among them.
+Parallel Design Exploration mental model:
+
+```text
+directions → keep several → generate all siblings → compare → user decides when to converge
+```
 
 ## Core contract
 
@@ -66,6 +74,7 @@ parallel-design-exploration/
 ├── references/
 │   ├── parallel-prototyping.md
 │   ├── exploration-canvas.md
+│   ├── open-design-community-alignment.md
 │   └── checklist.md
 ├── templates/
 │   ├── exploration-board.html
@@ -74,7 +83,7 @@ parallel-design-exploration/
     └── mobile-ui-exploration.md
 ```
 
-Read `references/parallel-prototyping.md` and `references/exploration-canvas.md` before generating the first round. Run `references/checklist.md` before completing each round.
+Read `references/parallel-prototyping.md`, `references/exploration-canvas.md`, and `references/open-design-community-alignment.md` before generating the first round. Run `references/checklist.md` before completing each round.
 
 ## Information model
 
@@ -228,19 +237,12 @@ A follow-up does **not** need a one-to-one descendant for every prior sibling. I
 
 ## Relationship to Open Design direction picking
 
-Open Design's `direction-picker` can be useful in other workflows for selecting a direction before generation. It is intentionally excluded from this scenario's plan stage.
+Open Design's `direction-picker` is useful in conventional workflows that select a direction before generation. When this skill is active, its semantics change:
 
-The scenario changes the default flow from:
-
-```text
-directions → pick one → generate
-```
-
-to:
-
-```text
-directions → generate siblings → compare → user feedback → append descendants
-```
+- do not stop at direction cards;
+- do not ask the user to pick before seeing rendered alternatives;
+- do not mark one direction as recommended;
+- if the host presents direction vocabulary during planning, carry multiple candidates forward into generation.
 
 The deliverable is the rendered exploration space, not a set of direction cards.
 
