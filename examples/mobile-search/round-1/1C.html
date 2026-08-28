@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>1C — Command Results</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; }
+    body {
+      overflow: hidden;
+      background: #fffdf8;
+      color: #161616;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    }
+    .screen { min-height: 100%; padding: 18px 18px 22px; display: flex; flex-direction: column; }
+    .status { display: flex; justify-content: space-between; font-size: 12px; font-weight: 650; padding: 0 3px; }
+    .query-block { margin-top: 48px; }
+    .label { color: #9a8f80; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+    h1 { margin: 9px 0 0; font-family: Georgia, "Times New Roman", serif; font-size: 30px; line-height: 1.08; letter-spacing: -0.025em; font-weight: 500; }
+    .edit { margin-top: 11px; border: 0; background: transparent; color: #8d7d68; padding: 0; font-size: 12px; }
+    .commands { margin-top: 34px; border-top: 1px solid #e6dfd4; }
+    .command {
+      display: grid;
+      grid-template-columns: 32px 1fr auto;
+      gap: 11px;
+      align-items: start;
+      padding: 16px 0;
+      border-bottom: 1px solid #e6dfd4;
+    }
+    .rank {
+      width: 28px; height: 28px;
+      display: grid; place-items: center;
+      border-radius: 8px;
+      background: #f1ece3;
+      color: #746653;
+      font-size: 11px; font-weight: 700;
+    }
+    .command strong { display: block; font-size: 14px; font-weight: 650; margin-bottom: 4px; }
+    .meta { color: #8d8274; font-size: 11px; margin-bottom: 7px; }
+    .summary { color: #585049; font-size: 12px; line-height: 1.42; }
+    .go {
+      margin-top: 2px;
+      border: 1px solid #d7cdbc;
+      border-radius: 9px;
+      background: #fffaf1;
+      color: #51483e;
+      padding: 7px 9px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .footer { margin-top: auto; }
+    .principle {
+      padding: 12px 13px;
+      border-radius: 12px;
+      background: #f5efe5;
+      color: #776b5d;
+      font-size: 11px;
+      line-height: 1.42;
+    }
+    .done {
+      margin-top: 10px;
+      width: 100%; height: 48px;
+      border: 0; border-radius: 13px;
+      background: #1d1a17; color: #fffaf2;
+      font-size: 13px; font-weight: 650;
+    }
+    .home { width: 128px; height: 5px; border-radius: 99px; background: #171717; margin: 12px auto 0; }
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <div class="status"><span>9:41</span><span>5G&nbsp;&nbsp;●●●</span></div>
+
+    <section class="query-block">
+      <div class="label">Your search</div>
+      <h1>Best flat white<br />near me</h1>
+      <button class="edit">Edit query</button>
+    </section>
+
+    <section class="commands">
+      <article class="command">
+        <div class="rank">01</div>
+        <div>
+          <strong>Go to Mellow Coffee</strong>
+          <div class="meta">Dianping · 4 min walk</div>
+          <div class="summary">Best match for milk texture and a quiet quick stop.</div>
+        </div>
+        <button class="go">Open ↗</button>
+      </article>
+
+      <article class="command">
+        <div class="rank">02</div>
+        <div>
+          <strong>Check Atlas notes</strong>
+          <div class="meta">Xiaohongshu · 6 min walk</div>
+          <div class="summary">Useful if you want recent photos before deciding.</div>
+        </div>
+        <button class="go">Open ↗</button>
+      </article>
+
+      <article class="command">
+        <div class="rank">03</div>
+        <div>
+          <strong>Navigate to North Room</strong>
+          <div class="meta">Maps · 8 min walk</div>
+          <div class="summary">Fastest late-opening fallback with simple takeaway.</div>
+        </div>
+        <button class="go">Open ↗</button>
+      </article>
+    </section>
+
+    <div class="footer">
+      <div class="principle">Results are phrased as next actions. The screen avoids an endless content surface once the search task is complete.</div>
+      <button class="done">Done — return to what I was doing</button>
+      <div class="home"></div>
+    </div>
+  </div>
+</body>
+</html>
