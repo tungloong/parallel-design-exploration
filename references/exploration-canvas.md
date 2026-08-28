@@ -103,29 +103,47 @@ When alternatives are simultaneously visible, critique naturally becomes relatio
 
 The canvas supports that same kind of comparative language through stable visible ids.
 
-## 6. Canvas substrate
+## 6. Stable utility chrome
 
-The exploration surface works best when its own visual system stays quiet and consistent. Useful substrate qualities include:
+The canvas chrome serves orientation rather than expression. A small, stable visual substrate is more reliable than asking each generation to reinterpret adjectives such as "quiet" or "restrained."
 
-- a neutral background;
-- compact turn and option labels;
-- restrained separators;
-- stable option ids;
-- enough whitespace to distinguish siblings;
-- comparable prototype viewport sizes when that helps comparison;
-- local annotations close to the work they explain;
-- optional lineage indicators;
-- enough working width for sibling designs to remain visible together.
+The useful invariant is structural:
 
-The designs themselves carry the visual personality required by the brief; the canvas mainly provides orientation and comparison.
+- a warm neutral working surface;
+- compact system-ui turn labels;
+- compact monospace state ids;
+- thin separators between turns;
+- flex-wrapped sibling options;
+- intrinsic artboard sizing;
+- transparent option containers;
+- a light bounded surface around rendered artifacts;
+- concise continuation cues when useful.
 
-## 7. Persistent exploration units
+The actual designs remain free to carry the visual personality required by the brief.
+
+## 7. Intrinsic artboard sizing
+
+A general exploration canvas may contain phones, dashboards, posters, components, charts, or other artifacts. A fixed responsive column system assumes a page-layout problem that may not exist.
+
+A more general model is:
+
+```text
+artifact chooses a useful intrinsic width
+          ↓
+option keeps that width
+          ↓
+canvas flex-wraps siblings as space permits
+```
+
+This preserves the artboard mental model while still allowing a normal HTML document to wrap when the viewport becomes narrow.
+
+## 8. Persistent exploration units
 
 The historical unit is the **design state**: a turn, option, or baseline with stable identity and meaning.
 
-The surrounding canvas can adapt as the document grows. A wide grid may later become a wrapped row or gain navigation aids. The design-state identities, historical content, turn association, and meaningful lineage remain the anchors that keep the exploration intelligible.
+The surrounding canvas can adapt as the document grows. The design-state identities, historical content, turn association, and meaningful lineage remain the anchors that keep the exploration intelligible.
 
-## 8. Spatial hierarchy
+## 9. Spatial hierarchy
 
 The temporal and spatial order align:
 
@@ -145,8 +163,8 @@ TURN 1
 
 A user can scan downward to understand how the design space evolved while keeping the latest exploration immediately accessible.
 
-## 9. Design rule derived from the references
+## 10. Design rule derived from the references
 
 > Design history that matters for active comparison is most useful when it remains visible in the design space and addressable from conversation.
 
-That principle is the basis for persistent turns, stable option ids, and newest-first ordering.
+That principle is the basis for persistent turns, stable option ids, newest-first ordering, and a lightweight canvas substrate.
