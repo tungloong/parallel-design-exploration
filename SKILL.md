@@ -49,7 +49,14 @@ Render each option far enough that the design itself can be judged. Comparable v
 
 An exploration session has **one stable primary artifact identity**. The first generation establishes that artifact. Follow-up turns resolve the same artifact and extend it in place.
 
-A delivered turn is an **immutable historical design-state snapshot**. After a turn has been shown to the user, its identity and rendering meaning become part of the visible record. A normal follow-up adds a newer state rather than re-authoring older states.
+At the start of a follow-up turn:
+
+1. locate the existing primary artifact that contains the current `main.pde-canvas`;
+2. read its highest turn number and existing state nodes;
+3. use that same artifact as the edit target;
+4. prepend the next turn before the previous newest state.
+
+A delivered design state — a turn or baseline — is an **immutable historical snapshot**. After a state has been shown to the user, its identity and rendering meaning become part of the visible record. A normal follow-up adds a newer state rather than re-authoring older states.
 
 The canonical mutation is prepend-only at the state level:
 
