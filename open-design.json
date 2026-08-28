@@ -1,0 +1,93 @@
+{
+  "$schema": "https://open-design.ai/schemas/plugin.v1.json",
+  "specVersion": "1.0.0",
+  "name": "parallel-design-exploration",
+  "title": "Parallel Design Exploration",
+  "version": "0.1.0",
+  "description": "Generate multiple full prototype directions in parallel, preserve every exploration round, and compare alternatives on one persistent board before convergence.",
+  "license": "MIT",
+  "author": {
+    "name": "tungloong",
+    "url": "https://github.com/tungloong"
+  },
+  "homepage": "https://github.com/tungloong/parallel-design-exploration",
+  "tags": [
+    "design-exploration",
+    "parallel-prototyping",
+    "variants",
+    "prototype",
+    "ideation"
+  ],
+  "compat": {
+    "agentSkills": [
+      {
+        "path": "./SKILL.md"
+      }
+    ]
+  },
+  "od": {
+    "kind": "skill",
+    "taskKind": "new-generation",
+    "mode": "prototype",
+    "scenario": "design-exploration",
+    "useCase": {
+      "query": "Run a parallel design exploration for this brief: {{brief}}. Generate {{variantCount}} materially different, fully rendered sibling prototypes and place them on one neutral exploration board. Do not pick a winner. Preserve prior rounds and append descendants on follow-up turns."
+    },
+    "context": {
+      "skills": [
+        {
+          "path": "./SKILL.md"
+        }
+      ],
+      "atoms": [
+        "discovery-question-form",
+        "todo-write",
+        "file-write",
+        "live-artifact"
+      ]
+    },
+    "pipeline": {
+      "stages": [
+        {
+          "id": "discovery",
+          "atoms": [
+            "discovery-question-form"
+          ]
+        },
+        {
+          "id": "exploration-plan",
+          "atoms": [
+            "todo-write"
+          ]
+        },
+        {
+          "id": "parallel-generate",
+          "atoms": [
+            "file-write",
+            "live-artifact"
+          ]
+        }
+      ]
+    },
+    "inputs": [
+      {
+        "name": "brief",
+        "type": "string",
+        "required": true,
+        "label": "Design brief",
+        "placeholder": "Explore alternative interaction models for a mobile search experience."
+      },
+      {
+        "name": "variantCount",
+        "type": "number",
+        "required": false,
+        "label": "Variants per round",
+        "default": 3
+      }
+    ],
+    "capabilities": [
+      "prompt:inject",
+      "fs:write"
+    ]
+  }
+}
