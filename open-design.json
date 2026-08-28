@@ -3,8 +3,8 @@
   "specVersion": "1.0.0",
   "name": "parallel-design-exploration",
   "title": "Parallel Design Exploration",
-  "version": "0.5.0",
-  "description": "Standalone Open Design scenario for persistent parallel exploration: render sibling design options together, preserve prior turns visibly, maintain stable option identities, and converge only when the user chooses to.",
+  "version": "0.6.0",
+  "description": "Standalone Open Design scenario for persistent parallel exploration: preserve a real current-state baseline when one exists, render sibling design options together, keep stable option identities, retain prior turns visibly, and converge only when the user chooses to.",
   "license": "MIT",
   "author": {
     "name": "tungloong",
@@ -44,8 +44,8 @@
     },
     "useCase": {
       "query": {
-        "en": "Use Parallel Design Exploration for my brief. Create one persistent exploration document with {{variantCount}} materially different sibling options per turn. Show siblings together, give every option a stable id, place the newest turn above older turns, preserve earlier turns visibly, explain each option's design hypothesis and tradeoffs, and let me decide when to converge.",
-        "zh-CN": "使用 Parallel Design Exploration 处理我的设计需求。创建一个持续存在的设计探索文档，每轮生成 {{variantCount}} 个实质不同的并行方案并同时展示；为每个方案保留稳定 ID；最新一轮位于旧轮次上方；旧轮次持续可见；说明每个方案的设计假设、关键变化与取舍；由我决定何时收敛。"
+        "en": "Use Parallel Design Exploration for my brief. If usable current design context exists, preserve it as a visible baseline before exploring alternatives. Render materially different sibling options together in one persistent visual document, keep stable option ids and visible history, place newer exploration above older work, and let me decide when to converge.",
+        "zh-CN": "使用 Parallel Design Exploration 处理我的设计需求。如果存在可用的当前设计或项目上下文，先将当前状态作为可见基线保留下来，再展开多个实质不同的并行方案；所有方案在同一个持续存在的视觉文档中直接比较，使用稳定 ID，保留可见历史，并由我决定何时收敛。"
       },
       "exampleOutputs": [
         {
