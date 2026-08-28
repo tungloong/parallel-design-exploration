@@ -27,7 +27,7 @@ SKILL.md
 → portable agent behavior
 
 open-design.json
-→ marketplace metadata, preview, inputs, context wiring, capabilities
+→ marketplace metadata, preview, context wiring, capabilities
 ```
 
 Parallel Design Exploration follows the same pattern.
@@ -66,14 +66,16 @@ The same portable behavior remains understandable to other Agent Skills clients 
 
 The manifest preview is primarily a marketplace/user-facing example. The executable behavior comes from the injected skill contract.
 
-For that reason, the visual and structural properties that matter to the generated artifact are expressed directly in `SKILL.md`; preview files remain examples rather than hidden runtime dependencies.
+For that reason, the structural protocol and the small canonical canvas substrate that materially affect generated artifacts are expressed directly in `SKILL.md`. Preview files demonstrate the experience but are not hidden runtime dependencies.
+
+The substrate is intentionally limited to exploration chrome—turn spacing, ids, sibling layout, artifact framing, and navigation—so host-level design guidance can continue shaping the actual options without needing to reinvent the workspace itself.
 
 ## Distribution principle
 
 The repository keeps one portable skill and one additive Open Design manifest:
 
 ```text
-SKILL.md             → agent capability
+SKILL.md             → agent capability and canonical substrate
 open-design.json     → Open Design packaging
 examples/            → human-readable demonstrations
 references/          → method and compatibility notes
