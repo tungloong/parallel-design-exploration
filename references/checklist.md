@@ -19,7 +19,14 @@ The checklist focuses on protocol stability and comparison quality rather than a
 - [ ] The alternatives are developed far enough for the design itself to be judged.
 - [ ] Convergence remains user-directed.
 
-## C. Visible document protocol
+## C. Primary artifact identity
+
+- [ ] The exploration session has one primary visible artifact.
+- [ ] The first generation establishes a stable subject-derived filename or host-required entry path.
+- [ ] Follow-up turns resolve and update that same primary artifact.
+- [ ] Supporting files, when useful, remain secondary to the visible exploration history.
+
+## D. Visible document protocol
 
 - [ ] `main.pde-canvas` owns the complete visible exploration document.
 - [ ] Its direct visible state children are ordered newest-first.
@@ -28,15 +35,16 @@ The checklist focuses on protocol stability and comparison quality rather than a
 - [ ] Every option has a stable DOM `id` and matching `data-option`.
 - [ ] Visible references to existing design-state ids navigate to their anchors.
 
-## D. Turn and history behavior
+## E. State mutation and history
 
-- [ ] The newest turn appears before earlier turns.
-- [ ] Sibling options are directly comparable within the turn.
-- [ ] Earlier turns retain stable ids, meaning, and visible content.
+- [ ] The newest turn is added before earlier states.
+- [ ] Every previously delivered state retains its identity and visible design content.
+- [ ] Previously delivered states keep the same rendering meaning after new CSS, JavaScript, data, or layout code is added.
+- [ ] Follow-up requests that riff on earlier work produce new descendants rather than silently re-authoring the source state.
+- [ ] Direct changes to a historical state correspond to an explicit request to correct or replace that state.
 - [ ] Descendant options expose meaningful lineage when they branch from earlier work.
-- [ ] Continuation cues, when present, point to concrete moves in the design space.
 
-## E. Option clarity
+## F. Option clarity
 
 For each option:
 
@@ -45,33 +53,28 @@ For each option:
 - [ ] Local explanation appears only when it materially improves understanding.
 - [ ] `data-parent` reflects intentional lineage when a primary parent exists.
 
-## F. Canvas substrate
+## G. Canvas substrate
 
-- [ ] The stable canvas chrome is visually subordinate to the rendered options.
+- [ ] The canonical canvas chrome is visually subordinate to the rendered options.
 - [ ] Turn labels and state ids remain compact and consistent.
 - [ ] Siblings use a wrapping spatial row rather than a fixed responsive column system.
 - [ ] Option containers behave as spatial containers; the rendered design is the artifact surface.
 - [ ] Artifact widths follow the content being shown so different design formats can share the same canvas protocol.
 - [ ] Individual options retain freedom to use the visual language appropriate to the brief.
 
-## G. Artifact lifecycle
-
-- [ ] The primary artifact name reflects the subject or a host-required entry path.
-- [ ] The filename remains stable across follow-up turns.
-- [ ] Later turns extend the visible exploration history in the same primary artifact.
-
 ## H. Progressive authoring
 
 When the host supports live preview refreshes:
 
-- [ ] The primary canvas becomes available early enough to show meaningful progress.
-- [ ] The newest turn can take shape through coherent incremental updates.
-- [ ] Incremental updates preserve stable ids and historical states.
+- [ ] The existing primary artifact is reused for follow-up work.
+- [ ] The new turn shell appears in canonical position before the turn is fully complete when practical.
+- [ ] Sibling options can take shape through coherent incremental updates.
+- [ ] Incremental updates preserve previously delivered states.
 
-For final-write hosts, the same document semantics apply without progressive preview.
+For final-write hosts, the same artifact and state mutation semantics apply without progressive preview.
 
 ## Final test
 
 The exploration succeeds if the user can truthfully say:
 
-> I can see the current state when one exists, compare several real options at once, navigate to any referenced state by id, ask for another riff, and keep the visible path of exploration in one place.
+> I can see the current state when one exists, compare several real options at once, navigate to any referenced state by id, ask for another riff, and watch the same exploration artifact grow without losing or rewriting the states I already saw.
