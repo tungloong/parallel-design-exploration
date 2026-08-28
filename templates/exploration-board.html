@@ -3,68 +3,95 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Design Exploration</title>
+  <title>Subject Exploration</title>
   <style>
     *{box-sizing:border-box}
-    html,body{margin:0;background:#f0efec;color:#1b1b1a;font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    html,body{margin:0;background:#f1f0ed;color:#1c1c1a;font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
     a{color:inherit;text-decoration:none}
-    .pde-turn,.pde-baseline{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.09);scroll-margin-top:16px}
-    .pde-turn-head,.pde-baseline-head{display:flex;align-items:baseline;gap:10px;margin-bottom:20px}
+    .pde-canvas{min-width:100%}
+    .pde-turn,.pde-baseline{padding:38px 44px 34px;border-bottom:1px solid rgba(0,0,0,.09);scroll-margin-top:16px}
+    .pde-turn-head,.pde-baseline-head,.pde-option-head{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+    .pde-turn-head,.pde-baseline-head{margin-bottom:18px}
     .pde-turn-id,.pde-option-id,.pde-baseline-id{display:inline-flex;border-radius:5px;font:700 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace}
-    .pde-turn-id{padding:4px 8px;background:#1b1b1a;color:#fff}
-    .pde-baseline-id,.pde-option-id{padding:4px 7px;background:rgba(0,0,0,.075);color:#1b1b1a}
+    .pde-turn-id{padding:4px 8px;background:#1c1c1a;color:#fff}
+    .pde-option-id,.pde-baseline-id{padding:4px 7px;background:rgba(0,0,0,.075)}
     .pde-turn-title,.pde-baseline-title{font-size:13px;font-weight:650}
+    .pde-turn-context{max-width:680px;margin:0 0 18px;color:#696761;font-size:12px;line-height:1.55}
     .pde-options{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
     .pde-option{width:360px;scroll-margin-top:16px}
-    .pde-option-label{display:flex;align-items:baseline;gap:8px;margin-bottom:9px;color:#66645f;font-size:11px}
-    .pde-option:target .pde-option-id{background:#2f6fd1;color:#fff}
+    .pde-option-head{margin-bottom:9px;color:#66645f;font-size:11px}
+    .pde-option:target .pde-option-id,.pde-baseline:target .pde-baseline-id{background:#2f6fd1;color:#fff}
     .pde-option-name{font-weight:600}
+    .pde-parent{color:#77746f}
     .pde-design,.pde-baseline-design{min-height:420px;overflow:hidden;border:1px solid rgba(0,0,0,.09);border-radius:9px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.05)}
     .pde-explain{margin-top:10px;padding:11px 12px;border:1px solid rgba(0,0,0,.08);border-radius:8px;background:rgba(255,255,255,.5);font-size:11.5px;line-height:1.5}
     .pde-explain p{display:grid;grid-template-columns:64px 1fr;gap:8px;margin:0}.pde-explain p+p{margin-top:6px}.pde-explain b{font-weight:650}.pde-explain span{color:#696761}
     .pde-next{margin:22px 0 0;color:#6d6a64;font-size:12px;line-height:1.55}
+    .pde-next a{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:650}
   </style>
 </head>
 <body>
-  <!-- Insert every NEW turn before older turns. -->
-  <section class="pde-turn" id="t1" data-turn="1">
-    <div class="pde-turn-head">
-      <a class="pde-turn-id" href="#t1">1</a>
-      <span class="pde-turn-title">What this turn explores</span>
-    </div>
+  <main class="pde-canvas" data-pde-version="1">
+    <section class="pde-turn" id="t1" data-turn="1">
+      <header class="pde-turn-head">
+        <a class="pde-turn-id" href="#t1">1</a>
+        <span class="pde-turn-title">What this turn explores</span>
+      </header>
+      <p class="pde-turn-context">One concise, design-facing explanation of this exploration state.</p>
 
-    <div class="pde-options">
-      <article class="pde-option" id="1a" data-option="1a">
-        <div class="pde-option-label"><a class="pde-option-id" href="#1a">1a</a><span class="pde-option-name">Direction name</span></div>
-        <div class="pde-design"><!-- Render the complete inline design here. --></div>
-        <div class="pde-explain">
-          <p><b>Idea</b><span>Core hypothesis.</span></p>
-          <p><b>Key move</b><span>What structurally distinguishes this option.</span></p>
-          <p><b>Tradeoff</b><span>What this option gains and gives up.</span></p>
-        </div>
-      </article>
+      <div class="pde-options">
+        <article class="pde-option" id="1a" data-option="1a">
+          <header class="pde-option-head">
+            <a class="pde-option-id" href="#1a">1a</a>
+            <span class="pde-option-name">Direction name</span>
+          </header>
+          <div class="pde-design"><!-- Render the complete inline design here. --></div>
+          <div class="pde-explain">
+            <p><b>Idea</b><span>Core hypothesis.</span></p>
+            <p><b>Key move</b><span>What structurally distinguishes this option.</span></p>
+            <p><b>Tradeoff</b><span>What this option gains and gives up.</span></p>
+          </div>
+        </article>
 
-      <article class="pde-option" id="1b" data-option="1b">
-        <div class="pde-option-label"><a class="pde-option-id" href="#1b">1b</a><span class="pde-option-name">Direction name</span></div>
-        <div class="pde-design"><!-- Complete inline design. --></div>
-        <div class="pde-explain"><p><b>Idea</b><span>Core hypothesis.</span></p><p><b>Key move</b><span>Distinctive move.</span></p><p><b>Tradeoff</b><span>Gain and sacrifice.</span></p></div>
-      </article>
+        <article class="pde-option" id="1b" data-option="1b">
+          <header class="pde-option-head">
+            <a class="pde-option-id" href="#1b">1b</a>
+            <span class="pde-option-name">Direction name</span>
+          </header>
+          <div class="pde-design"><!-- Render the complete inline design here. --></div>
+          <div class="pde-explain">
+            <p><b>Idea</b><span>Core hypothesis.</span></p>
+            <p><b>Key move</b><span>Distinctive move.</span></p>
+            <p><b>Tradeoff</b><span>Gain and sacrifice.</span></p>
+          </div>
+        </article>
 
-      <article class="pde-option" id="1c" data-option="1c">
-        <div class="pde-option-label"><a class="pde-option-id" href="#1c">1c</a><span class="pde-option-name">Direction name</span></div>
-        <div class="pde-design"><!-- Complete inline design. --></div>
-        <div class="pde-explain"><p><b>Idea</b><span>Core hypothesis.</span></p><p><b>Key move</b><span>Distinctive move.</span></p><p><b>Tradeoff</b><span>Gain and sacrifice.</span></p></div>
-      </article>
-    </div>
+        <article class="pde-option" id="1c" data-option="1c">
+          <header class="pde-option-head">
+            <a class="pde-option-id" href="#1c">1c</a>
+            <span class="pde-option-name">Direction name</span>
+          </header>
+          <div class="pde-design"><!-- Render the complete inline design here. --></div>
+          <div class="pde-explain">
+            <p><b>Idea</b><span>Core hypothesis.</span></p>
+            <p><b>Key move</b><span>Distinctive move.</span></p>
+            <p><b>Tradeoff</b><span>Gain and sacrifice.</span></p>
+          </div>
+        </article>
+      </div>
 
-    <p class="pde-next">Try next: “riff on <a class="pde-option-id" href="#1b">1b</a>” · “combine <a class="pde-option-id" href="#1a">1a</a> and <a class="pde-option-id" href="#1c">1c</a>” · “new directions”</p>
-  </section>
+      <p class="pde-next">Try next: “riff on <a href="#1b">1b</a>” · “combine <a href="#1a">1a</a> and <a href="#1c">1c</a>” · “explore a different axis”</p>
+    </section>
 
-  <!-- If a real current design exists, place a faithful baseline after the turns as the oldest visible state:
-  <section class="pde-baseline" id="baseline" data-baseline="0">
-    <div class="pde-baseline-head"><a class="pde-baseline-id" href="#baseline">0</a><span class="pde-baseline-title">Baseline</span></div>
-    <div class="pde-baseline-design">...faithful current design...</div>
-  </section>
-  -->
+    <!-- Add this oldest visible state only when a reliable current design can be established.
+    <section class="pde-baseline" id="baseline" data-baseline="0">
+      <header class="pde-baseline-head">
+        <a class="pde-baseline-id" href="#baseline">0</a>
+        <span class="pde-baseline-title">Baseline</span>
+      </header>
+      <div class="pde-baseline-design">...faithful current design...</div>
+    </section>
+    -->
+  </main>
 </body>
 </html>
