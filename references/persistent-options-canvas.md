@@ -1,73 +1,104 @@
 # Persistent Options Canvas — behavioral reference
 
-This note documents the interaction pattern implemented by this plugin. It is a behavioral synthesis, not a copy of any proprietary system prompt.
+This note documents the interaction model implemented by the plugin. It is a behavioral synthesis grounded in parallel prototyping, persistent visual workspaces, and observed design-tool patterns.
 
 ## Core model
 
 A persistent options canvas combines two kinds of design memory:
 
-- **spatial memory** — sibling alternatives from the same exploration round remain visible together;
-- **temporal memory** — later rounds are added without erasing earlier work.
+- **spatial memory** — sibling alternatives from the same exploration turn remain visible together;
+- **temporal memory** — later turns are added without erasing earlier work.
 
-The result is a design document that behaves more like a studio wall than a single mutable mockup.
+The result behaves more like a studio wall than a single mutable mockup.
 
-## Interaction grammar
+## State model
 
-### Turns
-
-Each generation round is a turn. New turns appear before older turns so current work is immediately visible while history remains nearby.
+The visible document is a stack of design states:
 
 ```text
-Turn 3
+Turn 3   ← newest
 Turn 2
 Turn 1
+0 · Baseline   ← only when a reliable current state exists
 ```
 
-### Stable option ids
+A turn contains sibling options. The optional baseline is a reference state representing what exists before exploration.
 
-Options receive short stable ids such as `1a`, `1b`, `2a`. The same ids are used in the visual document and in conversation so users can say things like:
+### Baseline is evidence, not lineage
+
+A baseline answers: **what is the current state?**
+
+Lineage answers: **which earlier design is this option intentionally derived from?**
+
+These are separate concepts. A project can have a visible baseline while a new option deliberately starts from first principles. Conversely, an option may explicitly riff on the baseline and record that lineage.
+
+This distinction keeps redesign work honest: the current state remains visible without silently constraining future directions.
+
+## Stable identities
+
+Turns and options receive stable anchors:
 
 ```text
-Keep the structure of 2a, but borrow the interaction from 1c.
+t1, t2, t3
+1a, 1b, 1c
+2a, 2b, 2c
 ```
 
-### Sibling comparison
+The same identities are used in the visual document and in conversation. Every visible reference to an existing state links back to its anchor, so a sentence such as:
 
-Options within a turn are shown side by side whenever practical. The layout should make visual comparison the default action rather than requiring navigation between alternatives.
+```text
+Combine the structure of 2a with the interaction from 1c.
+```
 
-### Lineage
+is also navigable inside the canvas.
 
-A descendant option may point to a parent option from an earlier turn. This makes the evolution of a direction explicit without forcing the entire exploration into a single linear history.
+## Sibling comparison
 
-### Explanation
+Options within a turn are shown together whenever practical. The layout should make comparison the default action rather than forcing navigation between separate files or views.
 
-Each option includes compact reasoning near the design: its hypothesis, distinguishing move, likely advantage, and tradeoff. Each turn also explains what the round is exploring.
+The options vary on dimensions that matter to the brief: structure, hierarchy, interaction, navigation, visual language, content strategy, or other relevant axes.
 
-### Navigation suggestions
+## Visible protocol and execution semantics
 
-A turn ends with a few concise next-step ideas. These suggestions help the user navigate the space without declaring a winner.
+The plugin separates two layers:
+
+- **execution semantics** guide how the agent acquires context, controls comparison conditions, generates alternatives, and preserves history;
+- **visible document protocol** defines what becomes part of the user's design space.
+
+Execution bookkeeping is not automatically user-facing content. The visible canvas is composed of design states, local reasoning, and navigation cues that help the user understand and continue the exploration.
+
+## Explanation near the work
+
+Each option can include compact reasoning near the rendered design:
+
+- hypothesis;
+- distinguishing move;
+- likely advantage;
+- tradeoff.
+
+The goal is to make the design legible without turning the canvas into a presentation deck.
+
+## Navigation suggestions
+
+Each turn can end with a few concise next-step paths: riff on one option, combine specific parts, explore another axis, or converge when the user is ready.
 
 ## Canvas styling
 
-The exploration surface should be visually quiet: plain neutral background, lightweight labels, restrained separators, and minimal framing. The canvas is infrastructure; the options are the designed objects.
+The substrate is intentionally quiet: neutral background, compact labels, restrained separators, and minimal framing. The exploration chrome stays consistent while the options themselves carry the design personality demanded by the brief.
 
 ## Progressive rendering
 
-When the host can refresh HTML previews as files change, progressive authoring improves the experience:
+When the host refreshes HTML as project files change, progressive authoring can make the design space appear while generation is still in progress:
 
-1. establish the canvas and new turn shell;
-2. render sibling options incrementally;
-3. add their reasoning;
-4. add turn-level follow-up suggestions.
+1. establish the newest turn shell;
+2. render coherent sibling options incrementally;
+3. add local reasoning;
+4. add navigation suggestions.
 
-The document model must still work in hosts that only expose a final-write workflow.
+The interaction model still works in hosts that only expose a final-write workflow.
 
 ## Method lineage
 
 The behavior is consistent with long-standing design practices such as parallel prototyping, pin-up critique, artboard duplication, design-space exploration, and persistent visual workspaces.
 
-Modern AI design tools make the pattern more valuable because alternatives can be generated quickly enough that visible divergence becomes the default interaction rather than an expensive exception.
-
-## Implementation stance
-
-This repository independently implements the behavioral pattern for Open Design. Public research and observed design-tool behavior may inform the interaction model, but the plugin should remain generic, portable, and suitable for community contribution rather than depending on a particular prompt, product, or proprietary host implementation.
+Modern AI design tools make the pattern especially useful because alternatives can be produced quickly enough that visible divergence can become a normal interaction rather than an expensive exception.
