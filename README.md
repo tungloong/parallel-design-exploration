@@ -22,39 +22,46 @@ The goal is to reproduce the most useful part of a traditional design studio / l
 
 ## Status
 
-**v0.2 — standalone Active Plugin scenario.**
+**v0.3 — community-safe standalone Active Plugin scenario.**
 
-The repository still has a portable `SKILL.md`, but its Open Design sidecar is now authored as a `new-generation` **scenario** so it can own a project/run directly. It does not depend on Web Prototype.
+The repository has a portable `SKILL.md` plus an Open Design `open-design.json` sidecar. In Open Design it is authored as a `new-generation` **scenario**, so it can be selected directly as the Active Plugin and does not depend on Web Prototype.
 
-The board uses normal HTML as the compatibility layer; v0.2 does not add a native infinite-canvas renderer to Open Design core.
+The board uses normal HTML as the compatibility layer; v0.3 does not add a native infinite-canvas renderer to Open Design core.
 
-## Why v0.2 changed the manifest
+## Why v0.3 changed the manifest again
 
-The first version was scaffolded as `od.kind: skill` and declared a required `brief` plugin input. That was a poor fit for the Open Design one-click Active Plugin path:
+After comparing the plugin against Open Design's actual `plugins/community/` catalog, v0.2 was still too close to a first-party trusted plugin: it declared its own pipeline and filesystem-writing capability.
 
-- Open Design applies a plugin **before** starting the run;
-- required `od.inputs` must therefore already have values or defaults at apply time;
-- the user's free-form chat prompt is not automatically copied into an input named `brief`;
-- v0.1's required `brief` had no default, so applying the plugin could fail before an active snapshot was created.
+That is a poor default for a directly installed community/GitHub plugin because Open Design's community trust model starts those installs as **restricted**. A manifest-owned pipeline causes additional capabilities to be required before the plugin can apply.
 
-v0.2 treats the user's chat prompt itself as the design brief. The only manifest input is optional `variantCount`, defaulting to 3.
-
-The manifest also now uses the same standalone shape as first-party prototype examples:
+v0.3 follows the community-safe pattern instead:
 
 ```text
 kind: scenario
 taskKind: new-generation
 mode: prototype
 surface: web
+capabilities: [prompt:inject]
 ```
 
-and uses standard Open Design stage ids:
+It deliberately does **not** declare a custom `od.pipeline`, `fs:write`, or shell capability.
 
-```text
-discovery → plan → generate → critique
-```
+Open Design's host `new-generation` scenario supplies normal planning, artifact writing, live preview, and critique. Parallel Design Exploration supplies the design-method contract through `SKILL.md`, references, templates, and examples.
 
-Crucially, the `plan` stage does **not** contain `direction-picker`; the scenario renders all sibling directions before asking the user to converge.
+This is similar to the pattern used by community design skills such as Hallmark: the skill can contain detailed generation/editing behavior without requiring the plugin manifest itself to own filesystem execution.
+
+See [`references/open-design-community-alignment.md`](references/open-design-community-alignment.md).
+
+## Community references used for alignment
+
+We reviewed several representative Open Design community plugins:
+
+- **Community Registry Starter** — standalone `scenario`, `new-generation`, `prototype`, `prompt:inject` only. This is the clearest minimal Active Plugin pattern.
+- **Hallmark** — a substantial UI generation/redesign skill whose manifest still requests only `prompt:inject`; most behavior lives in `SKILL.md` and references.
+- **Humanize PPT** — a legitimate higher-capability exception that explicitly requests `fs:read`, `fs:write`, and `bash`, and therefore crosses the trust gate.
+- **Design System Source Context / Clone Audit** — narrow capability-style plugins using `kind: skill` and `prompt:inject` only.
+
+Our plugin is closer to **Community Registry Starter + Hallmark** than to Humanize PPT: it should be a standalone scenario, but its distinctive behavior is methodological rather than a need for a separate privileged runtime.
 
 ## Install as a standalone Open Design plugin
 
@@ -62,19 +69,17 @@ Crucially, the `plan` stage does **not** contain `direction-picker`; the scenari
 od plugin install github:tungloong/parallel-design-exploration
 ```
 
-GitHub-installed third-party plugins are restricted by default in Open Design. Because this scenario declares its own pipeline and writes artifacts, trust it before using it as an Active Plugin:
+Because v0.3 requests only the restricted-safe `prompt:inject` capability, a normal direct GitHub install should no longer require an additional capability grant merely to become Active.
 
-```bash
-od plugin trust parallel-design-exploration
-```
-
-If you already installed an older version, reinstall it so the daemon picks up the v0.2 manifest. Use the uninstall/install flow supported by your Open Design build, then trust the newly installed record again if necessary.
+If you already installed v0.2, reinstall or upgrade it so Open Design reads the v0.3 manifest instead of a cached v0.2 record/snapshot.
 
 After installation, select **Parallel Design Exploration** directly as the project/plugin entry point. You should not need to select Web Prototype first.
 
 ## Expected Active Plugin behavior
 
-When correctly applied, the run should have an Applied Plugin Snapshot for `parallel-design-exploration`, containing this scenario's own pipeline and full local `SKILL.md` context.
+When correctly applied, the run should identify `parallel-design-exploration` as the Active Plugin and load the full local `SKILL.md` plus the declared reference/template assets.
+
+The host may still use its built-in `new-generation` pipeline. If a host `direction-picker` appears during planning, the skill contract explicitly prevents it from becoming a convergence gate: candidate directions must be carried forward and rendered before the user is asked to choose.
 
 The first exploration round should look conceptually like:
 
@@ -110,7 +115,7 @@ A follow-up may also branch several descendants from one promising earlier direc
 
 ## What it changes
 
-Open Design's default new-generation scenario can expose a direction picker before artifact generation. This scenario intentionally changes that interaction contract:
+Open Design's conventional new-generation workflow can encourage choosing a direction before artifact generation. This scenario changes the interaction contract at the skill layer:
 
 - directions become **fully rendered sibling prototypes**, not only direction cards;
 - the user does not have to pick a winner before seeing the alternatives;
@@ -129,6 +134,7 @@ Open Design's default new-generation scenario can expose a direction picker befo
 ├── references/
 │   ├── parallel-prototyping.md
 │   ├── exploration-canvas.md
+│   ├── open-design-community-alignment.md
 │   └── checklist.md
 ├── templates/
 │   ├── exploration-board.html
@@ -143,8 +149,6 @@ Open Design's default new-generation scenario can expose a direction picker befo
             ├── 1B.html
             └── 1C.html
 ```
-
-The references and templates are declared as plugin assets so they are part of the applied bundle rather than relying on a separate plugin for design behavior.
 
 ## Design principles
 
@@ -190,7 +194,13 @@ Expected result: three Round 2 descendants of `1B`, while Round 1 remains availa
 
 ## Optional Skill consumption
 
-`SKILL.md` remains portable. Clients that support Agent Skills can use the same repository as a methodology Skill. In Open Design, however, the primary v0.2 target is the **standalone Active Plugin scenario** described above.
+`SKILL.md` remains portable. Clients that support Agent Skills can use the same repository as a methodology Skill. In Open Design, the primary target is the **standalone Active Plugin scenario** described above.
+
+## Trust UI note
+
+Open Design's current community registry explicitly says community plugins remain restricted until installed and trusted. In the current UI code we reviewed, the visible trust mutation is attached to **marketplace sources** in the Sources tab; plugin detail surfaces display trust and capability metadata, but the reviewed path does not expose a per-installed-plugin capability grant control.
+
+That is another reason v0.3 is intentionally restricted-safe by default.
 
 ## Local validation
 
@@ -205,7 +215,7 @@ Then run a real exploration and check it against `references/checklist.md`.
 
 ## Next steps
 
-Potential follow-ups after validating v0.2 in real Open Design sessions:
+Potential follow-ups after validating v0.3 in real Open Design sessions:
 
 - native board/lineage rendering instead of a compatibility HTML board;
 - automatic `exploration.json` reconciliation;
@@ -213,6 +223,7 @@ Potential follow-ups after validating v0.2 in real Open Design sessions:
 - visual branch connectors and compare mode;
 - explicit `Explore` vs `Converge` modes;
 - integration with Open Design's file/version history without hiding historical variants in a separate panel;
+- an optional trusted/advanced distribution lane with a manifest-owned custom pipeline;
 - an upstream feature proposal for a first-class Parallel Exploration scenario.
 
 ## License
