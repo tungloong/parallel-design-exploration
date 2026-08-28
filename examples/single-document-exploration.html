@@ -3,33 +3,116 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="design_doc_mode" content="canvas" />
-  <title>Parallel Design Exploration — Single Document Example</title>
+  <title>Parallel Design Exploration — Persistent Options Canvas</title>
   <style>
-    *{box-sizing:border-box}html,body{margin:0;background:#f5f5f3;color:#171717;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{padding:28px}.canvas{width:max-content;min-width:100%}.round{margin-bottom:42px}.round-head{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}.round-id{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.round-note{font-size:12px;color:#747474}.variants{display:flex;align-items:flex-start;gap:18px}.variant{width:320px}.variant-label{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}.variant-id{font-size:12px;font-weight:800}.variant-name{font-size:13px;font-weight:650}.prototype{height:430px;border:1px solid #d7d7d2;border-radius:14px;background:white;overflow:hidden}.note{margin:9px 2px 0;font-size:12px;line-height:1.45;color:#535353}.v-a{padding:18px;background:#f9f9f7}.v-a .top{font-size:12px;color:#777}.v-a .focus{margin:74px auto 0;width:170px;height:170px;border-radius:50%;display:grid;place-items:center;border:12px solid #191919;font:700 44px/1 ui-monospace,SFMono-Regular,Menlo,monospace}.v-a .action{margin:54px auto 0;width:180px;padding:12px;border-radius:999px;background:#191919;color:white;text-align:center;font-size:13px}.v-b{background:#141517;color:#f4f4f4;padding:16px}.v-b .bar{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#a9adb4}.v-b .queue{display:grid;gap:9px;margin-top:26px}.v-b .item{padding:14px;border-radius:10px;background:#202226;border:1px solid #303238}.v-b .item strong{display:block;font-size:14px}.v-b .item span{display:block;margin-top:4px;font-size:11px;color:#9da3ad}.v-b .item.active{background:#efff77;color:#121212;border-color:#efff77}.v-b .item.active span{color:#4f531f}.v-c{background:#f0eadf;padding:16px}.v-c .title{font:700 22px/1.1 Georgia,serif}.v-c .axis{position:relative;margin-top:36px;padding-left:36px}.v-c .axis:before{content:"";position:absolute;left:12px;top:4px;bottom:4px;width:2px;background:#262626}.v-c .block{position:relative;margin:0 0 16px;padding:13px 14px;background:#fffaf0;border:1px solid #c9bea9}.v-c .block:before{content:"";position:absolute;left:-30px;top:18px;width:10px;height:10px;border-radius:50%;background:#262626}.v-c .block b{display:block;font:700 14px Georgia,serif}.v-c .block small{display:block;margin-top:5px;color:#736a5d}
+    *{box-sizing:border-box}
+    html,body{margin:0;background:#f0efec;color:#1b1b1a;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    body{padding:0}
+    a{color:inherit;text-decoration:none}
+    .canvas{width:max-content;min-width:100%}
+    .turn{padding:38px 44px 32px;border-bottom:1px solid rgba(0,0,0,.09);scroll-margin-top:12px}
+    .turn-head{display:flex;align-items:baseline;gap:10px;margin-bottom:20px}
+    .turn-id,.option-id{display:inline-flex;align-items:center;border-radius:5px;font:700 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace}
+    .turn-id{padding:4px 8px;background:#1b1b1a;color:#fff}
+    .turn-title{font-size:13px;font-weight:650}
+    .turn-context{max-width:680px;margin:0 0 18px;color:#66645f;font-size:12px;line-height:1.55}
+    .options{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+    .option{width:340px;scroll-margin-top:14px}
+    .option-label{display:flex;align-items:baseline;gap:8px;margin-bottom:9px;color:#66645f;font-size:11px}
+    .option-id{padding:4px 7px;background:rgba(0,0,0,.075);color:#1b1b1a}
+    .option:target .option-id{background:#2f6fd1;color:#fff}
+    .option-name{font-weight:600}
+    .card{height:430px;overflow:hidden;border:1px solid rgba(0,0,0,.09);border-radius:9px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+    .explain{margin-top:10px;padding:11px 12px;border:1px solid rgba(0,0,0,.08);border-radius:8px;background:rgba(255,255,255,.5);font-size:11.5px;line-height:1.5}
+    .explain p{display:grid;grid-template-columns:64px 1fr;gap:8px;margin:0}
+    .explain p+p{margin-top:6px}
+    .explain b{font-weight:650;color:#343330}
+    .explain span{color:#696761}
+    .next{margin:22px 0 0;color:#6d6a64;font-size:12px;line-height:1.55}
+    .next .option-id{margin:0 2px;padding:2px 5px;font-size:10px}
+
+    .focus-a{padding:20px;background:#151619;color:#f7f7f3}
+    .focus-a small{color:#9ea1a8;font:600 10px ui-monospace,SFMono-Regular,Menlo,monospace}
+    .focus-a .time{margin:100px auto 0;text-align:center;font:700 64px/1 ui-monospace,SFMono-Regular,Menlo,monospace}
+    .focus-a .label{margin-top:12px;text-align:center;color:#aeb1b8;font-size:12px}
+    .focus-a .button{width:180px;margin:74px auto 0;padding:13px;border-radius:999px;background:#e9ff72;color:#161713;text-align:center;font-weight:700;font-size:12px}
+
+    .focus-b{padding:18px;background:#fbfaf6;color:#1b211c}
+    .focus-b h3{margin:18px 0 6px;font:700 30px/1.05 Georgia,serif}
+    .focus-b .muted{color:#77746c;font-size:11px}
+    .focus-b .choice{margin-top:28px;padding:15px 0;border-top:1px solid #d8d5cc}
+    .focus-b .choice strong{display:block;font-size:13px}
+    .focus-b .choice span{display:block;margin-top:5px;color:#77746c;font-size:11px}
+    .focus-b .choice.active{padding:15px;border:1px solid #1b211c;background:#eef2df}
+
+    .focus-c{padding:18px;background:#eaf0f7;color:#15243a}
+    .focus-c h3{margin:18px 0 8px;font:700 27px/1.1 system-ui,sans-serif}
+    .focus-c .lane{display:grid;grid-template-columns:55px 1fr;gap:10px;margin-top:24px}
+    .focus-c .tick{padding-top:12px;color:#637187;font:600 10px ui-monospace,SFMono-Regular,Menlo,monospace}
+    .focus-c .block{margin-bottom:9px;padding:13px;border-radius:8px;background:#fff;border:1px solid #cad4e2;font-size:12px}
+
+    .riff-a{padding:18px;background:#f8f7f3}
+    .riff-a h3,.riff-b h3,.riff-c h3{margin:18px 0 8px;font-size:24px;letter-spacing:-.03em}
+    .sentence{margin:42px 0 0;font:650 26px/1.6 Georgia,serif}
+    .pill{display:inline-block;padding:3px 8px;border:1px solid #a9a69e;border-radius:999px;font:650 11px system-ui,sans-serif}
+    .result{margin-top:54px;padding:13px;border-top:1px solid #c9c6bf;font-size:12px}
+
+    .riff-b{padding:18px;background:#ffe786;color:#2d2512}
+    .progress{display:flex;gap:5px;margin-top:24px}.progress i{height:4px;flex:1;background:rgba(45,37,18,.22)}.progress i:first-child{background:#2d2512}
+    .question{margin-top:95px;font:700 38px/1.05 Georgia,serif;letter-spacing:-.05em}
+    .binary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:70px}.binary span{padding:14px;border:1px solid #2d2512;text-align:center;font-weight:700;font-size:12px}
+
+    .riff-c{padding:18px;background:#182432;color:#edf4f8}
+    .riff-c .muted{color:#9fb0bd;font-size:11px}
+    .sliders{margin-top:32px}.slider{margin-bottom:26px}.slider-head{display:flex;justify-content:space-between;font-size:11px}.track{height:5px;margin-top:9px;background:#435462}.fill{height:100%;background:#83d8cf}.ranking{margin-top:36px;border-top:1px solid #435462}.rank{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #435462;font-size:11px}
   </style>
 </head>
 <body>
   <main class="canvas">
-    <section class="round" data-round="1">
-      <div class="round-head"><span class="round-id">Round 1</span><span class="round-note">Three sibling hypotheses, shown together before convergence.</span></div>
-      <div class="variants">
-        <article class="variant" data-variant="1A" data-parent="baseline">
-          <div class="variant-label"><span class="variant-id">1A</span><span class="variant-name">Single-focus dial</span></div>
-          <div class="prototype v-a"><div class="top">FOCUS / 25 MIN</div><div class="focus">25:00</div><div class="action">Start one task</div></div>
-          <p class="note">Hypothesis: remove queue visibility and make one task feel physically dominant.</p>
+    <section class="turn" id="t2" data-turn="2">
+      <div class="turn-head"><a class="turn-id" href="#t2">2</a><span class="turn-title">Riffs on <a class="option-id" href="#1b">1b</a></span></div>
+      <p class="turn-context">This round keeps the “guided choice” premise from 1b and explores three different ways to reduce decision effort.</p>
+      <div class="options">
+        <article class="option" id="2a" data-option="2a" data-parent="1b">
+          <div class="option-label"><a class="option-id" href="#2a">2a</a><span class="option-name">Sentence builder</span><span>← <a href="#1b">1b</a></span></div>
+          <div class="card riff-a"><small>GUIDED CHOICE</small><h3>Say the constraint naturally</h3><div class="sentence">I want something <span class="pill">quiet</span>, for <span class="pill">25 min</span>, with <span class="pill">one task</span>.</div><div class="result">Ready to shape one focused session.</div></div>
+          <div class="explain"><p><b>Idea</b><span>Turn filters into a readable sentence.</span></p><p><b>Key move</b><span>Constraints become inline choices rather than a panel.</span></p><p><b>Tradeoff</b><span>Friendlier to read, less scalable to many criteria.</span></p></div>
         </article>
-        <article class="variant" data-variant="1B" data-parent="baseline">
-          <div class="variant-label"><span class="variant-id">1B</span><span class="variant-name">Queue workspace</span></div>
-          <div class="prototype v-b"><div class="bar"><span>TODAY</span><span>3 TASKS</span></div><div class="queue"><div class="item active"><strong>Ship design review</strong><span>Running · 18 min left</span></div><div class="item"><strong>Answer feedback</strong><span>Next</span></div><div class="item"><strong>Write notes</strong><span>Later</span></div></div></div>
-          <p class="note">Hypothesis: keep the next actions visible so momentum comes from queue progression.</p>
+        <article class="option" id="2b" data-option="2b" data-parent="1b">
+          <div class="option-label"><a class="option-id" href="#2b">2b</a><span class="option-name">Rapid interview</span><span>← <a href="#1b">1b</a></span></div>
+          <div class="card riff-b"><small>QUESTION 1 / 3</small><div class="progress"><i></i><i></i><i></i></div><div class="question">Do you want to see what comes next?</div><div class="binary"><span>Yes</span><span>No</span></div></div>
+          <div class="explain"><p><b>Idea</b><span>One binary decision at a time lowers cognitive load.</span></p><p><b>Key move</b><span>Replace simultaneous controls with progressive disclosure.</span></p><p><b>Tradeoff</b><span>Easy moment-to-moment, weaker overview.</span></p></div>
         </article>
-        <article class="variant" data-variant="1C" data-parent="baseline">
-          <div class="variant-label"><span class="variant-id">1C</span><span class="variant-name">Time blocks</span></div>
-          <div class="prototype v-c"><div class="title">Shape the afternoon</div><div class="axis"><div class="block"><b>13:00 · Deep work</b><small>45 minutes</small></div><div class="block"><b>14:00 · Review</b><small>30 minutes</small></div><div class="block"><b>15:00 · Open slot</b><small>Drag a task here</small></div></div></div>
-          <p class="note">Hypothesis: make time itself editable, with tasks treated as blocks on a temporal canvas.</p>
+        <article class="option" id="2c" data-option="2c" data-parent="1b">
+          <div class="option-label"><a class="option-id" href="#2c">2c</a><span class="option-name">Weighted priorities</span><span>← <a href="#1b">1b</a></span></div>
+          <div class="card riff-c"><small>PRIORITY MIX</small><h3>Not every constraint matters equally</h3><p class="muted">Shape the session by weighting what matters now.</p><div class="sliders"><div class="slider"><div class="slider-head"><span>Speed</span><span>82%</span></div><div class="track"><div class="fill" style="width:82%"></div></div></div><div class="slider"><div class="slider-head"><span>Clarity</span><span>68%</span></div><div class="track"><div class="fill" style="width:68%"></div></div></div></div><div class="ranking"><div class="rank"><span>Single-focus</span><b>91</b></div><div class="rank"><span>Queue</span><b>77</b></div></div></div>
+          <div class="explain"><p><b>Idea</b><span>Preferences are continuous, not binary.</span></p><p><b>Key move</b><span>Expose relative importance and live ranking.</span></p><p><b>Tradeoff</b><span>More expressive, but asks for more deliberate input.</span></p></div>
         </article>
       </div>
+      <p class="next">Try next: “make <a class="option-id" href="#2a">2a</a> more visual” · “combine the pacing of <a class="option-id" href="#2b">2b</a> with the overview from <a class="option-id" href="#2c">2c</a>” · “new directions”</p>
+    </section>
+
+    <section class="turn" id="t1" data-turn="1">
+      <div class="turn-head"><a class="turn-id" href="#t1">1</a><span class="turn-title">Three ways to structure a focus session</span></div>
+      <p class="turn-context">The first turn expands the problem before any direction is selected: one dominant task, a visible queue, or time as an editable canvas.</p>
+      <div class="options">
+        <article class="option" id="1a" data-option="1a" data-parent="baseline">
+          <div class="option-label"><a class="option-id" href="#1a">1a</a><span class="option-name">Single focus</span></div>
+          <div class="card focus-a"><small>FOCUS / 25 MIN</small><div class="time">25:00</div><div class="label">One thing, fully visible.</div><div class="button">Start one task</div></div>
+          <div class="explain"><p><b>Idea</b><span>Momentum comes from removing every competing choice.</span></p><p><b>Key move</b><span>One task occupies the visual center.</span></p><p><b>Tradeoff</b><span>Maximum focus, minimal awareness of what is next.</span></p></div>
+        </article>
+        <article class="option" id="1b" data-option="1b" data-parent="baseline">
+          <div class="option-label"><a class="option-id" href="#1b">1b</a><span class="option-name">Guided queue</span></div>
+          <div class="card focus-b"><small>TODAY</small><h3>Move through a short queue</h3><p class="muted">Keep the next step visible without showing the whole backlog.</p><div class="choice active"><strong>Ship design review</strong><span>Running · 18 min left</span></div><div class="choice"><strong>Answer feedback</strong><span>Next</span></div><div class="choice"><strong>Write notes</strong><span>Later</span></div></div>
+          <div class="explain"><p><b>Idea</b><span>Visible sequencing creates momentum.</span></p><p><b>Key move</b><span>Show only the active task and a tiny near-term queue.</span></p><p><b>Tradeoff</b><span>More context than 1a, with slightly more cognitive load.</span></p></div>
+        </article>
+        <article class="option" id="1c" data-option="1c" data-parent="baseline">
+          <div class="option-label"><a class="option-id" href="#1c">1c</a><span class="option-name">Time canvas</span></div>
+          <div class="card focus-c"><small>AFTERNOON</small><h3>Shape time directly</h3><div class="lane"><div class="tick">13:00</div><div><div class="block">Deep work · 45m</div><div class="block">Review · 30m</div></div><div class="tick">15:00</div><div><div class="block">Open slot · drag a task here</div></div></div></div>
+          <div class="explain"><p><b>Idea</b><span>Planning feels easier when time is tangible.</span></p><p><b>Key move</b><span>Tasks become blocks on a temporal surface.</span></p><p><b>Tradeoff</b><span>Strong overview, heavier planning interaction.</span></p></div>
+        </article>
+      </div>
+      <p class="next">Try next: “riff on <a class="option-id" href="#1b">1b</a>” · “make <a class="option-id" href="#1a">1a</a> feel more native” · “explore three completely new models”</p>
     </section>
   </main>
 </body>
