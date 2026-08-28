@@ -56,33 +56,31 @@ Options within a turn are shown together whenever the medium allows. The layout 
 
 The options vary on dimensions that matter to the brief: structure, hierarchy, interaction, navigation, visual language, content strategy, or other relevant axes.
 
+The option count is part of the design judgment rather than the state protocol. Explicit user counts are followed; otherwise the exploration uses a compact set large enough to expose meaningful differences.
+
 ## Complete visible document
 
-The canvas is the visible artifact, rather than one section inside a separate presentation wrapper. Turn framing, option labels, local annotation, continuation cues, and baseline context all live inside the state structure of the canvas.
+The canvas is the visible artifact, rather than one section inside a separate presentation wrapper. Turn labels, option identities, optional local explanation, continuation cues, and baseline context all live inside the state structure of the canvas.
 
-This gives the protocol a clear ownership boundary while keeping the surrounding visual system intentionally lightweight.
+This gives the protocol a clear ownership boundary while keeping the surrounding visual system lightweight.
 
-## Annotation near the work
+## Stable chrome, variable content
 
-Annotations help make differences legible, but their form follows the design rather than a fixed review schema.
+The canvas chrome has one job: make states easy to locate, compare, and revisit. It stays visually stable across generations.
 
-Depending on the work, an option may benefit from:
+The option content has a different job: answer the actual design brief. Its typography, color, density, interaction model, and visual language can vary freely.
 
-- one concise sentence;
-- a short paragraph;
-- a few bullets;
-- a compact tradeoff note;
-- little or no additional prose when the design is already self-explanatory.
+This separation reduces the chance that each new run reinvents the exploration workspace instead of concentrating on the designs.
 
-The stable part of the protocol is the option identity and its place in history; the annotation remains expressive.
+## Local explanation
+
+Explanation is optional content near the work. It can be a sentence, paragraph, bullets, or absent when the design is already self-explanatory.
+
+The protocol keeps identity and history stable while leaving design reasoning expressive.
 
 ## Navigation suggestions
 
-A turn can end with a few concise next-step paths: riff on one option, combine specific parts, explore another axis, or converge when the user is ready.
-
-## Canvas styling
-
-The substrate is intentionally quiet: neutral background, compact labels, restrained separators, and enough whitespace for the rendered options to carry the visual personality of the brief.
+A turn can end with a short line of concrete next-step paths: riff on one option, combine specific parts, explore another axis, or converge when the user is ready.
 
 ## Progressive rendering
 
@@ -90,8 +88,7 @@ When the host refreshes HTML as project files change, progressive authoring can 
 
 1. establish the newest turn shell;
 2. render coherent sibling options incrementally;
-3. add local annotation where useful;
-4. add continuation cues when useful.
+3. add local explanation or continuation cues when they improve the work.
 
 The same interaction model also works in hosts that expose only a final-write workflow.
 
