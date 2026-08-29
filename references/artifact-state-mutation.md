@@ -55,6 +55,26 @@ normally create new descendant options in the next turn. Lineage records where t
 
 Direct mutation of an earlier state is reserved for cases where the user explicitly asks to correct or replace that historical state itself.
 
+## Prefer a local prepend edit
+
+When the host exposes targeted file editing, the safest follow-up mutation is a local insertion immediately after the opening `main.pde-canvas` tag, before the current newest state.
+
+Conceptually:
+
+```html
+<main class="pde-canvas">
+  <!-- insert the new turn here -->
+
+  <!-- existing delivered states remain in place below -->
+  <section id="t1" data-turn="1">...</section>
+  <section id="baseline" data-baseline="0">...</section>
+</main>
+```
+
+This operation scales better than regenerating the entire exploration document and makes historical preservation mechanical: the edit adds a new subtree without re-emitting older state subtrees.
+
+Whole-file regeneration is a fallback for hosts that provide no targeted edit mechanism. Even in that case, the historical state model remains the same.
+
 ## Rendering meaning is part of state
 
 History is not only DOM markup. Shared CSS or JavaScript can change the visual or interactive meaning of old states even when their HTML nodes stay untouched.
@@ -77,7 +97,7 @@ The same principle applies to event handlers, shared data, and layout rules.
 
 ## Prepend-only state growth
 
-Because newest turns appear first, the normal structural mutation is to insert the new turn before the previous newest state:
+Because newest turns appear first, the normal structural result is:
 
 ```html
 <main class="pde-canvas">
