@@ -2,7 +2,11 @@
 
 **Explore multiple rendered design directions side by side, keep every exploration turn visible, and converge only when you are ready.**
 
-Parallel Design Exploration is an Open Design community scenario for **persistent parallel prototyping**. Instead of replacing yesterday's design with today's revision, it turns the artifact itself into a visible design space:
+Parallel Design Exploration is an Open Design community scenario for **persistent parallel prototyping**. Instead of replacing yesterday's design with today's revision, it turns the artifact itself into a visible design space.
+
+![Persistent Options Canvas](assets/demo/hero.svg)
+
+The canonical demo above is generated from the same Options Canvas grammar used by the skill: newest work at the top, earlier turns still visible, and stable ids connecting the canvas back to conversation.
 
 ```text
 TURN 3    3a     3b     3c          ← newest
@@ -102,6 +106,12 @@ Give me new directions instead of refining the current family.
 ```
 
 The important part is that `1b`, `2a`, and the earlier alternatives remain visible and addressable while the exploration grows.
+
+## How a follow-up grows the canvas
+
+![A follow-up prepends a new turn while preserving earlier states](assets/demo/evolution.svg)
+
+A normal continuation is an additive state transition. The new turn is inserted at the top of the same primary artifact; already delivered turns remain the visible source-of-truth history. This is different from regenerating a prettier summary of the old work.
 
 ## What the plugin provides
 
@@ -263,6 +273,7 @@ od plugin validate .
 .
 ├── SKILL.md                         # executable Agent Skill contract
 ├── open-design.json                 # Open Design scenario manifest
+├── assets/demo/                     # README / community-submission media
 ├── examples/
 │   ├── single-document-exploration.html
 │   └── mobile-ui-exploration.md
@@ -294,7 +305,7 @@ The protocol is grounded in established design practice rather than a single pro
 
 The core interaction protocol has been exercised across multiple model/agent combinations and multi-turn explorations. v0.10.1 focuses on portability and silent-failure prevention: selector-safe anchors, wide-artboard overflow behavior, targeted follow-up mutation, accessible reference affordances, portable Agent Skills frontmatter, and automated repository validation.
 
-The next public-facing work is demo media, a tagged beta release, and an Open Design community submission.
+The next public-facing work is a tagged beta release and an Open Design community submission. A real runtime screen recording can be added later without changing the canonical demo assets above.
 
 ## License
 
