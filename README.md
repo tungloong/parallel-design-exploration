@@ -1,197 +1,223 @@
 # Parallel Design Exploration
 
-A community-oriented Open Design scenario for **persistent parallel prototyping inside one visual document**.
+**Explore multiple rendered design directions side by side, keep every exploration turn visible, and converge only when you are ready.**
 
-Instead of treating design iteration as one mutable latest state:
-
-```text
-brief → one answer → modify → replace → modify
-```
-
-the plugin keeps a visible design space:
+Parallel Design Exploration is an Open Design community scenario for **persistent parallel prototyping**. Instead of replacing yesterday's design with today's revision, it turns the artifact itself into a visible design space:
 
 ```text
-TURN 3:  3a   3b   3c   ← newest
-TURN 2:  2a   2b   2c
-TURN 1:  1a   1b   1c   1d
-0 · BASELINE             ← when a reliable current design exists
+TURN 3    3a     3b     3c          ← newest
+
+TURN 2    2a     2b     2c
+            ↖     ↑     ↗
+                  1b
+
+TURN 1    1a     1b     1c     1d
+
+0 · BASELINE                         ← when reliable current UI exists
 ```
 
-Sibling options remain directly comparable, state identities stay stable across conversation, and later exploration can branch from earlier work without erasing visible history.
+You can point at any visible state by id — `1b`, `2a`, `3c` — and ask the agent to riff on it, combine it with another direction, or explore a different axis. New work appears as a new turn while the design history stays on the same canvas.
 
-## Status
+## Why this exists
 
-**v0.10 — stable artifact identity and immutable delivered states.**
-
-The plugin can be selected directly as an Open Design Active Plugin and requests only `prompt:inject`, keeping the scenario compatible with the community plugin trust model.
-
-v0.10 formalizes the temporal side of the protocol:
-
-- one exploration session has one stable primary artifact;
-- each delivered turn becomes a historical design-state snapshot;
-- normal follow-up work prepends a new turn to that same artifact;
-- earlier states keep their identity, visible content, and rendering meaning;
-- new implementation extends styles and behavior without unintentionally restyling historical states.
-
-The visual substrate introduced in v0.9 remains intentionally small and stable so the model can spend its creative effort on the designs themselves.
-
-## Core protocol
-
-### One persistent artifact identity
-
-The first generation establishes the primary exploration artifact. Its subject-derived filename becomes part of the session identity:
+Most AI design loops converge too early:
 
 ```text
-search-and-go-exploration.html
-checkout-flow-exploration.html
-analytics-dashboard-exploration.html
+brief → one design → edit → replace → edit
 ```
 
-Follow-up turns resolve and update that same artifact rather than creating a new latest copy.
+That makes it difficult to compare alternatives, recover an earlier idea, or understand how a later direction evolved.
 
-### Immutable delivered states
-
-Once a turn has been shown to the user, it becomes part of the historical record.
-
-A normal follow-up changes this:
+Parallel Design Exploration uses a different loop:
 
 ```text
-Turn 1
-0 · Baseline
+brief
+  ↓
+render several sibling options
+  ↓
+compare them at the same time
+  ↓
+reference any option by stable id
+  ↓
+add a new turn without erasing the old one
+  ↓
+converge when the user chooses
 ```
 
-into this:
-
-```text
-Turn 2   ← new
-Turn 1   ← same historical state
-0 · Baseline
-```
-
-Requests to riff on, deepen, combine, or refine earlier work normally create descendant options in a new turn. Direct correction of an earlier state is a different operation and happens only when the user explicitly asks to change that historical state itself.
-
-Historical preservation applies to rendering meaning, not only DOM ids. New-turn CSS and behavior should be additive or scoped so previously delivered states still look and behave as they did when delivered.
-
-See [`references/artifact-state-mutation.md`](references/artifact-state-mutation.md) for the state-transition model.
-
-### One visible exploration document
-
-The primary artifact is one persistent Options Canvas. `main.pde-canvas` owns the complete visible exploration surface, and its direct children are the visible design states:
-
-1. newest exploration turn;
-2. older turns in descending order;
-3. optional `0 · Baseline` as the oldest state.
-
-### Stable turn and option identities
-
-Turns and options use stable anchors:
-
-```text
-t1, t2, t3
-1a, 1b, 1c, 1d
-2a, 2b, 2c
-```
-
-Those ids are shared between canvas and conversation:
-
-```text
-Keep 2a's hierarchy, but use the interaction from 1c.
-```
-
-Visible references to existing states link back to the corresponding document anchor.
-
-### Reliable baseline evidence
-
-When the supplied project, screen, screenshot, design file, or prior artifact contains a reliable current state, the plugin preserves that state as `0 · Baseline`.
-
-The baseline records **what exists now**. It does not imply that new options must inherit the baseline's design choices. A redesign can keep the current state visible while exploring from first principles.
-
-For greenfield work or insufficient source context, the baseline is absent.
-
-### Lineage where it is meaningful
-
-`data-parent` represents intentional design descent, such as a later variant riffing on `1b`. Baseline presence alone does not make every first-turn option a child of the baseline.
-
-### Rendered sibling alternatives
-
-Each turn contains a compact set of materially different rendered options. A user-specified count wins; otherwise the agent chooses enough siblings to expose meaningful alternatives while keeping comparison practical.
-
-Variation axes come from the actual brief: interaction, structure, hierarchy, navigation, density, visual language, content strategy, or other relevant design dimensions.
-
-## Canonical canvas substrate
-
-The Options Canvas uses a small utility chrome rather than a newly invented page style on every run:
-
-- warm neutral workspace background;
-- compact system-ui turn labels;
-- compact monospace state ids;
-- thin separators between turns;
-- `flex-wrap` sibling layout;
-- intrinsic artboard sizing;
-- transparent option containers;
-- a light artifact surface around each rendered design;
-- quiet, one-line continuation cues when useful.
-
-This substrate is the base canvas chrome, not a visual-direction suggestion. The design inside each option remains free to use whatever visual language the brief calls for.
-
-See [`templates/exploration-board.html`](templates/exploration-board.html) for the minimal substrate and [`references/canvas-substrate.md`](references/canvas-substrate.md) for the rationale.
-
-## Optional local explanation
-
-Design reasoning can stay close to an option when it materially improves understanding, but it is not a fixed option schema. Depending on the work, an explanation can be one sentence, a short paragraph, bullets, or absent when the design is already clear.
-
-The protocol standardizes **identity, history, mutation, and spatial comparison** rather than the designer's writing style.
+The interaction model is inspired by parallel prototyping, design-space exploration, studio pin-ups, artboards, and persistent visual workspaces.
 
 ## Install
+
+Install directly from GitHub:
 
 ```bash
 od plugin install github:tungloong/parallel-design-exploration
 ```
 
-Then select **Parallel Design Exploration** directly as the Active Plugin.
+Then open Open Design and select **Parallel Design Exploration** as the Active Plugin. It is a standalone scenario; you do not need to start from Web Prototype first.
 
-If an older version is installed, reinstall or upgrade it so Open Design sees the current manifest and skill package.
+The plugin requests only:
 
-## Canonical structure
+```text
+prompt:inject
+```
+
+so it stays compatible with the Open Design community-plugin trust model.
+
+If Open Design already has an older copy installed, remove or reinstall that copy before testing the latest manifest and skill package.
+
+## Quick start
+
+Start with an ordinary design brief. You do not need to describe the exploration mechanics yourself.
+
+```text
+Redesign this search flow. I want to make choosing the destination much faster without turning the screen into a dense control panel.
+```
+
+A first turn might produce:
+
+```text
+1a   input-first
+1b   destination-first
+1c   command-style
+1d   system-native
+```
+
+Then continue conversationally:
+
+```text
+Along 1b, explore three different ways to organize the destinations.
+```
+
+or:
+
+```text
+Combine 2a's hierarchy with the interaction from 1c.
+```
+
+or:
+
+```text
+Give me new directions instead of refining the current family.
+```
+
+The important part is that `1b`, `2a`, and the earlier alternatives remain visible and addressable while the exploration grows.
+
+## What the plugin provides
+
+### Parallel rendered options
+
+Each turn contains a compact set of **materially different, rendered siblings** rather than a list of textual concepts. The exact count is driven by the brief or by an explicit user request.
+
+Sibling options are developed to a comparable level of craft and fidelity so the comparison reflects the design hypotheses rather than uneven execution quality.
+
+### Stable design identities
+
+Conversation uses short logical ids:
+
+```text
+1a  1b  1c  1d
+2a  2b  2c
+```
+
+The HTML uses selector-safe DOM anchors such as `o-1b`, while `data-option="1b"` and the visible label remain `1b`. This keeps conversational identity simple without creating invalid CSS/JavaScript selectors.
+
+### Persistent visible history
+
+One exploration session keeps **one primary artifact identity**. A normal follow-up locally prepends a new turn to that artifact:
+
+```text
+before                 after
+
+Turn 1                 Turn 2   ← new
+0 · Baseline           Turn 1   ← preserved
+                       0 · Baseline
+```
+
+When the host exposes targeted file editing, the preferred mutation is a local insertion immediately inside `main.pde-canvas`. Previously delivered state subtrees are left untouched.
+
+See [`references/artifact-state-mutation.md`](references/artifact-state-mutation.md) for the state model.
+
+### Optional `0 · Baseline`
+
+If the supplied code, screenshot, design file, or prior artifact contains a reliable current state, the canvas preserves it as **`0 · Baseline`**.
+
+Baseline means **what exists now**. It does not mean the new directions must inherit the current design. Baseline evidence and design lineage are separate concepts.
+
+Greenfield work simply begins at Turn 1.
+
+### Lineage
+
+Later options can record intentional descent:
+
+```html
+<article id="o-2a" data-option="2a" data-parent="1b">
+```
+
+This makes design ancestry visible without forcing every new idea to inherit from the baseline or from the immediately previous turn.
+
+## The Options Canvas
+
+The primary artifact is one visible exploration document. `main.pde-canvas` owns the complete workspace, ordered newest-first:
 
 ```html
 <body>
-  <main class="pde-canvas" data-pde-version="1">
+  <main class="pde-canvas">
     <section class="pde-turn" id="t2" data-turn="2">
-      ... 2a · 2b · 2c ...
+      <article id="o-2a" data-option="2a" data-parent="1b">...</article>
+      <article id="o-2b" data-option="2b" data-parent="1b">...</article>
     </section>
 
     <section class="pde-turn" id="t1" data-turn="1">
-      ... 1a · 1b · 1c · 1d ...
+      <article id="o-1a" data-option="1a">...</article>
+      <article id="o-1b" data-option="1b">...</article>
     </section>
 
     <section class="pde-baseline" id="baseline" data-baseline="0">
-      ... faithful current state ...
+      ... faithful current-state evidence ...
     </section>
   </main>
 </body>
 ```
 
-For greenfield work, the baseline section is absent.
+The canvas chrome is intentionally small and stable: compact state labels, thin temporal separators, transparent option containers, a light artifact surface, and spatial sibling layout. Wide artboards keep their authored width and can scroll horizontally when the host viewport is narrower.
 
-See [`examples/single-document-exploration.html`](examples/single-document-exploration.html) for a multi-turn example and [`templates/exploration-board.html`](templates/exploration-board.html) for a minimal structural scaffold.
+The **designs inside the options are not styled by the protocol**. Their visual language, typography, palette, interaction model, fidelity, and platform behavior come from the user's brief, the project context, and the host's design guidance.
 
-## Design principles
+See the current marketplace/example artifact:
 
-1. Diverge before converge.
-2. Render alternatives rather than merely describing them.
-3. Keep sibling options directly comparable.
-4. Keep one stable primary artifact for the exploration session.
-5. Treat delivered states as persistent historical snapshots.
-6. Give design states stable conversational identities.
-7. Treat baseline evidence and design lineage as separate concepts.
-8. Keep the canvas chrome stable and lightweight.
-9. Let the user's brief determine the domain, style, fidelity, and variation axes.
-10. Let the user direct convergence.
+- [`examples/single-document-exploration.html`](examples/single-document-exploration.html)
+- [`templates/exploration-board.html`](templates/exploration-board.html)
 
-## Open Design compatibility
+## What is intentionally left open
 
-The plugin is intentionally shaped as a community-safe standalone scenario:
+Parallel Design Exploration standardizes the **design-space interaction model**, not a universal visual style.
+
+It owns:
+
+- one persistent primary exploration artifact;
+- newest-first turns;
+- stable logical option ids;
+- selector-safe DOM anchors;
+- visible historical states;
+- optional baseline evidence;
+- lineage between descendants and parents;
+- direct sibling comparison;
+- a thin, stable workspace substrate.
+
+It leaves the following to the actual design task and host/model:
+
+- product domain;
+- visual direction;
+- typography and palette;
+- platform conventions;
+- interaction details;
+- option-specific reasoning and annotations;
+- the moment of convergence.
+
+## Open Design integration
+
+The plugin is packaged as a community-safe standalone scenario:
 
 ```text
 kind: scenario
@@ -201,51 +227,74 @@ surface: web
 capabilities: [prompt:inject]
 ```
 
-Open Design can still contribute host-level discovery, craft, or design-direction context. The skill uses that context while maintaining the persistent parallel exploration model, stable artifact identity, immutable history semantics, and canonical substrate.
+Open Design can still contribute host-level discovery, craft, and design-direction guidance. The skill preserves the persistent Options Canvas interaction model around that work.
 
-## Method references
+The executable contract lives in [`SKILL.md`](SKILL.md); Open Design-specific packaging lives in [`open-design.json`](open-design.json).
 
-The interaction model is grounded in established design practice and modern visual-workspace patterns:
+## Validation
 
-- parallel prototyping and divergence-before-convergence;
-- design-space exploration;
-- pin-up / studio-wall critique;
-- artboards, frames, sections, and persistent visual workspaces;
-- stable option identities and visible iteration history.
+The repository includes a lightweight standard-library validator and GitHub Actions workflow.
 
-See:
+Run locally:
 
-- [`references/parallel-prototyping.md`](references/parallel-prototyping.md)
-- [`references/exploration-canvas.md`](references/exploration-canvas.md)
-- [`references/persistent-options-canvas.md`](references/persistent-options-canvas.md)
-- [`references/artifact-state-mutation.md`](references/artifact-state-mutation.md)
-- [`references/canvas-substrate.md`](references/canvas-substrate.md)
-- [`references/open-design-community-alignment.md`](references/open-design-community-alignment.md)
-
-## Example request
-
-```text
-Explore several materially different ways to solve this design problem. Keep the alternatives together so I can compare them before choosing a direction.
+```bash
+python scripts/validate.py
 ```
 
-Later:
+It checks the pieces most likely to fail silently:
 
-```text
-Take 1b as the main parent and show three different riffs on it.
-```
+- portable Agent Skills frontmatter keys;
+- `SKILL.md` / `open-design.json` version alignment;
+- preview and template anchor integrity;
+- logical `data-option` ↔ selector-safe `o-*` DOM ids;
+- turn ids and `data-turn` alignment;
+- preview entry existence;
+- canonical canvas-substrate drift.
 
-Or:
-
-```text
-Combine the structure from 2a with the interaction idea from 1c, then keep exploring.
-```
-
-## Local validation
+For Open Design itself, also run:
 
 ```bash
 od plugin validate .
-od plugin install .
 ```
+
+## Project structure
+
+```text
+.
+├── SKILL.md                         # executable Agent Skill contract
+├── open-design.json                 # Open Design scenario manifest
+├── examples/
+│   ├── single-document-exploration.html
+│   └── mobile-ui-exploration.md
+├── templates/
+│   └── exploration-board.html
+├── references/                      # method and maintainer rationale
+├── scripts/
+│   └── validate.py
+└── .github/workflows/
+    └── validate.yml
+```
+
+The skill is self-contained for runtime use. The supporting files document the rationale, demonstrate the protocol, and help maintainers verify the package; they are not prerequisites that an agent must load before every run.
+
+## Method references
+
+The protocol is grounded in established design practice rather than a single product implementation. Background material is collected in:
+
+- [`references/parallel-prototyping.md`](references/parallel-prototyping.md) — divergence and parallel prototyping;
+- [`references/exploration-canvas.md`](references/exploration-canvas.md) — spatial comparison and persistent visual workspaces;
+- [`references/persistent-options-canvas.md`](references/persistent-options-canvas.md) — stable option identities and visible history;
+- [`references/artifact-state-mutation.md`](references/artifact-state-mutation.md) — artifact identity and historical-state mutation;
+- [`references/canvas-substrate.md`](references/canvas-substrate.md) — stable workspace chrome vs. generative design content;
+- [`references/open-design-community-alignment.md`](references/open-design-community-alignment.md) — packaging decisions for the Open Design ecosystem.
+
+## Status
+
+**v0.10.1 — public-beta hardening.**
+
+The core interaction protocol has been exercised across multiple model/agent combinations and multi-turn explorations. v0.10.1 focuses on portability and silent-failure prevention: selector-safe anchors, wide-artboard overflow behavior, targeted follow-up mutation, accessible reference affordances, portable Agent Skills frontmatter, and automated repository validation.
+
+The next public-facing work is demo media, a tagged beta release, and an Open Design community submission.
 
 ## License
 
